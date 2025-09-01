@@ -2,9 +2,10 @@ package devbrowser
 
 import (
 	"errors"
+	"fmt"
 	"io"
 
-	"github.com/playwright-community/playwright-go"
+	"github.com/go-rod/rod"
 )
 
 type DevBrowser struct {
@@ -16,12 +17,11 @@ type DevBrowser struct {
 
 	isOpen bool // Indica si el navegador está abierto
 
-	// Playwright fields
-	playwright *playwright.Playwright
-	browser    playwright.Browser
-	context    playwright.BrowserContext
-	page       playwright.Page
-	cancelFunc func() // Custom cancel function
+	// Rod fields
+	launcherURL string
+	browser     *rod.Browser
+	page        *rod.Page
+	cancelFunc  func() // Custom cancel function
 
 	readyChan chan bool
 	errChan   chan error
@@ -95,17 +95,35 @@ func (b *DevBrowser) navigateToURL(url string) error {
 		return errors.New("page not initialized")
 	}
 
-	_, err := b.page.Goto(url)
-	return err
+	if err := b.page.Navigate(url); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (b *DevBrowser) Reload() error {
 	if b.page != nil && b.isOpen {
-		// fmt.Println("Recargando Navegador")
-		_, err := b.page.Reload()
-		if err != nil {
-			return errors.New("Reload DevBrowser " + err.Error())
+		b.log("Reload")
+		if err := b.page.Reload(); err != nil {
+			return errors.New("Reload " + err.Error())
 		}
 	}
 	return nil
+}
+
+// log writes a simple message to the configured logger (if any).
+func (h *DevBrowser) log(msg string) {
+	if h == nil || h.logger == nil {
+		return
+	}
+	// add newline for readability
+	_, _ = h.logger.Write([]byte(msg + "\n"))
+}
+
+// logf writes a formatted message to the configured logger (if any).
+func (h *DevBrowser) logf(format string, a ...any) {
+	if h == nil || h.logger == nil {
+		return
+	}
+	_, _ = h.logger.Write([]byte(fmt.Sprintf(format, a...) + "\n"))
 }

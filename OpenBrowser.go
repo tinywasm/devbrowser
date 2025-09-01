@@ -27,17 +27,20 @@ func (h *DevBrowser) OpenBrowser() {
 		var protocol = "http"
 		url := protocol + `://localhost:` + h.config.GetServerPort() + "/"
 
-		// Navegar a la URL
-		_, err = h.page.Goto(url)
-		if err != nil {
+		// Navegar a la URL (rod)
+		if h.page == nil {
+			h.errChan <- fmt.Errorf("page not initialized")
+			return
+		}
+
+		if err = h.page.Navigate(url); err != nil {
 			h.errChan <- fmt.Errorf("error navigating to %s: %v", url, err)
 			return
 		}
 
-		// Verificar carga completa usando Playwright
-		err = h.page.WaitForLoadState()
-		if err != nil {
-			h.errChan <- err
+		// Esperar carga completa usando rod
+		if err = h.page.WaitLoad(); err != nil {
+			h.errChan <- fmt.Errorf("error waiting for load: %v", err)
 			return
 		}
 
@@ -50,11 +53,12 @@ func (h *DevBrowser) OpenBrowser() {
 	select {
 	case err := <-h.errChan:
 		h.isOpen = false
-		h.logger.Write([]byte("Error opening DevBrowser: " + err.Error()))
+		// use helper to ensure logging goes through configured logger
+		h.logf("Error opening DevBrowser: %s", err.Error())
 		return
 	case <-h.readyChan:
 		// Tomar el foco de la UI después de abrir el navegador
-		/* 	err := h.ui.ReturnFocus()
+		/*  err := h.ui.ReturnFocus()
 		if err != nil {
 			h.logger.Write([]byte("Error returning focus to UI: " + err.Error()))
 		} */
