@@ -3,7 +3,6 @@ package devbrowser
 import (
 	"errors"
 	"fmt"
-	"io"
 
 	"github.com/go-rod/rod"
 )
@@ -27,7 +26,7 @@ type DevBrowser struct {
 	errChan   chan error
 	exitChan  chan bool
 
-	logger io.Writer // For logging output
+	logger func(message ...any) // For logging output
 }
 
 type serverConfig interface {
@@ -51,7 +50,7 @@ devbrowser.New creates a new DevBrowser instance.
 
 	example :  New(serverConfig, userInterface, exitChan)
 */
-func New(sc serverConfig, ui userInterface, exitChan chan bool, logger io.Writer) *DevBrowser {
+func New(sc serverConfig, ui userInterface, exitChan chan bool, logger func(message ...any)) *DevBrowser {
 
 	browser := &DevBrowser{
 		config:    sc,
@@ -117,7 +116,7 @@ func (h *DevBrowser) log(msg string) {
 		return
 	}
 	// add newline for readability
-	_, _ = h.logger.Write([]byte(msg + "\n"))
+	h.logger(msg + "\n")
 }
 
 // logf writes a formatted message to the configured logger (if any).
@@ -125,5 +124,5 @@ func (h *DevBrowser) logf(format string, a ...any) {
 	if h == nil || h.logger == nil {
 		return
 	}
-	_, _ = h.logger.Write([]byte(fmt.Sprintf(format, a...) + "\n"))
+	h.logger(fmt.Sprintf(format, a...) + "\n")
 }
