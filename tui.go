@@ -18,16 +18,16 @@ func (h *DevBrowser) Label() string {
 func (h *DevBrowser) Execute(progress func(msgs ...any)) {
 
 	if h.isOpen { // cerrar si esta abierto
-		progress("Closing DevBrowser...")
+		progress("Closing...")
 
 		if err := h.CloseBrowser(); err != nil {
-			progress("CloseBrowser error:", err)
+			progress("Close error:", err)
 		} else {
-			progress("DevBrowser closed successfully.")
+			progress("Closed.")
 		}
 
 	} else { // abrir si esta cerrado
-		progress("Opening DevBrowser...")
+		progress("Opening...")
 		h.OpenBrowser()
 
 	}

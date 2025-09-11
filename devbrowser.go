@@ -2,7 +2,6 @@ package devbrowser
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/go-rod/rod"
 )
@@ -102,27 +101,10 @@ func (b *DevBrowser) navigateToURL(url string) error {
 
 func (b *DevBrowser) Reload() error {
 	if b.page != nil && b.isOpen {
-		b.log("Reload")
+		b.logger("Reload")
 		if err := b.page.Reload(); err != nil {
 			return errors.New("Reload " + err.Error())
 		}
 	}
 	return nil
-}
-
-// log writes a simple message to the configured logger (if any).
-func (h *DevBrowser) log(msg string) {
-	if h == nil || h.logger == nil {
-		return
-	}
-	// add newline for readability
-	h.logger(msg + "\n")
-}
-
-// logf writes a formatted message to the configured logger (if any).
-func (h *DevBrowser) logf(format string, a ...any) {
-	if h == nil || h.logger == nil {
-		return
-	}
-	h.logger(fmt.Sprintf(format, a...) + "\n")
 }

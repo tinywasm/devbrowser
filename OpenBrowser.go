@@ -54,7 +54,7 @@ func (h *DevBrowser) OpenBrowser() {
 	case err := <-h.errChan:
 		h.isOpen = false
 		// use helper to ensure logging goes through configured logger
-		h.logf("Error opening DevBrowser: %s", err.Error())
+		h.logger("Error opening DevBrowser: ", err)
 		return
 	case <-h.readyChan:
 		// Tomar el foco de la UI después de abrir el navegador
@@ -62,6 +62,7 @@ func (h *DevBrowser) OpenBrowser() {
 		if err != nil {
 			h.logger.Write([]byte("Error returning focus to UI: " + err.Error()))
 		} */
+		h.logger("Started")
 		return
 	}
 }
