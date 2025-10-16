@@ -5,7 +5,7 @@ import "testing"
 // minimal stub implementations for interfaces used by New
 type fakeServerConfig struct{}
 
-func (f fakeServerConfig) GetServerPort() string { return "8080" }
+func (f fakeServerConfig) ServerPort() string { return "8080" }
 
 type fakeUI struct{}
 

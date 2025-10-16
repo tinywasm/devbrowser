@@ -29,7 +29,7 @@ type DevBrowser struct {
 }
 
 type serverConfig interface {
-	GetServerPort() string
+	ServerPort() string
 }
 
 type userInterface interface {

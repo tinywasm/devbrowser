@@ -25,7 +25,7 @@ func (h *DevBrowser) OpenBrowser() {
 
 		h.isOpen = true
 		var protocol = "http"
-		url := protocol + `://localhost:` + h.config.GetServerPort() + "/"
+		url := protocol + `://localhost:` + h.config.ServerPort() + "/"
 
 		// Navegar a la URL (rod)
 		if h.page == nil {
