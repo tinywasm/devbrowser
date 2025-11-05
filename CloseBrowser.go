@@ -9,14 +9,16 @@ func (h *DevBrowser) CloseBrowser() error {
 		return errors.New("DevBrowser is already closed")
 	}
 
+	h.isOpen = false
+
 	if h.cancel != nil {
 		h.cancel()
-		h.isOpen = false
 	}
 
 	// Limpiar recursos
 	h.ctx = nil
 	h.cancel = nil
 
+	h.ui.RefreshUI()
 	return nil
 }

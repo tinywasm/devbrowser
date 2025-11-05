@@ -45,6 +45,7 @@ devbrowser.New creates a new DevBrowser instance.
 	}
 
 	type userInterface interface {
+		RefreshUI()
 		ReturnFocus() error
 	}
 
@@ -115,4 +116,23 @@ func (b *DevBrowser) Reload() error {
 // Debe llamarse antes de OpenBrowser().
 func (b *DevBrowser) SetHeadless(headless bool) {
 	b.headless = headless
+}
+
+// monitorBrowserClose monitors the browser context and updates state when browser is closed manually
+func (b *DevBrowser) monitorBrowserClose() {
+	if b.ctx == nil {
+		return
+	}
+
+	// Wait for context to be done (browser closed)
+	<-b.ctx.Done()
+
+	// Only handle if browser was marked as open (manual close by user)
+	if b.isOpen {
+		b.logger("Browser closed by user")
+		b.isOpen = false
+		b.ctx = nil
+		b.cancel = nil
+		b.ui.RefreshUI()
+	}
 }

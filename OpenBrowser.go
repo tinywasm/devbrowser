@@ -40,6 +40,9 @@ func (h *DevBrowser) OpenBrowser() {
 		// Esperar un momento adicional para asegurar que todo esté cargado
 		time.Sleep(100 * time.Millisecond)
 		h.readyChan <- true
+
+		// Monitor browser context for manual close
+		go h.monitorBrowserClose()
 	}()
 
 	// Esperar señal de inicio o error
@@ -56,6 +59,8 @@ func (h *DevBrowser) OpenBrowser() {
 			h.logger.Write([]byte("Error returning focus to UI: " + err.Error()))
 		} */
 		h.logger("Started")
+
+		h.ui.RefreshUI()
 		return
 	}
 }
