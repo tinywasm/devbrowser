@@ -26,6 +26,8 @@ type DevBrowser struct {
 	exitChan  chan bool
 
 	logger func(message ...any) // For logging output
+
+	lastOpID string // For tracking last operation ID
 }
 
 type serverConfig interface {
