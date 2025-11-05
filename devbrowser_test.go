@@ -2,17 +2,8 @@ package devbrowser
 
 import "testing"
 
-// minimal stub implementations for interfaces used by New
-type fakeServerConfig struct{}
-
-func (f fakeServerConfig) ServerPort() string { return "8080" }
-
-type fakeUI struct{}
-
-func (f fakeUI) ReturnFocus() error { return nil }
-
 func TestNewDefaults(t *testing.T) {
-	db := New(fakeServerConfig{}, fakeUI{}, make(chan bool), nil)
+	db, _ := DefaultTestBrowser()
 	if db == nil {
 		t.Fatal("New returned nil")
 	}
@@ -28,7 +19,7 @@ func TestNewDefaults(t *testing.T) {
 }
 
 func TestCloseBrowserWhenClosed(t *testing.T) {
-	db := New(fakeServerConfig{}, fakeUI{}, make(chan bool), nil)
+	db, _ := DefaultTestBrowser()
 	// Ensure isOpen is false by default
 	if db.isOpen {
 		t.Fatal("expected isOpen false by default")

@@ -8,8 +8,7 @@ import (
 )
 
 func TestGetConsoleLogs(t *testing.T) {
-	// Create a new DevBrowser instance
-	exitChan := make(chan bool)
+	// Create a new DevBrowser instance using the shared test helper
 	logMessages := []string{}
 	logger := func(message ...any) {
 		for _, msg := range message {
@@ -17,7 +16,7 @@ func TestGetConsoleLogs(t *testing.T) {
 		}
 	}
 
-	db := New(fakeServerConfig{}, fakeUI{}, exitChan, logger)
+	db, _ := DefaultTestBrowser(logger)
 
 	// Initialize browser context
 	err := db.CreateBrowserContext()
@@ -100,11 +99,9 @@ func TestGetConsoleLogs(t *testing.T) {
 }
 
 func TestClearConsoleLogs(t *testing.T) {
-	// Create a new DevBrowser instance
-	exitChan := make(chan bool)
+	// Create a new DevBrowser instance using the shared test helper
 	logger := func(message ...any) {}
-
-	db := New(fakeServerConfig{}, fakeUI{}, exitChan, logger)
+	db, _ := DefaultTestBrowser(logger)
 
 	// Initialize browser context
 	err := db.CreateBrowserContext()
@@ -174,8 +171,7 @@ func TestClearConsoleLogs(t *testing.T) {
 }
 
 func TestGetConsoleLogsWithoutContext(t *testing.T) {
-	exitChan := make(chan bool)
-	db := New(fakeServerConfig{}, fakeUI{}, exitChan, nil)
+	db, _ := DefaultTestBrowser()
 
 	// Try to get logs without initializing context
 	_, err := db.GetConsoleLogs()
@@ -190,8 +186,7 @@ func TestGetConsoleLogsWithoutContext(t *testing.T) {
 }
 
 func TestClearConsoleLogsWithoutContext(t *testing.T) {
-	exitChan := make(chan bool)
-	db := New(fakeServerConfig{}, fakeUI{}, exitChan, nil)
+	db, _ := DefaultTestBrowser()
 
 	// Try to clear logs without initializing context
 	err := db.ClearConsoleLogs()

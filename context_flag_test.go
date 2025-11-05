@@ -8,7 +8,7 @@ import (
 // It attempts to call CreateBrowserContext and expects either an error or a panic
 // from the launcher library. This test helps reproduce the stacktrace reported.
 func TestLauncherAppendPanic(t *testing.T) {
-	db := New(fakeServerConfig{}, fakeUI{}, make(chan bool), nil)
+	db, _ := DefaultTestBrowser()
 	// provide a position just in case launcher handles it
 	db.position = "0,0"
 

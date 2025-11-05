@@ -13,6 +13,7 @@ type DevBrowser struct {
 	width    int    // ej "800" default "1024"
 	height   int    //ej: "600" default "768"
 	position string //ej: "1930,0" (when you have second monitor) default: "0,0"
+	headless bool   // true para modo headless (sin UI), false muestra el navegador
 
 	isOpen bool // Indica si el navegador está abierto
 
@@ -32,6 +33,7 @@ type serverConfig interface {
 }
 
 type userInterface interface {
+	RefreshUI()
 	ReturnFocus() error
 }
 
@@ -106,4 +108,11 @@ func (b *DevBrowser) Reload() error {
 		}
 	}
 	return nil
+}
+
+// SetHeadless configura si el navegador debe ejecutarse en modo headless (sin UI).
+// Por defecto es false (muestra la ventana del navegador).
+// Debe llamarse antes de OpenBrowser().
+func (b *DevBrowser) SetHeadless(headless bool) {
+	b.headless = headless
 }

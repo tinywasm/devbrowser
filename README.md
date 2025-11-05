@@ -41,3 +41,49 @@ func main() {
 - `(*DevBrowser) BrowserPositionAndSizeChanged(fieldName, oldValue, newValue string) error`: Change the browser window's position and size, and restart the browser.
 - `(*DevBrowser) Name() string` and `(*DevBrowser) Label() string`: For UI integration, returns the component name and label.
 - `(*DevBrowser) Execute(progress func(msgs ...any))`: For UI integration, toggles browser open/close and reports progress.
+
+- `(*DevBrowser) SetHeadless(headless bool)`: Configure whether the browser runs in headless mode (without a visible UI).
+	- Signature: `func (b *DevBrowser) SetHeadless(headless bool)`
+	- Default: `false` (shows the browser window). This is convenient for local development and debugging.
+	- Tests: the test helper `DefaultTestBrowser()` configures the returned `DevBrowser` with `headless = true` so unit tests run without requiring a graphical display.
+	- Notes: Call this before `OpenBrowser()` (or before the browser context is created) to ensure the headless flag is applied when launching Chrome/Chromium.
+	- Example:
+
+```go
+db := devbrowser.New(myServerConfig{}, myUI{}, exitChan)
+// run with no UI (useful in CI/tests)
+db.SetHeadless(true)
+err := db.OpenBrowser()
+if err != nil {
+		// handle error
+}
+```
+
+- `(*DevBrowser) GetConsoleLogs() ([]string, error)`: Capture console messages from the loaded page.
+	- Signature: `func (b *DevBrowser) GetConsoleLogs() ([]string, error)`
+	- Behavior: injects a small script into the page that maintains `window.__consoleLogs` and returns its contents as a slice of strings. Captures `console.log`, `console.error`, `console.warn`, and `console.info` messages.
+	- Requirements: the browser context must be initialized (`OpenBrowser()` called and context created). Returns an error if the context is not ready or the evaluation fails.
+	- Example:
+
+```go
+logs, err := db.GetConsoleLogs()
+if err != nil {
+		// handle error
+}
+for _, l := range logs {
+		fmt.Println(l)
+}
+```
+
+- `(*DevBrowser) ClearConsoleLogs() error`: Clear the in-page captured console log buffer.
+	- Signature: `func (b *DevBrowser) ClearConsoleLogs() error`
+	- Behavior: executes a small script that resets `window.__consoleLogs = []` if present.
+	- Requirements: the browser context must be initialized. Returns an error if the evaluation fails.
+	- Example:
+
+```go
+err := db.ClearConsoleLogs()
+if err != nil {
+		// handle error
+}
+```

@@ -9,7 +9,7 @@ import (
 
 func (h *DevBrowser) CreateBrowserContext() error {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
-		chromedp.Flag("headless", false),
+		chromedp.Flag("headless", h.headless),
 		chromedp.Flag("disable-blink-features", "WebFontsInterventionV2"),
 		chromedp.Flag("use-fake-ui-for-media-stream", true),
 		chromedp.Flag("no-focus-on-load", true),
