@@ -3,6 +3,8 @@ package devbrowser
 import (
 	"fmt"
 	"time"
+
+	"github.com/chromedp/chromedp"
 )
 
 func (h *DevBrowser) OpenBrowser() {
@@ -27,20 +29,11 @@ func (h *DevBrowser) OpenBrowser() {
 		var protocol = "http"
 		url := protocol + `://localhost:` + h.config.ServerPort() + "/"
 
-		// Navegar a la URL (rod)
-		if h.page == nil {
-			h.errChan <- fmt.Errorf("page not initialized")
-			return
-		}
-
-		if err = h.page.Navigate(url); err != nil {
+		if err := chromedp.Run(h.ctx,
+			chromedp.Navigate(url),
+			chromedp.WaitReady("body"),
+		); err != nil {
 			h.errChan <- fmt.Errorf("error navigating to %s: %v", url, err)
-			return
-		}
-
-		// Esperar carga completa usando rod
-		if err = h.page.WaitLoad(); err != nil {
-			h.errChan <- fmt.Errorf("error waiting for load: %v", err)
 			return
 		}
 

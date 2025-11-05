@@ -9,17 +9,14 @@ func (h *DevBrowser) CloseBrowser() error {
 		return errors.New("DevBrowser is already closed")
 	}
 
-	// Llamar a la función de cancelación personalizada que cierra todos los recursos
-	if h.cancelFunc != nil {
-		h.cancelFunc()
+	if h.cancel != nil {
+		h.cancel()
 		h.isOpen = false
 	}
 
 	// Limpiar recursos
-	h.launcherURL = ""
-	h.browser = nil
-	h.page = nil
-	h.cancelFunc = nil
+	h.ctx = nil
+	h.cancel = nil
 
 	return nil
 }

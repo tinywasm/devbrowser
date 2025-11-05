@@ -1,9 +1,10 @@
 package devbrowser
 
 import (
+	"context"
 	"errors"
 
-	"github.com/go-rod/rod"
+	"github.com/chromedp/chromedp"
 )
 
 type DevBrowser struct {
@@ -15,11 +16,9 @@ type DevBrowser struct {
 
 	isOpen bool // Indica si el navegador está abierto
 
-	// Rod fields
-	launcherURL string
-	browser     *rod.Browser
-	page        *rod.Page
-	cancelFunc  func() // Custom cancel function
+	// chromedp fields
+	ctx    context.Context
+	cancel context.CancelFunc
 
 	readyChan chan bool
 	errChan   chan error
@@ -89,20 +88,20 @@ func (h *DevBrowser) RestartBrowser() error {
 }
 
 func (b *DevBrowser) navigateToURL(url string) error {
-	if b.page == nil {
-		return errors.New("page not initialized")
+	if b.ctx == nil {
+		return errors.New("context not initialized")
 	}
 
-	if err := b.page.Navigate(url); err != nil {
+	if err := chromedp.Run(b.ctx, chromedp.Navigate(url)); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (b *DevBrowser) Reload() error {
-	if b.page != nil && b.isOpen {
+	if b.ctx != nil && b.isOpen {
 		b.logger("Reload")
-		if err := b.page.Reload(); err != nil {
+		if err := chromedp.Run(b.ctx, chromedp.Reload()); err != nil {
 			return errors.New("Reload " + err.Error())
 		}
 	}
