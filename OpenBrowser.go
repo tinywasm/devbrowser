@@ -29,6 +29,13 @@ func (h *DevBrowser) OpenBrowser() {
 		var protocol = "http"
 		url := protocol + `://localhost:` + h.config.ServerPort() + "/"
 
+		// Initialize console log capturing BEFORE navigating to the page
+		// This ensures all console.log statements from page load are captured
+		if err := h.initializeConsoleCapture(); err != nil {
+			h.logger("Warning: failed to initialize console capture:", err)
+			// Continue anyway - capture is optional
+		}
+
 		if err := chromedp.Run(h.ctx,
 			chromedp.Navigate(url),
 			chromedp.WaitReady("body"),
@@ -39,6 +46,7 @@ func (h *DevBrowser) OpenBrowser() {
 
 		// Esperar un momento adicional para asegurar que todo esté cargado
 		time.Sleep(100 * time.Millisecond)
+
 		h.readyChan <- true
 
 		// Monitor browser context for manual close

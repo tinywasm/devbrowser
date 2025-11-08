@@ -15,6 +15,7 @@ func (h *DevBrowser) Label() string {
 	return state
 }
 
+// run the open/close browser operation
 func (h *DevBrowser) Execute(progress chan<- string) {
 
 	if h.isOpen { // cerrar si esta abierto

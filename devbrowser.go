@@ -3,6 +3,7 @@ package devbrowser
 import (
 	"context"
 	"errors"
+	"sync"
 
 	"github.com/chromedp/chromedp"
 )
@@ -28,6 +29,10 @@ type DevBrowser struct {
 	logger func(message ...any) // For logging output
 
 	lastOpID string // For tracking last operation ID
+
+	// Console log capture
+	consoleLogs []string
+	logsMutex   sync.Mutex
 }
 
 type serverConfig interface {

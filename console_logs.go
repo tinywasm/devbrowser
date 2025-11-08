@@ -2,81 +2,95 @@ package devbrowser
 
 import (
 	"errors"
+	"fmt"
 
+	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
 )
 
-// GetConsoleLogs captures and returns console logs from the browser.
-// It executes JavaScript to retrieve console messages and returns them as a slice of strings.
-// Returns an error if the browser context is not initialized or if there's an error executing the script.
+// initializeConsoleCapture sets up the console log capturing system using Chrome DevTools Protocol.
+// This captures ALL console messages including those from page load, using runtime events.
+func (b *DevBrowser) initializeConsoleCapture() error {
+	if b.ctx == nil {
+		return errors.New("browser context not initialized")
+	}
+
+	// Initialize the console logs slice
+	b.consoleLogs = []string{}
+
+	// Listen for console API called events and console cleared events
+	chromedp.ListenTarget(b.ctx, func(ev interface{}) {
+		switch ev := ev.(type) {
+		case *runtime.EventConsoleAPICalled:
+			b.logsMutex.Lock()
+			defer b.logsMutex.Unlock()
+
+			// Format the arguments without prefix
+			var message string
+			for i, arg := range ev.Args {
+				if i > 0 {
+					message += " "
+				}
+				// Get the string value from the RemoteObject
+				if arg.Value != nil {
+					// Extract the raw value without JSON encoding
+					val := fmt.Sprintf("%v", arg.Value)
+					// Remove surrounding quotes if it's a string value
+					if len(val) > 2 && val[0] == '"' && val[len(val)-1] == '"' {
+						val = val[1 : len(val)-1]
+					}
+					message += val
+				} else if arg.Description != "" {
+					message += arg.Description
+				}
+			}
+
+			// Add to logs without type prefix to save tokens
+			b.consoleLogs = append(b.consoleLogs, message)
+
+		case *runtime.EventExecutionContextsCleared:
+			// Clear logs when execution contexts are cleared (page reload/navigation)
+			b.logsMutex.Lock()
+			b.consoleLogs = []string{}
+			b.logsMutex.Unlock()
+		}
+	})
+
+	// Enable console domain to start receiving events
+	err := chromedp.Run(b.ctx, runtime.Enable())
+	if err != nil {
+		return errors.New("initializeConsoleCapture: " + err.Error())
+	}
+
+	return nil
+}
+
+// GetConsoleLogs returns captured console logs from the browser.
+// Returns an error if the browser context is not initialized.
 func (b *DevBrowser) GetConsoleLogs() ([]string, error) {
 	if b.ctx == nil {
 		return nil, errors.New("browser context not initialized")
 	}
 
-	var logs []string
+	b.logsMutex.Lock()
+	defer b.logsMutex.Unlock()
 
-	// JavaScript code to retrieve console logs
-	// This captures console.log, console.error, console.warn, and console.info
-	script := `
-		(function() {
-			if (!window.__consoleLogs) {
-				window.__consoleLogs = [];
-				
-				['log', 'error', 'warn', 'info'].forEach(function(method) {
-					var original = console[method];
-					console[method] = function() {
-						var args = Array.prototype.slice.call(arguments);
-						var message = args.map(function(arg) {
-							if (typeof arg === 'object') {
-								try {
-									return JSON.stringify(arg);
-								} catch(e) {
-									return String(arg);
-								}
-							}
-							return String(arg);
-						}).join(' ');
-						
-						window.__consoleLogs.push('[' + method.toUpperCase() + '] ' + message);
-						original.apply(console, arguments);
-					};
-				});
-			}
-			return window.__consoleLogs;
-		})();
-	`
+	// Return a copy of the logs to avoid race conditions
+	logsCopy := make([]string, len(b.consoleLogs))
+	copy(logsCopy, b.consoleLogs)
 
-	err := chromedp.Run(b.ctx,
-		chromedp.Evaluate(script, &logs),
-	)
-
-	if err != nil {
-		return nil, errors.New("GetConsoleLogs: " + err.Error())
-	}
-
-	return logs, nil
+	return logsCopy, nil
 }
 
-// ClearConsoleLogs clears the captured console logs in the browser.
+// ClearConsoleLogs clears the captured console logs.
 func (b *DevBrowser) ClearConsoleLogs() error {
 	if b.ctx == nil {
 		return errors.New("browser context not initialized")
 	}
 
-	script := `
-		if (window.__consoleLogs) {
-			window.__consoleLogs = [];
-		}
-	`
+	b.logsMutex.Lock()
+	defer b.logsMutex.Unlock()
 
-	err := chromedp.Run(b.ctx,
-		chromedp.Evaluate(script, nil),
-	)
-
-	if err != nil {
-		return errors.New("ClearConsoleLogs: " + err.Error())
-	}
-
+	b.consoleLogs = []string{}
 	return nil
 }
