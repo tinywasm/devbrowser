@@ -35,6 +35,8 @@ func (h *DevBrowser) OpenBrowser() {
 			h.logger("Warning: failed to initialize console capture:", err)
 			// Continue anyway - capture is optional
 		}
+		h.initializeNetworkCapture()
+		h.initializeErrorCapture()
 
 		if err := chromedp.Run(h.ctx,
 			chromedp.Navigate(url),

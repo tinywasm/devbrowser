@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"sync"
+	"time"
 
 	"github.com/chromedp/chromedp"
 )
@@ -33,6 +34,33 @@ type DevBrowser struct {
 	// Console log capture
 	consoleLogs []string
 	logsMutex   sync.Mutex
+
+	// Network log capture
+	networkLogs  []NetworkLogEntry
+	networkMutex sync.Mutex
+
+	// JS error capture
+	jsErrors    []JSError
+	errorsMutex sync.Mutex
+}
+
+type JSError struct {
+	Message      string
+	Source       string // File/URL where error occurred
+	LineNumber   int
+	ColumnNumber int
+	StackTrace   string
+	Timestamp    time.Time
+}
+
+type NetworkLogEntry struct {
+	URL       string
+	Method    string
+	Status    int
+	Type      string // xhr, fetch, document, script, image, etc.
+	Duration  int64  // milliseconds
+	Failed    bool
+	ErrorText string
 }
 
 type serverConfig interface {
