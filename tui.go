@@ -15,19 +15,19 @@ func (h *DevBrowser) Label() string {
 	return state
 }
 
-func (h *DevBrowser) Execute(progress func(msgs ...any)) {
+func (h *DevBrowser) Execute(progress chan<- string) {
 
 	if h.isOpen { // cerrar si esta abierto
-		progress("Closing...")
+		progress <- "Closing..."
 
 		if err := h.CloseBrowser(); err != nil {
-			progress("Close error:", err)
+			progress <- "Close error:" + err.Error()
 		} else {
-			progress("Closed.")
+			progress <- "Closed."
 		}
 
 	} else { // abrir si esta cerrado
-		progress("Opening...")
+		progress <- "Opening..."
 		h.OpenBrowser()
 
 	}
