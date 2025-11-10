@@ -8,7 +8,7 @@ func (b *DevBrowser) getManagementTools() []ToolMetadata {
 			Name:        "browser_open",
 			Description: "Open Chrome development browser pointing to the local Go server to test the full-stack app (Go backend + WASM frontend).",
 			Parameters:  []ParameterMetadata{},
-			Execute: func(args map[string]any, progress chan<- string) {
+			Execute: func(args map[string]any, progress chan<- any) {
 				if b.isOpen {
 					progress <- "Browser is already open"
 					return
@@ -22,7 +22,7 @@ func (b *DevBrowser) getManagementTools() []ToolMetadata {
 			Name:        "browser_close",
 			Description: "Close Chrome development browser and cleanup resources when done testing or to restart fresh.",
 			Parameters:  []ParameterMetadata{},
-			Execute: func(args map[string]any, progress chan<- string) {
+			Execute: func(args map[string]any, progress chan<- any) {
 				if !b.isOpen {
 					progress <- "Browser is already closed"
 					return
@@ -39,7 +39,7 @@ func (b *DevBrowser) getManagementTools() []ToolMetadata {
 			Name:        "browser_reload",
 			Description: "Reload browser page to see latest WASM/asset changes without full browser restart (faster iteration during development).",
 			Parameters:  []ParameterMetadata{},
-			Execute: func(args map[string]any, progress chan<- string) {
+			Execute: func(args map[string]any, progress chan<- any) {
 				if !b.isOpen {
 					progress <- "Browser is not open. Please open it first with browser_open"
 					return

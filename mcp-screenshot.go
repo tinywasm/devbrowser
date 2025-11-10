@@ -1,8 +1,8 @@
 package devbrowser
 
 import (
-	"encoding/base64"
 	"fmt"
+
 	"github.com/chromedp/chromedp"
 )
 
@@ -10,7 +10,7 @@ func (b *DevBrowser) getScreenshotTools() []ToolMetadata {
 	return []ToolMetadata{
 		{
 			Name:        "browser_screenshot",
-			Description: "Capture screenshot of current browser viewport to verify visual rendering, layout correctness, or UI state. Returns base64-encoded PNG image.",
+			Description: "Capture screenshot of current browser viewport to verify visual rendering, layout correctness, or UI state. Returns PNG image as MCP resource (binary efficient format).",
 			Parameters: []ParameterMetadata{
 				{
 					Name:        "fullpage",
@@ -20,7 +20,7 @@ func (b *DevBrowser) getScreenshotTools() []ToolMetadata {
 					Default:     false,
 				},
 			},
-			Execute: func(args map[string]any, progress chan<- string) {
+			Execute: func(args map[string]any, progress chan<- any) {
 				if !b.isOpen {
 					progress <- "Browser is not open. Please open it first with browser_open"
 					return
@@ -53,8 +53,12 @@ func (b *DevBrowser) getScreenshotTools() []ToolMetadata {
 					return
 				}
 
-				encoded := base64.StdEncoding.EncodeToString(buf)
-				progress <- fmt.Sprintf("data:image/png;base64,%s", encoded)
+				// Send binary data directly - no base64 conversion needed!
+				// Executor will handle MCP resource format efficiently
+				progress <- BinaryData{
+					MimeType: "image/png",
+					Data:     buf,
+				}
 			},
 		},
 	}

@@ -32,7 +32,7 @@ func (b *DevBrowser) getNetworkTools() []ToolMetadata {
 					Default:     50,
 				},
 			},
-			Execute: func(args map[string]any, progress chan<- string) {
+			Execute: func(args map[string]any, progress chan<- any) {
 				if !b.isOpen {
 					progress <- "Browser is not open. Please open it first with browser_open"
 					return

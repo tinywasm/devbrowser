@@ -27,7 +27,7 @@ func (b *DevBrowser) getEvaluateJsTools() []ToolMetadata {
 					Default:     false,
 				},
 			},
-			Execute: func(args map[string]any, progress chan<- string) {
+			Execute: func(args map[string]any, progress chan<- any) {
 				if !b.isOpen {
 					progress <- "Browser is not open. Please open it first with browser_open"
 					return

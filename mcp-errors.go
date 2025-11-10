@@ -22,7 +22,7 @@ func (b *DevBrowser) getErrorTools() []ToolMetadata {
 					Default:     20,
 				},
 			},
-			Execute: func(args map[string]any, progress chan<- string) {
+			Execute: func(args map[string]any, progress chan<- any) {
 				if !b.isOpen {
 					progress <- "Browser is not open. Please open it first with browser_open"
 					return
