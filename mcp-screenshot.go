@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/chromedp/chromedp"
+	"golang.design/x/clipboard"
 )
 
 func (b *DevBrowser) getScreenshotTools() []ToolMetadata {
@@ -53,12 +54,96 @@ func (b *DevBrowser) getScreenshotTools() []ToolMetadata {
 					return
 				}
 
-				// Send binary data directly - no base64 conversion needed!
-				// Executor will handle MCP resource format efficiently
-				progress <- BinaryData{
-					MimeType: "image/png",
-					Data:     buf,
+				// Write PNG image to clipboard
+				clipboard.Write(clipboard.FmtImage, buf)
+				progress <- "Screenshot copied to clipboard"
+
+				// Capture comprehensive page context for AI understanding (no OCR needed)
+				var pageTitle, pageURL, htmlStructure string
+				var windowWidth, windowHeight int
+
+				err = chromedp.Run(b.ctx,
+					chromedp.Title(&pageTitle),
+					chromedp.Location(&pageURL),
+					chromedp.Evaluate(`window.innerWidth`, &windowWidth),
+					chromedp.Evaluate(`window.innerHeight`, &windowHeight),
+					// Extract HTML structure with visible text and computed styles
+					chromedp.Evaluate(`
+						(() => {
+							const getStructure = (el, depth = 0) => {
+								if (depth > 4 || !el) return '';
+								
+								const tag = el.tagName.toLowerCase();
+								const indent = '  '.repeat(depth);
+								const style = window.getComputedStyle(el);
+								
+								// Skip invisible elements
+								if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') return '';
+								
+								// Get direct text content
+								const directText = Array.from(el.childNodes)
+									.filter(n => n.nodeType === 3)
+									.map(n => n.textContent.trim())
+									.filter(t => t)
+									.join(' ');
+								
+								let result = indent + '<' + tag;
+								if (el.id) result += ' id="' + el.id + '"';
+								if (el.className) result += ' class="' + el.className + '"';
+								
+								// Add critical visual styles (only if non-default)
+								const styles = [];
+								if (style.display !== 'block' && style.display !== 'inline') styles.push('display:' + style.display);
+								if (style.position !== 'static') styles.push('position:' + style.position);
+								if (style.backgroundColor !== 'rgba(0, 0, 0, 0)' && style.backgroundColor !== 'transparent') {
+									styles.push('bg:' + style.backgroundColor);
+								}
+								if (style.color !== 'rgb(0, 0, 0)') styles.push('color:' + style.color);
+								if (parseInt(style.fontSize) > 16) styles.push('font:' + style.fontSize);
+								if (style.fontWeight === 'bold' || parseInt(style.fontWeight) >= 700) styles.push('bold');
+								const w = parseInt(style.width);
+								const h = parseInt(style.height);
+								if (w > 50) styles.push('w:' + w);
+								if (h > 50) styles.push('h:' + h);
+								
+								if (styles.length > 0) result += ' [' + styles.join(' ') + ']';
+								result += '>';
+								
+								if (directText) result += ' ' + directText;
+								result += '\n';
+								
+								// Recurse for children
+								Array.from(el.children).forEach(child => {
+									result += getStructure(child, depth + 1);
+								});
+								
+								return result;
+							};
+							return getStructure(document.body);
+						})()
+					`, &htmlStructure),
+				)
+
+				// Build visual context report (what AI "sees" without image bytes)
+				contextReport := fmt.Sprintf(
+					"Screenshot captured (%d KB)\n"+
+						"URL: %s | Title: %s | Viewport: %dx%d\n"+
+						"\n"+
+						"%s",
+					len(buf)/1024,
+					pageURL,
+					pageTitle,
+					windowWidth, windowHeight,
+					htmlStructure,
+				)
+
+				if err != nil {
+					// Fallback if context extraction fails
+					contextReport = fmt.Sprintf("Screenshot captured (%d KB)", len(buf)/1024)
 				}
+
+				// Send only text context - NO binary data (saves LLM context)
+				progress <- contextReport
 			},
 		},
 	}

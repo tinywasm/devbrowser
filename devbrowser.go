@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/chromedp/chromedp"
+	"golang.design/x/clipboard"
 )
 
 type DevBrowser struct {
@@ -87,6 +88,12 @@ devbrowser.New creates a new DevBrowser instance.
 	example :  New(serverConfig, userInterface, exitChan)
 */
 func New(sc serverConfig, ui userInterface, exitChan chan bool, logger func(message ...any)) *DevBrowser {
+
+	// Initialize clipboard for cross-platform support
+	err := clipboard.Init()
+	if err != nil && logger != nil {
+		logger("Warning: clipboard initialization failed:", err)
+	}
 
 	browser := &DevBrowser{
 		config:    sc,
