@@ -70,6 +70,9 @@ func (h *DevBrowser) OpenBrowser() {
 		} */
 		h.logger("Started")
 
+		// Start monitoring browser geometry changes
+		go h.monitorBrowserGeometry()
+
 		h.ui.RefreshUI()
 		return
 	}

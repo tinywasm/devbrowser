@@ -1,5 +1,10 @@
 package devbrowser
 
+import (
+	"errors"
+	"sync"
+)
+
 // Utilities for tests: provide a single initializer that tests can call to
 // create a trimmed-down DevBrowser suitable for unit tests. The function
 // accepts variadic options so callers don't have to pass anything. If a
@@ -24,6 +29,35 @@ type defaultUI struct{}
 func (defaultUI) RefreshUI() {}
 
 func (defaultUI) ReturnFocus() error { return nil }
+
+// defaultStore implements store for tests (in-memory key-value)
+type defaultStore struct {
+	mu sync.RWMutex
+	m  map[string]string
+}
+
+func (s *defaultStore) Get(key string) (string, error) {
+	s.mu.RLock()
+	defer s.mu.RUnlock()
+	if s.m == nil {
+		return "", errors.New("key not found")
+	}
+	v, ok := s.m[key]
+	if !ok {
+		return "", errors.New("key not found")
+	}
+	return v, nil
+}
+
+func (s *defaultStore) Set(key, value string) error {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	if s.m == nil {
+		s.m = make(map[string]string)
+	}
+	s.m[key] = value
+	return nil
+}
 
 // DefaultTestBrowser creates a DevBrowser instance for tests.
 //
@@ -51,7 +85,7 @@ func DefaultTestBrowser(opts ...any) (*DevBrowser, chan bool) {
 		exit = make(chan bool)
 	}
 
-	db := New(defaultServerConfig{}, defaultUI{}, exit, logger)
+	db := New(defaultServerConfig{}, defaultUI{}, &defaultStore{m: make(map[string]string)}, exit, logger)
 	db.SetHeadless(true) // Los tests usan modo headless por defecto
 	return db, exit
 }

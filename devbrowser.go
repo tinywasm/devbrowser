@@ -3,12 +3,18 @@ package devbrowser
 import (
 	"context"
 	"errors"
+	"strconv"
 	"sync"
 	"time"
 
 	"github.com/chromedp/chromedp"
 	"golang.design/x/clipboard"
 )
+
+type store interface {
+	Get(key string) (string, error)
+	Set(key, value string) error
+}
 
 type DevBrowser struct {
 	config   serverConfig
@@ -19,6 +25,8 @@ type DevBrowser struct {
 	headless bool   // true para modo headless (sin UI), false muestra el navegador
 
 	isOpen bool // Indica si el navegador está abierto
+
+	db store // Key-value store para configuración y estado
 
 	// chromedp fields
 	ctx    context.Context
@@ -87,7 +95,7 @@ devbrowser.New creates a new DevBrowser instance.
 
 	example :  New(serverConfig, userInterface, exitChan)
 */
-func New(sc serverConfig, ui userInterface, exitChan chan bool, logger func(message ...any)) *DevBrowser {
+func New(sc serverConfig, ui userInterface, st store, exitChan chan bool, logger func(message ...any)) *DevBrowser {
 
 	// Initialize clipboard for cross-platform support
 	err := clipboard.Init()
@@ -98,6 +106,7 @@ func New(sc serverConfig, ui userInterface, exitChan chan bool, logger func(mess
 	browser := &DevBrowser{
 		config:    sc,
 		ui:        ui,
+		db:        st,
 		width:     1024,  // Default width
 		height:    768,   // Default height
 		position:  "0,0", // Default position
@@ -106,7 +115,53 @@ func New(sc serverConfig, ui userInterface, exitChan chan bool, logger func(mess
 		exitChan:  exitChan,
 		logger:    logger,
 	}
+
+	// Load stored position and size from db
+	browser.loadBrowserConfig()
+
 	return browser
+}
+
+// loadBrowserConfig loads position and size from the store
+func (b *DevBrowser) loadBrowserConfig() {
+	// Load position
+	if pos, err := b.db.Get("browser_position"); err == nil && pos != "" {
+		b.position = pos
+	}
+
+	// Load width
+	if w, err := b.db.Get("browser_width"); err == nil && w != "" {
+		if width, err := strconv.Atoi(w); err == nil {
+			b.width = width
+		}
+	}
+
+	// Load height
+	if h, err := b.db.Get("browser_height"); err == nil && h != "" {
+		if height, err := strconv.Atoi(h); err == nil {
+			b.height = height
+		}
+	}
+}
+
+// saveBrowserConfig saves current position and size to the store
+func (b *DevBrowser) saveBrowserConfig() error {
+	// Save position
+	if err := b.db.Set("browser_position", b.position); err != nil {
+		return err
+	}
+
+	// Save width
+	if err := b.db.Set("browser_width", strconv.Itoa(b.width)); err != nil {
+		return err
+	}
+
+	// Save height
+	if err := b.db.Set("browser_height", strconv.Itoa(b.height)); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (h *DevBrowser) BrowserStartUrlChanged(fieldName string, oldValue, newValue string) error {

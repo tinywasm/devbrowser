@@ -40,6 +40,11 @@ func (b *DevBrowser) setBrowserPositionAndSize(newConfig string) (err error) {
 		return errors.Join(this, err)
 	}
 
+	// Save the new configuration to db
+	if err := b.saveBrowserConfig(); err != nil {
+		return errors.Join(this, err)
+	}
+
 	return
 }
 
@@ -78,10 +83,5 @@ func getBrowserPositionAndSize(config string) (position, width, height string, e
 	}
 	height = strconv.Itoa(heightInt)
 
-	return
-}
-
-func verifyBrowserposition(newConfig string) (err error) {
-	_, _, _, err = getBrowserPositionAndSize(newConfig)
 	return
 }

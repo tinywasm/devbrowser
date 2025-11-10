@@ -8,6 +8,9 @@ import (
 )
 
 func (h *DevBrowser) CreateBrowserContext() error {
+	// Format window size as "width,height"
+	windowSize := fmt.Sprintf("%d,%d", h.width, h.height)
+
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", h.headless),
 		chromedp.Flag("disable-blink-features", "WebFontsInterventionV2"),
@@ -15,6 +18,7 @@ func (h *DevBrowser) CreateBrowserContext() error {
 		chromedp.Flag("no-focus-on-load", true),
 		chromedp.Flag("auto-open-devtools-for-tabs", true),
 		chromedp.Flag("window-position", h.position),
+		chromedp.Flag("window-size", windowSize),
 	)
 
 	allocCtx, _ := chromedp.NewExecAllocator(context.Background(), opts...)
