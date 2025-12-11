@@ -1,4 +1,4 @@
-module github.com/cdvelop/devbrowser
+module github.com/tinywasm/devbrowser
 
 go 1.24.4
 
