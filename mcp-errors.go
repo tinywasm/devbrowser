@@ -22,9 +22,9 @@ func (b *DevBrowser) getErrorTools() []ToolMetadata {
 					Default:     20,
 				},
 			},
-			Execute: func(args map[string]any, progress chan<- any) {
+			Execute: func(args map[string]any) {
 				if !b.isOpen {
-					progress <- "Browser is not open. Please open it first with browser_open"
+					b.Logger("Browser is not open. Please open it first with browser_open")
 					return
 				}
 
@@ -37,7 +37,7 @@ func (b *DevBrowser) getErrorTools() []ToolMetadata {
 				defer b.errorsMutex.Unlock()
 
 				if len(b.jsErrors) == 0 {
-					progress <- "No JavaScript errors captured"
+					b.Logger("No JavaScript errors captured")
 					return
 				}
 
@@ -47,7 +47,7 @@ func (b *DevBrowser) getErrorTools() []ToolMetadata {
 				}
 
 				for _, err := range b.jsErrors[start:] {
-					progress <- fmt.Sprintf("Error: %s\n  at %s:%d:%d\n%s\n---", err.Message, err.Source, err.LineNumber, err.ColumnNumber, err.StackTrace)
+					b.Logger(fmt.Sprintf("Error: %s\n  at %s:%d:%d\n%s\n---", err.Message, err.Source, err.LineNumber, err.ColumnNumber, err.StackTrace))
 				}
 			},
 		},

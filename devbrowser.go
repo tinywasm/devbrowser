@@ -36,9 +36,7 @@ type DevBrowser struct {
 	errChan   chan error
 	exitChan  chan bool
 
-	logger func(message ...any) // For logging output
-
-	lastOpID string // For tracking last operation ID
+	log func(message ...any) // For logging output (Loggable interface)
 
 	// Console log capture
 	consoleLogs []string
@@ -95,12 +93,12 @@ devbrowser.New creates a new DevBrowser instance.
 
 	example :  New(serverConfig, userInterface, exitChan)
 */
-func New(sc serverConfig, ui userInterface, st store, exitChan chan bool, logger func(message ...any)) *DevBrowser {
+func New(sc serverConfig, ui userInterface, st store, exitChan chan bool) *DevBrowser {
 
 	// Initialize clipboard for cross-platform support
 	err := clipboard.Init()
-	if err != nil && logger != nil {
-		logger("Warning: clipboard initialization failed:", err)
+	if err != nil {
+		// Can't log yet, no logger injected
 	}
 
 	browser := &DevBrowser{
@@ -113,7 +111,6 @@ func New(sc serverConfig, ui userInterface, st store, exitChan chan bool, logger
 		readyChan: make(chan bool),
 		errChan:   make(chan error),
 		exitChan:  exitChan,
-		logger:    logger,
 	}
 
 	// Load stored position and size from db
@@ -200,12 +197,22 @@ func (b *DevBrowser) navigateToURL(url string) error {
 
 func (b *DevBrowser) Reload() error {
 	if b.ctx != nil && b.isOpen {
-		b.logger("Reload")
+		b.Logger("Reload")
 		if err := chromedp.Run(b.ctx, chromedp.Reload()); err != nil {
 			return errors.New("Reload " + err.Error())
 		}
 	}
 	return nil
+}
+
+func (b *DevBrowser) SetLog(f func(message ...any)) {
+	b.log = f
+}
+
+func (b *DevBrowser) Logger(messages ...any) {
+	if b.log != nil {
+		b.log(messages...)
+	}
 }
 
 // SetHeadless configura si el navegador debe ejecutarse en modo headless (sin UI).
@@ -226,7 +233,7 @@ func (b *DevBrowser) monitorBrowserClose() {
 
 	// Only handle if browser was marked as open (manual close by user)
 	if b.isOpen {
-		b.logger("Browser closed by user")
+		b.Logger("Browser closed by user")
 		b.isOpen = false
 		b.ctx = nil
 		b.cancel = nil

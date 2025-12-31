@@ -27,15 +27,15 @@ func (b *DevBrowser) getInteractionTools() []ToolMetadata {
 					Default:     100,
 				},
 			},
-			Execute: func(args map[string]any, progress chan<- any) {
+			Execute: func(args map[string]any) {
 				if !b.isOpen {
-					progress <- "Browser is not open. Please open it first with browser_open"
+					b.Logger("Browser is not open. Please open it first with browser_open")
 					return
 				}
 
 				selector, ok := args["selector"].(string)
 				if !ok || selector == "" {
-					progress <- "Selector parameter is required"
+					b.Logger("Selector parameter is required")
 					return
 				}
 
@@ -51,11 +51,11 @@ func (b *DevBrowser) getInteractionTools() []ToolMetadata {
 				)
 
 				if err != nil {
-					progress <- fmt.Sprintf("Error clicking element %s: %v", selector, err)
+					b.Logger(fmt.Sprintf("Error clicking element %s: %v", selector, err))
 					return
 				}
 
-				progress <- fmt.Sprintf("Clicked element: %s", selector)
+				b.Logger(fmt.Sprintf("Clicked element: %s", selector))
 			},
 		},
 	}

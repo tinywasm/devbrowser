@@ -21,9 +21,9 @@ func (b *DevBrowser) getScreenshotTools() []ToolMetadata {
 					Default:     false,
 				},
 			},
-			Execute: func(args map[string]any, progress chan<- any) {
+			Execute: func(args map[string]any) {
 				if !b.isOpen {
-					progress <- "Browser is not open. Please open it first with browser_open"
+					b.Logger("Browser is not open. Please open it first with browser_open")
 					return
 				}
 
@@ -46,17 +46,17 @@ func (b *DevBrowser) getScreenshotTools() []ToolMetadata {
 				}
 
 				if err != nil {
-					progress <- fmt.Sprintf("Failed to capture screenshot: %v", err)
+					b.Logger(fmt.Sprintf("Failed to capture screenshot: %v", err))
 					return
 				}
 				if len(buf) == 0 {
-					progress <- "Screenshot capture returned empty buffer"
+					b.Logger("Screenshot capture returned empty buffer")
 					return
 				}
 
 				// Write PNG image to clipboard
 				clipboard.Write(clipboard.FmtImage, buf)
-				progress <- "Screenshot copied to clipboard"
+				b.Logger("Screenshot copied to clipboard")
 
 				// Capture comprehensive page context for AI understanding (no OCR needed)
 				var pageTitle, pageURL, htmlStructure string
@@ -142,8 +142,8 @@ func (b *DevBrowser) getScreenshotTools() []ToolMetadata {
 					contextReport = fmt.Sprintf("Screenshot captured (%d KB)", len(buf)/1024)
 				}
 
-				// Send only text context - NO binary data (saves LLM context)
-				progress <- contextReport
+				// Send both text context and binary data
+				b.Logger(contextReport, BinaryData{MimeType: "image/png", Data: buf})
 			},
 		},
 	}

@@ -3,6 +3,7 @@ package devbrowser
 import (
 	"encoding/json"
 	"fmt"
+
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
 )
@@ -27,15 +28,15 @@ func (b *DevBrowser) getEvaluateJsTools() []ToolMetadata {
 					Default:     false,
 				},
 			},
-			Execute: func(args map[string]any, progress chan<- any) {
+			Execute: func(args map[string]any) {
 				if !b.isOpen {
-					progress <- "Browser is not open. Please open it first with browser_open"
+					b.Logger("Browser is not open. Please open it first with browser_open")
 					return
 				}
 
 				script, ok := args["script"].(string)
 				if !ok || script == "" {
-					progress <- "Script parameter is required"
+					b.Logger("Script parameter is required")
 					return
 				}
 
@@ -49,24 +50,24 @@ func (b *DevBrowser) getEvaluateJsTools() []ToolMetadata {
 				)
 
 				if err != nil {
-					progress <- fmt.Sprintf("Error: %v", err)
+					b.Logger(fmt.Sprintf("Error: %v", err))
 					return
 				}
 
 				switch v := res.(type) {
 				case nil:
-					progress <- "undefined"
+					b.Logger("undefined")
 				case string:
-					progress <- v
+					b.Logger(v)
 				case float64, bool:
-					progress <- fmt.Sprintf("%v", v)
+					b.Logger(fmt.Sprintf("%v", v))
 				default:
 					jsonRes, err := json.Marshal(v)
 					if err != nil {
-						progress <- fmt.Sprintf("Error: failed to serialize result: %v", err)
+						b.Logger(fmt.Sprintf("Error: failed to serialize result: %v", err))
 						return
 					}
-					progress <- string(jsonRes)
+					b.Logger(string(jsonRes))
 				}
 			},
 		},

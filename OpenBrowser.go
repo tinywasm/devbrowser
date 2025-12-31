@@ -32,7 +32,7 @@ func (h *DevBrowser) OpenBrowser() {
 		// Initialize console log capturing BEFORE navigating to the page
 		// This ensures all console.log statements from page load are captured
 		if err := h.initializeConsoleCapture(); err != nil {
-			h.logger("Warning: failed to initialize console capture:", err)
+			h.Logger("Warning: failed to initialize console capture:", err)
 			// Continue anyway - capture is optional
 		}
 		h.initializeNetworkCapture()
@@ -60,15 +60,15 @@ func (h *DevBrowser) OpenBrowser() {
 	case err := <-h.errChan:
 		h.isOpen = false
 		// use helper to ensure logging goes through configured logger
-		h.logger("Error opening DevBrowser: ", err)
+		h.Logger("Error opening DevBrowser: ", err)
 		return
 	case <-h.readyChan:
 		// Tomar el foco de la UI después de abrir el navegador
 		/*  err := h.ui.ReturnFocus()
 		if err != nil {
-			h.logger.Write([]byte("Error returning focus to UI: " + err.Error()))
+			h.Logger.Write([]byte("Error returning focus to UI: " + err.Error()))
 		} */
-		h.logger("Started")
+		h.Logger("Started")
 
 		// Start monitoring browser geometry changes
 		go h.monitorBrowserGeometry()

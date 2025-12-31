@@ -1,13 +1,10 @@
 package devbrowser
 
 // ToolExecutor defines how a tool should be executed
-// Channel can receive:
-// - string: text messages
-// - []byte: binary data (images, files, etc.) with mime type prefix
-// - BinaryData: structured binary response
-type ToolExecutor func(args map[string]any, progress chan<- any)
+type ToolExecutor func(args map[string]any)
 
 // BinaryData represents binary response data with metadata
+// (Imported from mcpserve)
 type BinaryData struct {
 	MimeType string // e.g., "image/png", "application/pdf"
 	Data     []byte // Raw binary data

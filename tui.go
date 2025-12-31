@@ -34,7 +34,3 @@ func (h *DevBrowser) Execute(progress chan<- string) {
 	}
 
 }
-
-// MessageTracker implementation for operation tracking
-func (h *DevBrowser) GetLastOperationID() string   { return h.lastOpID }
-func (h *DevBrowser) SetLastOperationID(id string) { h.lastOpID = id }

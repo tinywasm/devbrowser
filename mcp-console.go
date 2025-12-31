@@ -27,20 +27,20 @@ func (b *DevBrowser) getConsoleTools() []ToolMetadata {
 					Default:     50,
 				},
 			},
-			Execute: func(args map[string]any, progress chan<- any) {
+			Execute: func(args map[string]any) {
 				if !b.isOpen {
-					progress <- "Browser is not open. Please open it first with browser_open"
+					b.Logger("Browser is not open. Please open it first with browser_open")
 					return
 				}
 
 				logs, err := b.GetConsoleLogs()
 				if err != nil {
-					progress <- fmt.Sprintf("Failed to get console logs: %v", err)
+					b.Logger(fmt.Sprintf("Failed to get console logs: %v", err))
 					return
 				}
 
 				if len(logs) == 0 {
-					progress <- "No console logs available"
+					b.Logger("No console logs available")
 					return
 				}
 
@@ -75,12 +75,12 @@ func (b *DevBrowser) getConsoleTools() []ToolMetadata {
 				}
 
 				if len(filteredLogs) == 0 {
-					progress <- "No console logs"
+					b.Logger("No console logs")
 					return
 				}
 
 				for _, log := range filteredLogs {
-					progress <- log
+					b.Logger(log)
 				}
 			},
 		},

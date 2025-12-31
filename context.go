@@ -25,7 +25,7 @@ func (h *DevBrowser) CreateBrowserContext() error {
 
 	// Adapter function to match the logger signature required by chromedp.WithLogf.
 	logfAdapter := func(format string, args ...any) {
-		h.logger(fmt.Sprintf(format, args...))
+		h.Logger(fmt.Sprintf(format, args...))
 	}
 
 	ctx, cancel := chromedp.NewContext(allocCtx, chromedp.WithLogf(logfAdapter))

@@ -32,9 +32,9 @@ func (b *DevBrowser) getNetworkTools() []ToolMetadata {
 					Default:     50,
 				},
 			},
-			Execute: func(args map[string]any, progress chan<- any) {
+			Execute: func(args map[string]any) {
 				if !b.isOpen {
-					progress <- "Browser is not open. Please open it first with browser_open"
+					b.Logger("Browser is not open. Please open it first with browser_open")
 					return
 				}
 
@@ -64,9 +64,9 @@ func (b *DevBrowser) getNetworkTools() []ToolMetadata {
 
 				if len(filteredLogs) == 0 {
 					if filter == "all" {
-						progress <- "No network requests captured"
+						b.Logger("No network requests captured")
 					} else {
-						progress <- fmt.Sprintf("No %s requests found", filter)
+						b.Logger(fmt.Sprintf("No %s requests found", filter))
 					}
 					return
 				}
@@ -76,7 +76,7 @@ func (b *DevBrowser) getNetworkTools() []ToolMetadata {
 					if log.Failed {
 						status = "Failed"
 					}
-					progress <- fmt.Sprintf("%s %s %s (%dms) [%s] %s", status, log.Method, log.URL, log.Duration, log.Type, log.ErrorText)
+					b.Logger(fmt.Sprintf("%s %s %s (%dms) [%s] %s", status, log.Method, log.URL, log.Duration, log.Type, log.ErrorText))
 				}
 			},
 		},
