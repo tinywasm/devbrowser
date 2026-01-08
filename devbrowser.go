@@ -5,6 +5,7 @@ import (
 	"errors"
 	"strconv"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/chromedp/chromedp"
@@ -15,6 +16,8 @@ type store interface {
 	Get(key string) (string, error)
 	Set(key, value string) error
 }
+
+const StoreKeyBrowserAutostart = "browser_autostart"
 
 type DevBrowser struct {
 	config   serverConfig
@@ -49,6 +52,10 @@ type DevBrowser struct {
 	// JS error capture
 	jsErrors    []JSError
 	errorsMutex sync.Mutex
+
+	// Operation busy flag (atomic) to prevent race conditions and UI blocking
+	// 0 = idle, 1 = busy
+	busy int32
 }
 
 type JSError struct {
@@ -117,6 +124,34 @@ func New(sc serverConfig, ui userInterface, st store, exitChan chan bool) *DevBr
 	browser.loadBrowserConfig()
 
 	return browser
+}
+
+// AutoStart opens the browser if auto-start is enabled in config
+// Should be called after the server is ready
+// NOTE: OpenBrowser() contains a blocking select, so it runs in a goroutine
+func (b *DevBrowser) AutoStart() {
+	autoStart := true // Default: enabled
+	val, err := b.db.Get(StoreKeyBrowserAutostart)
+	if err == nil && val != "" {
+		autoStart = (val == "true")
+	}
+
+	if autoStart {
+		//b.Logger("Auto-starting browser...")
+		go func() {
+			if !atomic.CompareAndSwapInt32(&b.busy, 0, 1) {
+				// Already busy
+				return
+			}
+			defer atomic.StoreInt32(&b.busy, 0)
+
+			if !b.isOpen { // Check again inside lock
+				b.OpenBrowser()
+			}
+		}()
+	} else {
+		//b.Logger("Browser auto-start disabled")
+	}
 }
 
 // loadBrowserConfig loads position and size from the store

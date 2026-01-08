@@ -68,7 +68,7 @@ func (h *DevBrowser) OpenBrowser() {
 		if err != nil {
 			h.Logger.Write([]byte("Error returning focus to UI: " + err.Error()))
 		} */
-		h.Logger("Started")
+		h.Logger(h.StatusMessage())
 
 		// Start monitoring browser geometry changes
 		go h.monitorBrowserGeometry()

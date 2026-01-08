@@ -19,6 +19,7 @@ func (h *DevBrowser) CloseBrowser() error {
 	h.ctx = nil
 	h.cancel = nil
 
+	h.Logger(h.StatusMessage())
 	h.ui.RefreshUI()
 	return nil
 }
