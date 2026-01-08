@@ -12,13 +12,10 @@ func (h *DevBrowser) Label() string {
 
 // Value returns current auto-start setting as "t" or "f"
 func (h *DevBrowser) Value() string {
-	if val, err := h.db.Get(StoreKeyBrowserAutostart); err == nil && val != "" {
-		if val == "true" {
-			return "t"
-		}
-		return "f"
+	if h.autoStart {
+		return "t"
 	}
-	return "t" // Default: auto-start enabled
+	return "f"
 }
 
 // StatusMessage returns formatted browser status for logging
@@ -54,12 +51,7 @@ func (h *DevBrowser) Change(newValue string) {
 		return // Return immediately, don't fall through to RefreshUI below
 
 	default: // Toggle auto-start setting
-		current := h.Value()
-		newVal := "true"
-		if current == "t" {
-			newVal = "false"
-		}
-		h.db.Set(StoreKeyBrowserAutostart, newVal)
+		h.SetAutoStart(!h.autoStart)
 		h.Logger(h.StatusMessage())
 	}
 

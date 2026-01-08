@@ -89,7 +89,7 @@ func TestSaveBrowserConfig(t *testing.T) {
 	browser.height = 1080
 
 	// Save config
-	err := browser.saveBrowserConfig()
+	err := browser.SaveConfig()
 	if err != nil {
 		t.Fatalf("saveBrowserConfig failed: %v", err)
 	}
@@ -193,7 +193,7 @@ func TestBrowserConfigPersistenceAcrossRestarts(t *testing.T) {
 	browser1.position = "1920,0"
 	browser1.width = 1600
 	browser1.height = 900
-	browser1.saveBrowserConfig()
+	browser1.SaveConfig()
 
 	// Simulate restart - create new browser instance with same store
 	exitChan2 := make(chan bool)

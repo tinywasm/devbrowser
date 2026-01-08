@@ -3,7 +3,6 @@ package devbrowser
 import (
 	"context"
 	"errors"
-	"strconv"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -17,15 +16,14 @@ type store interface {
 	Set(key, value string) error
 }
 
-const StoreKeyBrowserAutostart = "browser_autostart"
-
 type DevBrowser struct {
-	config   serverConfig
-	ui       userInterface
-	width    int    // ej "800" default "1024"
-	height   int    //ej: "600" default "768"
-	position string //ej: "1930,0" (when you have second monitor) default: "0,0"
-	headless bool   // true para modo headless (sin UI), false muestra el navegador
+	config    serverConfig
+	ui        userInterface
+	width     int    // ej "800" default "1024"
+	height    int    //ej: "600" default "768"
+	position  string //ej: "1930,0" (when you have second monitor) default: "0,0"
+	headless  bool   // true para modo headless (sin UI), false muestra el navegador
+	autoStart bool   // true if browser should auto-open on startup
 
 	isOpen bool // Indica si el navegador está abierto
 
@@ -120,8 +118,8 @@ func New(sc serverConfig, ui userInterface, st store, exitChan chan bool) *DevBr
 		exitChan:  exitChan,
 	}
 
-	// Load stored position and size from db
-	browser.loadBrowserConfig()
+	// Load all configuration from store
+	browser.LoadConfig()
 
 	return browser
 }
@@ -130,70 +128,21 @@ func New(sc serverConfig, ui userInterface, st store, exitChan chan bool) *DevBr
 // Should be called after the server is ready
 // NOTE: OpenBrowser() contains a blocking select, so it runs in a goroutine
 func (b *DevBrowser) AutoStart() {
-	autoStart := true // Default: enabled
-	val, err := b.db.Get(StoreKeyBrowserAutostart)
-	if err == nil && val != "" {
-		autoStart = (val == "true")
+	if !b.autoStart {
+		return
 	}
 
-	if autoStart {
-		//b.Logger("Auto-starting browser...")
-		go func() {
-			if !atomic.CompareAndSwapInt32(&b.busy, 0, 1) {
-				// Already busy
-				return
-			}
-			defer atomic.StoreInt32(&b.busy, 0)
-
-			if !b.isOpen { // Check again inside lock
-				b.OpenBrowser()
-			}
-		}()
-	} else {
-		//b.Logger("Browser auto-start disabled")
-	}
-}
-
-// loadBrowserConfig loads position and size from the store
-func (b *DevBrowser) loadBrowserConfig() {
-	// Load position
-	if pos, err := b.db.Get("browser_position"); err == nil && pos != "" {
-		b.position = pos
-	}
-
-	// Load width
-	if w, err := b.db.Get("browser_width"); err == nil && w != "" {
-		if width, err := strconv.Atoi(w); err == nil {
-			b.width = width
+	go func() {
+		if !atomic.CompareAndSwapInt32(&b.busy, 0, 1) {
+			// Already busy
+			return
 		}
-	}
+		defer atomic.StoreInt32(&b.busy, 0)
 
-	// Load height
-	if h, err := b.db.Get("browser_height"); err == nil && h != "" {
-		if height, err := strconv.Atoi(h); err == nil {
-			b.height = height
+		if !b.isOpen {
+			b.OpenBrowser()
 		}
-	}
-}
-
-// saveBrowserConfig saves current position and size to the store
-func (b *DevBrowser) saveBrowserConfig() error {
-	// Save position
-	if err := b.db.Set("browser_position", b.position); err != nil {
-		return err
-	}
-
-	// Save width
-	if err := b.db.Set("browser_width", strconv.Itoa(b.width)); err != nil {
-		return err
-	}
-
-	// Save height
-	if err := b.db.Set("browser_height", strconv.Itoa(b.height)); err != nil {
-		return err
-	}
-
-	return nil
+	}()
 }
 
 func (h *DevBrowser) BrowserStartUrlChanged(fieldName string, oldValue, newValue string) error {

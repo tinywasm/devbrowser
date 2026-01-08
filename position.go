@@ -41,7 +41,7 @@ func (b *DevBrowser) setBrowserPositionAndSize(newConfig string) (err error) {
 	}
 
 	// Save the new configuration to db
-	if err := b.saveBrowserConfig(); err != nil {
+	if err := b.SaveConfig(); err != nil {
 		return errors.Join(this, err)
 	}
 
