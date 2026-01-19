@@ -14,7 +14,7 @@ func (h *DevBrowser) OpenBrowser() {
 		return
 	}
 
-	if h.testMode || TestMode {
+	if h.testMode {
 		h.mu.Unlock()
 		h.Logger("Skipping browser open in TestMode")
 		return

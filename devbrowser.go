@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"sync"
-	"sync/atomic"
 	"time"
 
 	"github.com/chromedp/chromedp"
@@ -15,8 +14,6 @@ type store interface {
 	Get(key string) (string, error)
 	Set(key, value string) error
 }
-
-var TestMode bool
 
 type DevBrowser struct {
 	config    serverConfig
@@ -138,12 +135,6 @@ func (b *DevBrowser) AutoStart() {
 	}
 
 	go func() {
-		if !atomic.CompareAndSwapInt32(&b.busy, 0, 1) {
-			// Already busy
-			return
-		}
-		defer atomic.StoreInt32(&b.busy, 0)
-
 		if !b.isOpen {
 			b.OpenBrowser()
 		}

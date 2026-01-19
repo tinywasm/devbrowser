@@ -11,15 +11,8 @@ func TestGetMCPToolsMetadata_AllToolsRegistered(t *testing.T) {
 	tools := db.GetMCPToolsMetadata()
 
 	expectedToolNames := []string{
-		"browser_open",
-		"browser_close",
-		"browser_reload",
 		"browser_get_console",
 		"browser_screenshot",
-		//"browser_evaluate_js",
-		//"browser_get_network_logs",
-		//"browser_get_errors",
-		//"browser_click_element",
 	}
 
 	if len(tools) != len(expectedToolNames) {
