@@ -16,6 +16,8 @@ type store interface {
 	Set(key, value string) error
 }
 
+var TestMode bool
+
 type DevBrowser struct {
 	config    serverConfig
 	ui        userInterface
@@ -54,6 +56,9 @@ type DevBrowser struct {
 	// Operation busy flag (atomic) to prevent race conditions and UI blocking
 	// 0 = idle, 1 = busy
 	busy int32
+
+	testMode bool // Skip opening browser in tests
+	mu       sync.Mutex
 }
 
 type JSError struct {
@@ -204,6 +209,10 @@ func (b *DevBrowser) Logger(messages ...any) {
 // Debe llamarse antes de OpenBrowser().
 func (b *DevBrowser) SetHeadless(headless bool) {
 	b.headless = headless
+}
+
+func (b *DevBrowser) SetTestMode(testMode bool) {
+	b.testMode = testMode
 }
 
 // monitorBrowserClose monitors the browser context and updates state when browser is closed manually

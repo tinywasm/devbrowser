@@ -5,6 +5,9 @@ import (
 )
 
 func (h *DevBrowser) CloseBrowser() error {
+	h.mu.Lock()
+	defer h.mu.Unlock()
+
 	if !h.isOpen {
 		return errors.New("DevBrowser is already closed")
 	}

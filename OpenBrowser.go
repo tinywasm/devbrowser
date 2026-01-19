@@ -8,11 +8,21 @@ import (
 )
 
 func (h *DevBrowser) OpenBrowser() {
+	h.mu.Lock()
 	if h.isOpen {
+		h.mu.Unlock()
 		return
 	}
 
-	// Add listener for exit signal
+	if h.testMode || TestMode {
+		h.mu.Unlock()
+		h.Logger("Skipping browser open in TestMode")
+		return
+	}
+	h.isOpen = true
+	h.mu.Unlock()
+
+	// Add listener for exit signal (only once per open session)
 	go func() {
 		<-h.exitChan
 		h.CloseBrowser()
@@ -25,7 +35,6 @@ func (h *DevBrowser) OpenBrowser() {
 			return
 		}
 
-		h.isOpen = true
 		var protocol = "http"
 		url := protocol + `://localhost:` + h.config.ServerPort() + "/"
 
@@ -58,9 +67,9 @@ func (h *DevBrowser) OpenBrowser() {
 	// Esperar señal de inicio o error
 	select {
 	case err := <-h.errChan:
-		h.isOpen = false
 		// use helper to ensure logging goes through configured logger
 		h.Logger("Error opening DevBrowser: ", err)
+		h.CloseBrowser()
 		return
 	case <-h.readyChan:
 		// Tomar el foco de la UI después de abrir el navegador
