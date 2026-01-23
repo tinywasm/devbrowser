@@ -85,7 +85,7 @@ func DefaultTestBrowser(opts ...any) (*DevBrowser, chan bool) {
 		exit = make(chan bool)
 	}
 
-	db := New(defaultServerConfig{}, defaultUI{}, &defaultStore{m: make(map[string]string)}, exit)
+	db := New(defaultUI{}, &defaultStore{m: make(map[string]string)}, exit)
 	db.SetLog(logger)
 	db.SetHeadless(true) // Los tests usan modo headless por defecto
 	return db, exit

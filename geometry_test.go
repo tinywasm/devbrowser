@@ -37,7 +37,7 @@ func TestLoadBrowserConfigOnNew(t *testing.T) {
 	}
 
 	exitChan := make(chan bool)
-	browser := New(nil, nil, store, exitChan)
+	browser := New(nil, store, exitChan)
 
 	if browser.position != "100,200" {
 		t.Errorf("Expected position '100,200', got '%s'", browser.position)
@@ -59,7 +59,7 @@ func TestLoadBrowserConfigDefaults(t *testing.T) {
 	}
 
 	exitChan := make(chan bool)
-	browser := New(nil, nil, store, exitChan)
+	browser := New(nil, store, exitChan)
 
 	if browser.position != "0,0" {
 		t.Errorf("Expected default position '0,0', got '%s'", browser.position)
@@ -81,7 +81,7 @@ func TestSaveBrowserConfig(t *testing.T) {
 	}
 
 	exitChan := make(chan bool)
-	browser := New(nil, nil, store, exitChan)
+	browser := New(nil, store, exitChan)
 
 	// Change values
 	browser.position = "500,300"
@@ -115,7 +115,7 @@ func TestSetBrowserPositionAndSizeSavesToStore(t *testing.T) {
 	}
 
 	exitChan := make(chan bool)
-	browser := New(nil, nil, store, exitChan)
+	browser := New(nil, store, exitChan)
 
 	// Set new position and size
 	err := browser.setBrowserPositionAndSize("1930,0:800,600")
@@ -163,7 +163,7 @@ func TestLoadBrowserConfigIgnoresInvalidValues(t *testing.T) {
 	}
 
 	exitChan := make(chan bool)
-	browser := New(nil, nil, store, exitChan)
+	browser := New(nil, store, exitChan)
 
 	// Position should load correctly
 	if browser.position != "100,200" {
@@ -189,7 +189,7 @@ func TestBrowserConfigPersistenceAcrossRestarts(t *testing.T) {
 	exitChan := make(chan bool)
 
 	// First browser instance
-	browser1 := New(nil, nil, store, exitChan)
+	browser1 := New(nil, store, exitChan)
 	browser1.position = "1920,0"
 	browser1.width = 1600
 	browser1.height = 900
@@ -197,7 +197,7 @@ func TestBrowserConfigPersistenceAcrossRestarts(t *testing.T) {
 
 	// Simulate restart - create new browser instance with same store
 	exitChan2 := make(chan bool)
-	browser2 := New(nil, nil, store, exitChan2)
+	browser2 := New(nil, store, exitChan2)
 
 	// Verify values were loaded from store
 	if browser2.position != "1920,0" {

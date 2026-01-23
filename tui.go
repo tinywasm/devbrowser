@@ -44,14 +44,15 @@ func (h *DevBrowser) Change(newValue string) {
 					h.Logger("Close error:", err.Error())
 				}
 			} else {
-				h.OpenBrowser()
+				h.OpenBrowser(h.lastPort, h.lastHttps)
 			}
 			// Note: OpenBrowser and CloseBrowser log StatusMessage internally
 		}()
 		return // Return immediately, don't fall through to RefreshUI below
 
 	default: // Toggle auto-start setting
-		h.SetAutoStart(!h.autoStart)
+		h.autoStart = !h.autoStart
+		h.SaveConfig()
 		h.Logger(h.StatusMessage())
 	}
 

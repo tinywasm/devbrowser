@@ -12,7 +12,12 @@ import (
 // monitorBrowserGeometry monitors changes in browser window position and size
 // and automatically saves them to the database
 func (b *DevBrowser) monitorBrowserGeometry() {
-	if b.ctx == nil || !b.isOpen {
+	b.mu.Lock()
+	ctx := b.ctx
+	isOpen := b.isOpen
+	b.mu.Unlock()
+
+	if ctx == nil || !isOpen {
 		return
 	}
 
@@ -25,7 +30,7 @@ func (b *DevBrowser) monitorBrowserGeometry() {
 
 	for {
 		select {
-		case <-b.ctx.Done():
+		case <-ctx.Done():
 			// Browser context closed, stop monitoring
 			return
 		case <-ticker.C:
@@ -37,14 +42,18 @@ func (b *DevBrowser) monitorBrowserGeometry() {
 
 // checkAndSaveGeometry checks current browser geometry and saves if changed
 func (b *DevBrowser) checkAndSaveGeometry() {
-	if b.ctx == nil {
+	b.mu.Lock()
+	ctx := b.ctx
+	b.mu.Unlock()
+
+	if ctx == nil {
 		return
 	}
 
 	var x, y, width, height int64
 
 	// Get window bounds using Chrome DevTools Protocol
-	err := chromedp.Run(b.ctx,
+	err := chromedp.Run(ctx,
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			// Get the window ID for the current target
 			t := chromedp.FromContext(ctx).Target

@@ -16,13 +16,17 @@ type store interface {
 }
 
 type DevBrowser struct {
-	config    serverConfig
-	ui        userInterface
-	width     int    // ej "800" default "1024"
-	height    int    //ej: "600" default "768"
-	position  string //ej: "1930,0" (when you have second monitor) default: "0,0"
-	headless  bool   // true para modo headless (sin UI), false muestra el navegador
-	autoStart bool   // true if browser should auto-open on startup
+	ui         userInterface
+	width      int    // ej "800" default "1024"
+	height     int    //ej: "600" default "768"
+	position   string //ej: "1930,0" (when you have second monitor) default: "0,0"
+	headless   bool   // true para modo headless (sin UI), false muestra el navegador
+	autoStart  bool   // true if browser should auto-open on startup
+	firstCall  bool   // Internal flag to track if OpenBrowser was called for the first time
+	openedOnce bool   // Internal flag to track if browser was actually opened at least once
+
+	lastPort  string
+	lastHttps bool
 
 	isOpen bool // Indica si el navegador está abierto
 
@@ -77,10 +81,6 @@ type NetworkLogEntry struct {
 	ErrorText string
 }
 
-type serverConfig interface {
-	ServerPort() string
-}
-
 type userInterface interface {
 	RefreshUI()
 	ReturnFocus() error
@@ -98,9 +98,9 @@ devbrowser.New creates a new DevBrowser instance.
 		ReturnFocus() error
 	}
 
-	example :  New(serverConfig, userInterface, exitChan)
+	example :  New(userInterface, st, exitChan)
 */
-func New(sc serverConfig, ui userInterface, st store, exitChan chan bool) *DevBrowser {
+func New(ui userInterface, st store, exitChan chan bool) *DevBrowser {
 
 	// Initialize clipboard for cross-platform support
 	err := clipboard.Init()
@@ -109,12 +109,12 @@ func New(sc serverConfig, ui userInterface, st store, exitChan chan bool) *DevBr
 	}
 
 	browser := &DevBrowser{
-		config:    sc,
 		ui:        ui,
 		db:        st,
-		width:     1024,  // Default width
-		height:    768,   // Default height
-		position:  "0,0", // Default position
+		width:     1024, // Default width
+		height:    768,  // Default height
+		position:  "0,0",
+		firstCall: true,
 		readyChan: make(chan bool),
 		errChan:   make(chan error),
 		exitChan:  exitChan,
@@ -123,22 +123,17 @@ func New(sc serverConfig, ui userInterface, st store, exitChan chan bool) *DevBr
 	// Load all configuration from store
 	browser.LoadConfig()
 
+	//id := atomic.AddInt32(&instanceCounter, 1)
+	// Logger not set yet, so we can't log this via b.Logger consistently
+	// But let's try just in case it's injected early or for future ref inspection
+	// We'll use fmt temporarily for this one-time struct init check if needed,
+	// but user dislikes fmt. Let's rely on AutoStart logs primarily.
+	// If we really need New log, we might need fmt. But user said no fmt.
+	// We'll skip logging in New for now unless critical, but we'll keep the counter.
+	// actually, let's just use fmt for the New call since it is before logger init usually
+	//fmt.Printf("DEBUG: DevBrowser New Instance #%d created\n", id)
+
 	return browser
-}
-
-// AutoStart opens the browser if auto-start is enabled in config
-// Should be called after the server is ready
-// NOTE: OpenBrowser() contains a blocking select, so it runs in a goroutine
-func (b *DevBrowser) AutoStart() {
-	if !b.autoStart {
-		return
-	}
-
-	go func() {
-		if !b.isOpen {
-			b.OpenBrowser()
-		}
-	}()
 }
 
 func (h *DevBrowser) BrowserStartUrlChanged(fieldName string, oldValue, newValue string) error {
@@ -159,7 +154,7 @@ func (h *DevBrowser) RestartBrowser() error {
 		return errors.Join(this, err)
 	}
 
-	h.OpenBrowser()
+	h.OpenBrowser(h.lastPort, h.lastHttps)
 
 	return nil
 }

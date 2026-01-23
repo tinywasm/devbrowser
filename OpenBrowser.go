@@ -7,19 +7,37 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func (h *DevBrowser) OpenBrowser() {
+func (h *DevBrowser) OpenBrowser(port string, https bool) {
 	h.mu.Lock()
+	isFirst := h.firstCall
+	h.firstCall = false
+	h.lastPort = port
+	h.lastHttps = https
+
+	//h.Logger(fmt.Sprintf("DEBUG: OpenBrowser called. port=%s, https=%v, isOpen=%v, firstCall=%v", port, https, h.isOpen, isFirst))
+
+	// Logic: on first call, only open if autoStart is true.
+	// On subsequent calls (e.g. user action), always open.
+	if isFirst && !h.autoStart {
+		//h.Logger("DEBUG: OpenBrowser skipped on first call (autoStart=false)")
+		h.mu.Unlock()
+		return
+	}
+
 	if h.isOpen {
+		//h.Logger("DEBUG: OpenBrowser returning early, already open")
 		h.mu.Unlock()
 		return
 	}
 
 	if h.testMode {
+		h.openedOnce = true
 		h.mu.Unlock()
 		h.Logger("Skipping browser open in TestMode")
 		return
 	}
 	h.isOpen = true
+	h.openedOnce = true
 	h.mu.Unlock()
 
 	// Add listener for exit signal (only once per open session)
@@ -27,7 +45,7 @@ func (h *DevBrowser) OpenBrowser() {
 		<-h.exitChan
 		h.CloseBrowser()
 	}()
-	// fmt.Println("*** START DEV BROWSER ***")
+
 	go func() {
 		err := h.CreateBrowserContext()
 		if err != nil {
@@ -35,8 +53,11 @@ func (h *DevBrowser) OpenBrowser() {
 			return
 		}
 
-		var protocol = "http"
-		url := protocol + `://localhost:` + h.config.ServerPort() + "/"
+		protocol := "http"
+		if https {
+			protocol = "https"
+		}
+		url := protocol + `://localhost:` + port + "/"
 
 		// Initialize console log capturing BEFORE navigating to the page
 		// This ensures all console.log statements from page load are captured
@@ -72,11 +93,6 @@ func (h *DevBrowser) OpenBrowser() {
 		h.CloseBrowser()
 		return
 	case <-h.readyChan:
-		// Tomar el foco de la UI después de abrir el navegador
-		/*  err := h.ui.ReturnFocus()
-		if err != nil {
-			h.Logger.Write([]byte("Error returning focus to UI: " + err.Error()))
-		} */
 		h.Logger(h.StatusMessage())
 
 		// Start monitoring browser geometry changes

@@ -83,18 +83,3 @@ func (b *DevBrowser) SaveConfig() error {
 
 	return nil
 }
-
-// SetAutoStart updates the auto-start setting and persists it
-func (b *DevBrowser) SetAutoStart(enabled bool) {
-	b.autoStart = enabled
-	val := "f"
-	if enabled {
-		val = "t"
-	}
-	b.db.Set(StoreKeyBrowserAutostart, val)
-}
-
-// AutoStartEnabled returns current auto-start setting
-func (b *DevBrowser) AutoStartEnabled() bool {
-	return b.autoStart
-}
