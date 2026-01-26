@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/mcpserve"
 	"golang.design/x/clipboard"
 )
 
@@ -143,7 +144,7 @@ func (b *DevBrowser) getScreenshotTools() []ToolMetadata {
 				}
 
 				// Send both text context and binary data
-				b.Logger(contextReport, BinaryData{MimeType: "image/png", Data: buf})
+				b.Logger(contextReport, mcpserve.BinaryData{MimeType: "image/png", Data: buf})
 			},
 		},
 	}

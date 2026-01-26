@@ -1,14 +1,12 @@
 package devbrowser
 
+import "github.com/tinywasm/mcpserve"
+
 // ToolExecutor defines how a tool should be executed
 type ToolExecutor func(args map[string]any)
 
-// BinaryData represents binary response data with metadata
-// (Imported from mcpserve)
-type BinaryData struct {
-	MimeType string // e.g., "image/png", "application/pdf"
-	Data     []byte // Raw binary data
-}
+// BinaryData is imported from mcpserve
+type BinaryData = mcpserve.BinaryData
 
 // ToolMetadata provides MCP tool configuration metadata
 type ToolMetadata struct {
