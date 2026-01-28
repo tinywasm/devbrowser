@@ -203,12 +203,19 @@ func (b *DevBrowser) SetTestMode(testMode bool) {
 
 // monitorBrowserClose monitors the browser context and updates state when browser is closed manually
 func (b *DevBrowser) monitorBrowserClose() {
-	if b.ctx == nil {
+	b.mu.Lock()
+	ctx := b.ctx
+	b.mu.Unlock()
+
+	if ctx == nil {
 		return
 	}
 
 	// Wait for context to be done (browser closed)
-	<-b.ctx.Done()
+	<-ctx.Done()
+
+	b.mu.Lock()
+	defer b.mu.Unlock()
 
 	// Only handle if browser was marked as open (manual close by user)
 	if b.isOpen {
