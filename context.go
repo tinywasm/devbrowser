@@ -16,7 +16,7 @@ func (h *DevBrowser) CreateBrowserContext() error {
 		chromedp.Flag("disable-blink-features", "WebFontsInterventionV2"),
 		chromedp.Flag("use-fake-ui-for-media-stream", true),
 		chromedp.Flag("no-focus-on-load", true),
-		chromedp.Flag("auto-open-devtools-for-tabs", true),
+		chromedp.Flag("auto-open-devtools-for-tabs", h.width > 1200),
 		chromedp.Flag("window-position", h.position),
 		chromedp.Flag("window-size", windowSize),
 	)
