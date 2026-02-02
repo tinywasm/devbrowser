@@ -6,11 +6,11 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-// getStructureJS is the JavaScript used to extract the page structure for LLM understanding.
-const getStructureJS = `
+// GetStructureJS is the JavaScript used to extract the page structure for LLM understanding.
+const GetStructureJS = `
 (() => {
 	const getStructure = (el, depth = 0) => {
-		if (depth > 12 || !el) return ''; // Increased depth for more detail
+		if (depth > 12 || !el) return ''; 
 		
 		const tag = el.tagName.toLowerCase();
 		const indent = '  '.repeat(depth);
@@ -42,6 +42,11 @@ const getStructureJS = `
 		const value = el.value;
 		const name = el.getAttribute('name');
 		const type = el.getAttribute('type');
+		// NEW: Add critical navigation and media attributes
+		const href = el.getAttribute('href');
+		const src = el.getAttribute('src');
+		const alt = el.getAttribute('alt');
+		const title = el.getAttribute('title');
 
 		if (role) result += ' role="' + role + '"';
 		if (ariaLabel) result += ' aria-label="' + ariaLabel + '"';
@@ -49,13 +54,24 @@ const getStructureJS = `
 		if (name) result += ' name="' + name + '"';
 		if (type) result += ' type="' + type + '"';
 		if (value && tag !== 'body') result += ' value="' + value + '"';
+		
+		if (href) result += ' href="' + href + '"';
+		if (src) result += ' src="' + src + '"';
+		if (alt) result += ' alt="' + alt + '"';
+		if (title) result += ' title="' + title + '"';
 
 		// Add critical visual styles (only if non-default)
 		const styles = [];
 		if (style.display !== 'block' && style.display !== 'inline' && style.display !== 'inline-block') {
 			styles.push('display:' + style.display);
+			if (style.display === 'flex') styles.push('FLEX');
+			if (style.display === 'grid') styles.push('GRID');
 		}
 		if (style.position !== 'static') styles.push('position:' + style.position);
+		if (style.position === 'absolute' || style.position === 'fixed') {
+             styles.push('top:' + style.top);
+             styles.push('left:' + style.left);
+        }
 		
 		// Indicate interactive items
 		const isClickable = window.getComputedStyle(el).cursor === 'pointer' || 
@@ -99,7 +115,7 @@ func (b *DevBrowser) getStructureTools() []ToolMetadata {
 					chromedp.Location(&pageURL),
 					chromedp.Evaluate(`window.innerWidth`, &windowWidth),
 					chromedp.Evaluate(`window.innerHeight`, &windowHeight),
-					chromedp.Evaluate(getStructureJS, &structure),
+					chromedp.Evaluate(GetStructureJS, &structure),
 				)
 
 				if err != nil {

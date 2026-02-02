@@ -69,7 +69,7 @@ func (b *DevBrowser) getScreenshotTools() []ToolMetadata {
 					chromedp.Evaluate(`window.innerWidth`, &windowWidth),
 					chromedp.Evaluate(`window.innerHeight`, &windowHeight),
 					// Extract HTML structure with visible text and computed styles
-					chromedp.Evaluate(getStructureJS, &htmlStructure),
+					chromedp.Evaluate(GetStructureJS, &htmlStructure),
 				)
 
 				// Build visual context report (what AI "sees" without image bytes)
