@@ -13,6 +13,7 @@ func TestGetMCPToolsMetadata_AllToolsRegistered(t *testing.T) {
 	expectedToolNames := []string{
 		"browser_get_console",
 		"browser_screenshot",
+		"browser_get_content",
 	}
 
 	if len(tools) != len(expectedToolNames) {
