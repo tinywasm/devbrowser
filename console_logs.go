@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/chromedp/cdproto/log"
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
 )
@@ -48,6 +49,29 @@ func (b *DevBrowser) initializeConsoleCapture() error {
 			// Add to logs without type prefix to save tokens
 			b.consoleLogs = append(b.consoleLogs, message)
 
+		case *runtime.EventExceptionThrown:
+			b.logsMutex.Lock()
+			defer b.logsMutex.Unlock()
+
+			// Capture uncaught exceptions
+			msg := fmt.Sprintf("[Exception] %s", ev.ExceptionDetails.Text)
+			if ev.ExceptionDetails.Exception != nil && ev.ExceptionDetails.Exception.Description != "" {
+				msg += ": " + ev.ExceptionDetails.Exception.Description
+			}
+			b.consoleLogs = append(b.consoleLogs, msg)
+
+		case *log.EventEntryAdded:
+			b.logsMutex.Lock()
+			defer b.logsMutex.Unlock()
+
+			// Capture browser logs (network errors, security warnings, etc.)
+			// Format: [Level] Source: Text
+			msg := fmt.Sprintf("[%s] %s: %s", ev.Entry.Level, ev.Entry.Source, ev.Entry.Text)
+			if ev.Entry.URL != "" {
+				msg += fmt.Sprintf(" (%s)", ev.Entry.URL)
+			}
+			b.consoleLogs = append(b.consoleLogs, msg)
+
 		case *runtime.EventExecutionContextsCleared:
 			// Clear logs when execution contexts are cleared (page reload/navigation)
 			b.logsMutex.Lock()
@@ -56,8 +80,11 @@ func (b *DevBrowser) initializeConsoleCapture() error {
 		}
 	})
 
-	// Enable console domain to start receiving events
-	err := chromedp.Run(b.ctx, runtime.Enable())
+	// Enable console and log domains to start receiving events
+	err := chromedp.Run(b.ctx,
+		runtime.Enable(),
+		log.Enable(),
+	)
 	if err != nil {
 		return errors.New("initializeConsoleCapture: " + err.Error())
 	}
