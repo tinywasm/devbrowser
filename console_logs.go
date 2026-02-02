@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/chromedp/cdproto/audits"
 	"github.com/chromedp/cdproto/log"
 	"github.com/chromedp/cdproto/runtime"
 	"github.com/chromedp/chromedp"
@@ -72,6 +73,16 @@ func (b *DevBrowser) initializeConsoleCapture() error {
 			}
 			b.consoleLogs = append(b.consoleLogs, msg)
 
+		case *audits.EventIssueAdded:
+			b.logsMutex.Lock()
+			defer b.logsMutex.Unlock()
+
+			// Capture Audit Issues (Cookie warnings, Mixed Content, etc.)
+			msg := fmt.Sprintf("[Issue] %s", ev.Issue.Code)
+			// Details are often complex structs, so we stick to the code mostly.
+			// Ideally we could parse Issue.Details but it is a complex union type.
+			b.consoleLogs = append(b.consoleLogs, msg)
+
 		case *runtime.EventExecutionContextsCleared:
 			// Clear logs when execution contexts are cleared (page reload/navigation)
 			b.logsMutex.Lock()
@@ -80,10 +91,11 @@ func (b *DevBrowser) initializeConsoleCapture() error {
 		}
 	})
 
-	// Enable console and log domains to start receiving events
+	// Enable console, log, and audits domains to start receiving events
 	err := chromedp.Run(b.ctx,
 		runtime.Enable(),
 		log.Enable(),
+		audits.Enable(),
 	)
 	if err != nil {
 		return errors.New("initializeConsoleCapture: " + err.Error())

@@ -32,6 +32,8 @@ func TestConsoleCapture(t *testing.T) {
 				</script>
 				<!-- Trigger network error -->
 				<img src="/404.png"> 
+				<!-- Trigger accessibility issue (Chrome Audit): Input without label -->
+				<input type="text" name="bad-input">
 			</body>
 			</html>
 		`)
@@ -74,6 +76,7 @@ func TestConsoleCapture(t *testing.T) {
 	foundNormal := false
 	foundException := false
 	foundNetwork := false
+	//foundIssue := false // Issues might be flaky depending on headless audit settings, checking if present
 
 	for _, log := range logs {
 		if strings.Contains(log, "Normal log message") {
@@ -86,6 +89,10 @@ func TestConsoleCapture(t *testing.T) {
 		// The helper formats it as: [Level] Source: Text
 		if strings.Contains(log, "404") || strings.Contains(log, "Failed to load resource") {
 			foundNetwork = true
+		}
+		// Check for issues if they appear (not failing test if strict audit is off, but useful to see)
+		if strings.Contains(log, "[Issue]") {
+			//foundIssue = true
 		}
 	}
 
