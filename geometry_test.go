@@ -1,7 +1,6 @@
 package devbrowser
 
 import (
-	"strconv"
 	"testing"
 )
 
@@ -31,8 +30,7 @@ func TestLoadBrowserConfigOnNew(t *testing.T) {
 	store := &mockStore{
 		data: map[string]string{
 			"browser_position": "100,200",
-			"browser_width":    "1280",
-			"browser_height":   "720",
+			"browser_size":     "1280,720",
 		},
 	}
 
@@ -99,12 +97,8 @@ func TestSaveBrowserConfig(t *testing.T) {
 		t.Errorf("Expected stored position '500,300', got '%s'", store.data["browser_position"])
 	}
 
-	if store.data["browser_width"] != "1920" {
-		t.Errorf("Expected stored width '1920', got '%s'", store.data["browser_width"])
-	}
-
-	if store.data["browser_height"] != "1080" {
-		t.Errorf("Expected stored height '1080', got '%s'", store.data["browser_height"])
+	if store.data["browser_size"] != "1920,1080" {
+		t.Errorf("Expected stored size '1920,1080', got '%s'", store.data["browser_size"])
 	}
 }
 
@@ -136,19 +130,8 @@ func TestSetBrowserPositionAndSizeSavesToStore(t *testing.T) {
 		t.Errorf("Expected height 600, got %d", browser.height)
 	}
 
-	// Verify stored values
-	if store.data["browser_position"] != "1930,0" {
-		t.Errorf("Expected stored position '1930,0', got '%s'", store.data["browser_position"])
-	}
-
-	width, _ := strconv.Atoi(store.data["browser_width"])
-	if width != 800 {
-		t.Errorf("Expected stored width 800, got %d", width)
-	}
-
-	height, _ := strconv.Atoi(store.data["browser_height"])
-	if height != 600 {
-		t.Errorf("Expected stored height 600, got %d", height)
+	if store.data["browser_size"] != "800,600" {
+		t.Errorf("Expected stored size '800,600', got '%s'", store.data["browser_size"])
 	}
 }
 
@@ -157,8 +140,7 @@ func TestLoadBrowserConfigIgnoresInvalidValues(t *testing.T) {
 	store := &mockStore{
 		data: map[string]string{
 			"browser_position": "100,200",
-			"browser_width":    "invalid",
-			"browser_height":   "not_a_number",
+			"browser_size":     "invalid",
 		},
 	}
 

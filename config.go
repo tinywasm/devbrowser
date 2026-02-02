@@ -1,13 +1,14 @@
 package devbrowser
 
-import "strconv"
+import (
+	"fmt"
+)
 
 // Store keys for browser configuration
 const (
 	StoreKeyBrowserAutostart = "browser_autostart"
 	StoreKeyBrowserPosition  = "browser_position"
-	StoreKeyBrowserWidth     = "browser_width"
-	StoreKeyBrowserHeight    = "browser_height"
+	StoreKeyBrowserSize      = "browser_size"
 )
 
 // LoadConfig loads all browser configuration from the store
@@ -40,17 +41,12 @@ func (b *DevBrowser) LoadConfig() {
 		b.position = pos
 	}
 
-	// Load width
-	if w, err := b.db.Get(StoreKeyBrowserWidth); err == nil && w != "" {
-		if width, err := strconv.Atoi(w); err == nil {
-			b.width = width
-		}
-	}
-
-	// Load height
-	if h, err := b.db.Get(StoreKeyBrowserHeight); err == nil && h != "" {
-		if height, err := strconv.Atoi(h); err == nil {
-			b.height = height
+	// Load size (width,height)
+	if size, err := b.db.Get(StoreKeyBrowserSize); err == nil && size != "" {
+		var w, h int
+		if _, err := fmt.Sscanf(size, "%d,%d", &w, &h); err == nil {
+			b.width = w
+			b.height = h
 		}
 	}
 }
@@ -71,13 +67,9 @@ func (b *DevBrowser) SaveConfig() error {
 		return err
 	}
 
-	// Save width
-	if err := b.db.Set(StoreKeyBrowserWidth, strconv.Itoa(b.width)); err != nil {
-		return err
-	}
-
-	// Save height
-	if err := b.db.Set(StoreKeyBrowserHeight, strconv.Itoa(b.height)); err != nil {
+	// Save size
+	size := fmt.Sprintf("%d,%d", b.width, b.height)
+	if err := b.db.Set(StoreKeyBrowserSize, size); err != nil {
 		return err
 	}
 

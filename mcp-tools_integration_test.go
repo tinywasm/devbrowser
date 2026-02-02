@@ -12,6 +12,7 @@ func TestGetMCPToolsMetadata_AllToolsRegistered(t *testing.T) {
 
 	expectedToolNames := []string{
 		"browser_get_console",
+		"browser_set_viewport",
 		"browser_screenshot",
 		"browser_get_content",
 		"browser_click_element",
