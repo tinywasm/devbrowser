@@ -1,6 +1,7 @@
 package devbrowser
 
 import (
+	"context"
 	"fmt"
 	"time"
 
@@ -26,6 +27,13 @@ func (b *DevBrowser) getInteractionTools() []ToolMetadata {
 					Type:        "number",
 					Default:     100,
 				},
+				{
+					Name:        "timeout",
+					Description: "Maximum milliseconds to wait for the element to be visible",
+					Required:    false,
+					Type:        "number",
+					Default:     5000,
+				},
 			},
 			Execute: func(args map[string]any) {
 				if !b.isOpen {
@@ -44,14 +52,27 @@ func (b *DevBrowser) getInteractionTools() []ToolMetadata {
 					waitAfter = int(w)
 				}
 
-				err := chromedp.Run(b.ctx,
+				timeoutMs := 5000.0
+				if t, ok := args["timeout"].(float64); ok {
+					timeoutMs = t
+				}
+
+				// Create context with timeout
+				ctx, cancel := context.WithTimeout(b.ctx, time.Duration(timeoutMs)*time.Millisecond)
+				defer cancel()
+
+				err := chromedp.Run(ctx,
 					chromedp.WaitVisible(selector, chromedp.ByQuery),
 					chromedp.Click(selector, chromedp.ByQuery),
 					chromedp.Sleep(time.Duration(waitAfter)*time.Millisecond),
 				)
 
 				if err != nil {
-					b.Logger(fmt.Sprintf("Error clicking element %s: %v", selector, err))
+					if err == context.DeadlineExceeded {
+						b.Logger(fmt.Sprintf("Timeout exceeded waiting for element: %s", selector))
+					} else {
+						b.Logger(fmt.Sprintf("Error clicking element %s: %v", selector, err))
+					}
 					return
 				}
 
@@ -81,6 +102,13 @@ func (b *DevBrowser) getInteractionTools() []ToolMetadata {
 					Type:        "number",
 					Default:     100,
 				},
+				{
+					Name:        "timeout",
+					Description: "Maximum milliseconds to wait for the element to be visible",
+					Required:    false,
+					Type:        "number",
+					Default:     5000,
+				},
 			},
 			Execute: func(args map[string]any) {
 				if !b.isOpen {
@@ -105,14 +133,27 @@ func (b *DevBrowser) getInteractionTools() []ToolMetadata {
 					waitAfter = int(w)
 				}
 
-				err := chromedp.Run(b.ctx,
+				timeoutMs := 5000.0
+				if t, ok := args["timeout"].(float64); ok {
+					timeoutMs = t
+				}
+
+				// Create context with timeout
+				ctx, cancel := context.WithTimeout(b.ctx, time.Duration(timeoutMs)*time.Millisecond)
+				defer cancel()
+
+				err := chromedp.Run(ctx,
 					chromedp.WaitVisible(selector, chromedp.ByQuery),
 					chromedp.SendKeys(selector, value, chromedp.ByQuery),
 					chromedp.Sleep(time.Duration(waitAfter)*time.Millisecond),
 				)
 
 				if err != nil {
-					b.Logger(fmt.Sprintf("Error filling element %s: %v", selector, err))
+					if err == context.DeadlineExceeded {
+						b.Logger(fmt.Sprintf("Timeout exceeded waiting for element: %s", selector))
+					} else {
+						b.Logger(fmt.Sprintf("Error filling element %s: %v", selector, err))
+					}
 					return
 				}
 
