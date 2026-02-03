@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/chromedp/cdproto/input"
 	"github.com/chromedp/chromedp"
 )
 
@@ -180,6 +181,128 @@ func (b *DevBrowser) getInteractionTools() []ToolMetadata {
 				}
 
 				b.Logger(fmt.Sprintf("Filled element %s with '%s'", selector, value))
+			},
+		},
+		{
+			Name:        "browser_swipe_element",
+			Description: "Simulate a swipe gesture on an element (up, down, left, right).",
+			Parameters: []ParameterMetadata{
+				{
+					Name:        "selector",
+					Description: "CSS selector for the element to swipe on",
+					Required:    true,
+					Type:        "string",
+				},
+				{
+					Name:        "direction",
+					Description: "Direction of swipe: 'up', 'down', 'left', 'right'",
+					Required:    true,
+					Type:        "string",
+					EnumValues:  []string{"up", "down", "left", "right"},
+				},
+				{
+					Name:        "distance",
+					Description: "Distance in pixels to swipe",
+					Required:    true,
+					Type:        "number",
+				},
+			},
+			Execute: func(args map[string]any) {
+				if !b.isOpen {
+					b.Logger("Browser is not open. Please open it first with browser_open")
+					return
+				}
+
+				selector, ok := args["selector"].(string)
+				if !ok || selector == "" {
+					b.Logger("Selector parameter is required")
+					return
+				}
+
+				direction, ok := args["direction"].(string)
+				if !ok || direction == "" {
+					b.Logger("Direction parameter is required")
+					return
+				}
+
+				distanceVal, ok := args["distance"].(float64)
+				if !ok {
+					b.Logger("Distance parameter is required")
+					return
+				}
+				distance := int(distanceVal)
+
+				// Create context with timeout
+				ctx, cancel := context.WithTimeout(b.ctx, 5000*time.Millisecond)
+				defer cancel()
+
+				// Swipe Logic
+				err := chromedp.Run(ctx,
+					chromedp.WaitVisible(selector, chromedp.ByQuery),
+					chromedp.ActionFunc(func(ctx context.Context) error {
+						// 1. Get element dimensions to find center
+						// We use javascript to get bounding client rect as it is reliable
+						script := fmt.Sprintf(`
+							(function() {
+								const el = document.querySelector('%s');
+								if (!el) return null;
+								const rect = el.getBoundingClientRect();
+								return {x: rect.left + rect.width/2, y: rect.top + rect.height/2};
+							})()
+						`, selector)
+
+						var res map[string]float64
+						if err := chromedp.Evaluate(script, &res).Do(ctx); err != nil {
+							return err
+						}
+
+						startX := res["x"]
+						startY := res["y"]
+						endX := startX
+						endY := startY
+
+						switch direction {
+						case "up":
+							endY -= float64(distance)
+						case "down":
+							endY += float64(distance)
+						case "left":
+							endX -= float64(distance)
+						case "right":
+							endX += float64(distance)
+						}
+
+						// Perform Mouse sequence using cdproto/input
+						// Move to start
+						p1 := input.DispatchMouseEvent(input.MouseMoved, startX, startY)
+						if err := p1.Do(ctx); err != nil {
+							return err
+						}
+						// Mouse Down
+						p2 := input.DispatchMouseEvent(input.MousePressed, startX, startY).WithButton("left").WithClickCount(1)
+						if err := p2.Do(ctx); err != nil {
+							return err
+						}
+						// Move to end (swipe)
+						p3 := input.DispatchMouseEvent(input.MouseMoved, endX, endY).WithButton("left")
+						if err := p3.Do(ctx); err != nil {
+							return err
+						}
+						// Mouse Up
+						p4 := input.DispatchMouseEvent(input.MouseReleased, endX, endY).WithButton("left").WithClickCount(1)
+						if err := p4.Do(ctx); err != nil {
+							return err
+						}
+						return nil
+					}),
+				)
+
+				if err != nil {
+					b.Logger(fmt.Sprintf("Error swiping element %s: %v", selector, err))
+					return
+				}
+
+				b.Logger(fmt.Sprintf("Swiped %s on %s by %dpx", direction, selector, distance))
 			},
 		},
 	}
