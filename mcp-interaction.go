@@ -3,6 +3,7 @@ package devbrowser
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/chromedp/chromedp"
@@ -61,22 +62,43 @@ func (b *DevBrowser) getInteractionTools() []ToolMetadata {
 				ctx, cancel := context.WithTimeout(b.ctx, time.Duration(timeoutMs)*time.Millisecond)
 				defer cancel()
 
-				err := chromedp.Run(ctx,
-					chromedp.WaitVisible(selector, chromedp.ByQuery),
-					chromedp.Click(selector, chromedp.ByQuery),
-					chromedp.Sleep(time.Duration(waitAfter)*time.Millisecond),
-				)
-
+				// 1. Wait for element to be present in DOM (WaitReady)
+				err := chromedp.Run(ctx, chromedp.WaitReady(selector, chromedp.ByQuery))
 				if err != nil {
 					if err == context.DeadlineExceeded {
-						b.Logger(fmt.Sprintf("Timeout exceeded waiting for element: %s", selector))
+						b.Logger(fmt.Sprintf("Timeout exceeded waiting for element presence: %s", selector))
 					} else {
-						b.Logger(fmt.Sprintf("Error clicking element %s: %v", selector, err))
+						b.Logger(fmt.Sprintf("Error waiting for element %s: %v", selector, err))
 					}
 					return
 				}
 
-				b.Logger(fmt.Sprintf("Clicked element: %s", selector))
+				// 2. Attempt standard click with a short timeout (500ms)
+				// If it fails (e.g., covered, not visible), fallback to JS click
+				clickCtx, clickCancel := context.WithTimeout(ctx, 500*time.Millisecond)
+				err = chromedp.Run(clickCtx, chromedp.Click(selector, chromedp.ByQuery))
+				clickCancel()
+
+				if err == nil {
+					b.Logger(fmt.Sprintf("Clicked element: %s", selector))
+				} else {
+					// 3. Fallback: JavaScript click
+					b.Logger(fmt.Sprintf("Standard click failed (%v), attempting JS fallback for: %s", err, selector))
+
+					// Use strconv.Quote to safely escape the selector for JS string
+					jsClick := fmt.Sprintf("document.querySelector(%s).click()", strconv.Quote(selector))
+
+					if err := chromedp.Run(ctx, chromedp.Evaluate(jsClick, nil)); err != nil {
+						b.Logger(fmt.Sprintf("JS click fallback failed for %s: %v", selector, err))
+						return
+					}
+					b.Logger(fmt.Sprintf("Clicked element (JS fallback): %s", selector))
+				}
+
+				// Wait after action
+				if waitAfter > 0 {
+					chromedp.Run(ctx, chromedp.Sleep(time.Duration(waitAfter)*time.Millisecond))
+				}
 			},
 		},
 		{
