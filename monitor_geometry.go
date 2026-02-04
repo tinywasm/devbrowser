@@ -85,7 +85,7 @@ func (b *DevBrowser) checkAndSaveGeometry() {
 	newPosition := strconv.FormatInt(x, 10) + "," + strconv.FormatInt(y, 10)
 	if newPosition != b.position {
 		b.position = newPosition
-		b.db.Set("browser_position", b.position)
+		b.db.Set(StoreKeyBrowserPosition, b.position)
 	}
 
 	// Check if width or height changed
@@ -98,6 +98,6 @@ func (b *DevBrowser) checkAndSaveGeometry() {
 		b.sizeConfigured = true // Mark as manually configured
 
 		size := fmt.Sprintf("%d,%d", b.width, b.height)
-		b.db.Set("browser_size", size)
+		b.db.Set(StoreKeyBrowserSize, size)
 	}
 }
