@@ -6,7 +6,7 @@ require (
 	github.com/chromedp/cdproto v0.0.0-20250803210736-d308e07a266d
 	github.com/chromedp/chromedp v0.14.2
 	github.com/kbinani/screenshot v0.0.0-20250624051815-089614a94018
-	github.com/tinywasm/mcpserve v0.0.15
+	github.com/tinywasm/mcpserve v0.0.16
 	golang.design/x/clipboard v0.7.1
 )
 
