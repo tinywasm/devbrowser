@@ -2,6 +2,7 @@ package devbrowser
 
 import (
 	"context"
+	"fmt"
 	"strconv"
 	"time"
 
@@ -87,17 +88,16 @@ func (b *DevBrowser) checkAndSaveGeometry() {
 		b.db.Set("browser_position", b.position)
 	}
 
-	// Check if width changed
+	// Check if width or height changed
 	newWidth := int(width)
-	if newWidth != b.width && newWidth > 0 {
-		b.width = newWidth
-		b.db.Set("browser_width", strconv.Itoa(b.width))
-	}
-
-	// Check if height changed
 	newHeight := int(height)
-	if newHeight != b.height && newHeight > 0 {
+
+	if (newWidth != b.width && newWidth > 0) || (newHeight != b.height && newHeight > 0) {
+		b.width = newWidth
 		b.height = newHeight
-		b.db.Set("browser_height", strconv.Itoa(b.height))
+		b.sizeConfigured = true // Mark as manually configured
+
+		size := fmt.Sprintf("%d,%d", b.width, b.height)
+		b.db.Set("browser_size", size)
 	}
 }
