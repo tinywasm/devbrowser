@@ -19,6 +19,7 @@ func TestGetMCPToolsMetadata_AllToolsRegistered(t *testing.T) {
 		"browser_fill_element",
 		"browser_navigate",
 		"browser_swipe_element",
+		"browser_inspect_element",
 	}
 
 	if len(tools) != len(expectedToolNames) {

@@ -38,5 +38,6 @@ func (b *DevBrowser) GetMCPToolsMetadata() []ToolMetadata {
 	//tools = append(tools, b.getErrorTools()...)
 	tools = append(tools, b.getInteractionTools()...)
 	tools = append(tools, b.getNavigationTools()...)
+	tools = append(tools, b.getInspectTools()...)
 	return tools
 }
