@@ -1,5 +1,7 @@
 package devbrowser
 
+import "github.com/tinywasm/mcpserve"
+
 import (
 	"context"
 	"fmt"
@@ -59,7 +61,7 @@ func TestRobustClickVerification(t *testing.T) {
 
 	// 4. Get the interaction tool
 	tools := db.getInteractionTools()
-	var clickTool ToolMetadata
+	var clickTool mcpserve.ToolMetadata
 	for _, tool := range tools {
 		if tool.Name == "browser_click_element" {
 			clickTool = tool

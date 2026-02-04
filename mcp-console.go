@@ -1,15 +1,17 @@
 package devbrowser
 
+import "github.com/tinywasm/mcpserve"
+
 import (
 	"fmt"
 )
 
-func (b *DevBrowser) getConsoleTools() []ToolMetadata {
-	return []ToolMetadata{
+func (b *DevBrowser) getConsoleTools() []mcpserve.ToolMetadata {
+	return []mcpserve.ToolMetadata{
 		{
 			Name:        "browser_get_console",
 			Description: "Get browser JavaScript console logs to debug WASM runtime errors, console.log outputs, or frontend issues.",
-			Parameters: []ParameterMetadata{
+			Parameters: []mcpserve.ParameterMetadata{
 				{
 					Name:        "lines",
 					Description: "Number of recent entries to retrieve",

@@ -1,5 +1,7 @@
 package devbrowser
 
+import "github.com/tinywasm/mcpserve"
+
 import (
 	"fmt"
 	"time"
@@ -8,12 +10,12 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-func (b *DevBrowser) getErrorTools() []ToolMetadata {
-	return []ToolMetadata{
+func (b *DevBrowser) getErrorTools() []mcpserve.ToolMetadata {
+	return []mcpserve.ToolMetadata{
 		{
 			Name:        "browser_get_errors",
 			Description: "Get JavaScript runtime errors and uncaught exceptions to quickly identify crashes, bugs, or WASM panics. Returns error messages with stack traces.",
-			Parameters: []ParameterMetadata{
+			Parameters: []mcpserve.ParameterMetadata{
 				{
 					Name:        "limit",
 					Description: "Maximum number of recent errors to return",

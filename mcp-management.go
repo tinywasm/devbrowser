@@ -7,12 +7,12 @@ import (
 	"github.com/tinywasm/mcpserve"
 )
 
-func (b *DevBrowser) getManagementTools() []ToolMetadata {
-	return []ToolMetadata{
+func (b *DevBrowser) getManagementTools() []mcpserve.ToolMetadata {
+	return []mcpserve.ToolMetadata{
 		{
 			Name:        "browser_emulate_device",
 			Description: "Emulate a mobile device or tablet viewport without resizing the physical window. This toggle affects rendering and touch events. This change is persisted.",
-			Parameters: []ParameterMetadata{
+			Parameters: []mcpserve.ParameterMetadata{
 				{
 					Name:        "mode",
 					Description: "Device mode: 'desktop' (no emulation), 'mobile' (375x812), 'tablet' (768x1024), or 'off' (clear all overrides)",

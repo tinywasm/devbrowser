@@ -1,5 +1,7 @@
 package devbrowser
 
+import "github.com/tinywasm/mcpserve"
+
 import (
 	"context"
 	"fmt"
@@ -44,7 +46,7 @@ func TestBrowserNavigation(t *testing.T) {
 
 	// 4. Get the navigation tool
 	tools := db.getNavigationTools()
-	var navigateTool ToolMetadata
+	var navigateTool mcpserve.ToolMetadata
 	for _, tool := range tools {
 		if tool.Name == "browser_navigate" {
 			navigateTool = tool

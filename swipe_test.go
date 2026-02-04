@@ -1,5 +1,7 @@
 package devbrowser
 
+import "github.com/tinywasm/mcpserve"
+
 import (
 	"context"
 	"fmt"
@@ -95,7 +97,7 @@ func TestBrowserSwipe(t *testing.T) {
 
 	// 4. Get the swipe tool
 	tools := db.getInteractionTools()
-	var swipeTool ToolMetadata
+	var swipeTool mcpserve.ToolMetadata
 	for _, tool := range tools {
 		if tool.Name == "browser_swipe_element" {
 			swipeTool = tool

@@ -1,13 +1,15 @@
 package devbrowser
 
+import "github.com/tinywasm/mcpserve"
+
 import "fmt"
 
-func (b *DevBrowser) getNavigationTools() []ToolMetadata {
-	return []ToolMetadata{
+func (b *DevBrowser) getNavigationTools() []mcpserve.ToolMetadata {
+	return []mcpserve.ToolMetadata{
 		{
 			Name:        "browser_navigate",
 			Description: "Navigate the browser to a specific URL",
-			Parameters: []ParameterMetadata{
+			Parameters: []mcpserve.ParameterMetadata{
 				{
 					Name:        "url",
 					Description: "Complete URL (including http:// or https://)",

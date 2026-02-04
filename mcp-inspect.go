@@ -1,5 +1,7 @@
 package devbrowser
 
+import "github.com/tinywasm/mcpserve"
+
 import (
 	"fmt"
 
@@ -113,12 +115,12 @@ const InspectElementJS = `
 }
 `
 
-func (b *DevBrowser) getInspectTools() []ToolMetadata {
-	return []ToolMetadata{
+func (b *DevBrowser) getInspectTools() []mcpserve.ToolMetadata {
+	return []mcpserve.ToolMetadata{
 		{
 			Name:        "browser_inspect_element",
 			Description: "Inspect a specific element to get detailed CSS properties like Chrome DevTools. Returns box model (width, height, padding, margin, border), position (top, left, offset), layout (display, flex, grid), typography (font, color), and accessibility info.",
-			Parameters: []ParameterMetadata{
+			Parameters: []mcpserve.ParameterMetadata{
 				{
 					Name:        "selector",
 					Description: "CSS selector of the element to inspect (e.g., '#my-id', '.my-class', 'div.container')",

@@ -1,5 +1,7 @@
 package devbrowser
 
+import "github.com/tinywasm/mcpserve"
+
 import (
 	"fmt"
 
@@ -95,12 +97,12 @@ const GetStructureJS = `
 })()
 `
 
-func (b *DevBrowser) getStructureTools() []ToolMetadata {
-	return []ToolMetadata{
+func (b *DevBrowser) getStructureTools() []mcpserve.ToolMetadata {
+	return []mcpserve.ToolMetadata{
 		{
 			Name:        "browser_get_content",
 			Description: "Get a text-based representation of the page content, optimized for LLM reading. Reduced token count compared to screenshots.",
-			Parameters:  []ParameterMetadata{},
+			Parameters:  []mcpserve.ParameterMetadata{},
 			Execute: func(args map[string]any) {
 				if !b.isOpen {
 					b.Logger("Browser is not open. Please open it first with browser_open")

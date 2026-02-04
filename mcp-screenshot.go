@@ -7,12 +7,12 @@ import (
 	"golang.design/x/clipboard"
 )
 
-func (b *DevBrowser) getScreenshotTools() []ToolMetadata {
-	return []ToolMetadata{
+func (b *DevBrowser) getScreenshotTools() []mcpserve.ToolMetadata {
+	return []mcpserve.ToolMetadata{
 		{
 			Name:        "browser_screenshot",
 			Description: "Capture screenshot of current browser viewport to verify visual rendering, layout correctness, or UI state. Returns PNG image as MCP resource (binary efficient format).",
-			Parameters: []ParameterMetadata{
+			Parameters: []mcpserve.ParameterMetadata{
 				{
 					Name:        "fullpage",
 					Description: "Capture full page height instead of viewport only",
