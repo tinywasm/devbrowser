@@ -9,6 +9,7 @@ const (
 	StoreKeyBrowserAutostart = "browser_autostart"
 	StoreKeyBrowserPosition  = "browser_position"
 	StoreKeyBrowserSize      = "browser_size"
+	StoreKeyViewportMode     = "viewport_mode"
 )
 
 // LoadConfig loads all browser configuration from the store
@@ -50,6 +51,11 @@ func (b *DevBrowser) LoadConfig() {
 			b.sizeConfigured = true
 		}
 	}
+
+	// Load viewport mode
+	if mode, err := b.db.Get(StoreKeyViewportMode); err == nil && mode != "" {
+		b.viewportMode = mode
+	}
 }
 
 // SaveConfig saves all browser configuration to the store
@@ -71,6 +77,11 @@ func (b *DevBrowser) SaveConfig() error {
 	// Save size
 	size := fmt.Sprintf("%d,%d", b.width, b.height)
 	if err := b.db.Set(StoreKeyBrowserSize, size); err != nil {
+		return err
+	}
+
+	// Save viewport mode
+	if err := b.db.Set(StoreKeyViewportMode, b.viewportMode); err != nil {
 		return err
 	}
 

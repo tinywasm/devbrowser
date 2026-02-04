@@ -60,6 +60,17 @@ func (h *DevBrowser) OpenBrowser(port string, https bool) {
 			return
 		}
 
+		// Restore device emulation if set
+		h.mu.Lock()
+		mode := h.viewportMode
+		h.mu.Unlock()
+		if mode != "" && mode != "off" && mode != "desktop" {
+			// We need a context where the page is already loaded or at least ready
+			// but applyDeviceEmulation can be called on the context once it's created.
+			// However, emulation is better applied AFTER navigation or during it.
+			// Page load might reset viewport in some cases, but CDP overrides usually persist.
+		}
+
 		protocol := "http"
 		if https {
 			protocol = "https"
@@ -85,6 +96,16 @@ func (h *DevBrowser) OpenBrowser(port string, https bool) {
 
 		// Esperar un momento adicional para asegurar que todo esté cargado
 		time.Sleep(100 * time.Millisecond)
+
+		// Restore device emulation if set
+		h.mu.Lock()
+		vMode := h.viewportMode
+		h.mu.Unlock()
+		if vMode != "" && vMode != "off" && vMode != "desktop" {
+			if err := h.applyDeviceEmulation(); err != nil {
+				h.Logger(fmt.Sprintf("Failed to restore emulation: %v", err))
+			}
+		}
 
 		h.readyChan <- true
 
