@@ -16,14 +16,17 @@ type store interface {
 }
 
 type DevBrowser struct {
-	ui         userInterface
-	width      int    // ej "800" default "1024"
-	height     int    //ej: "600" default "768"
-	position   string //ej: "1930,0" (when you have second monitor) default: "0,0"
-	headless   bool   // true para modo headless (sin UI), false muestra el navegador
-	autoStart  bool   // true if browser should auto-open on startup
-	firstCall  bool   // Internal flag to track if OpenBrowser was called for the first time
-	openedOnce bool   // Internal flag to track if browser was actually opened at least once
+	ui             userInterface
+	width          int    // ej "800" default "1024"
+	height         int    //ej: "600" default "768"
+	position       string //ej: "1930,0" (when you have second monitor) default: "0,0"
+	headless       bool   // true para modo headless (sin UI), false muestra el navegador
+	autoStart      bool   // true if browser should auto-open on startup
+	monitorWidth   int    // Detected monitor availability width
+	monitorHeight  int    // Detected monitor availability height
+	sizeConfigured bool   // Track if size was loaded from storage
+	firstCall      bool   // Internal flag to track if OpenBrowser was called for the first time
+	openedOnce     bool   // Internal flag to track if browser was actually opened at least once
 
 	lastPort  string
 	lastHttps bool

@@ -47,6 +47,7 @@ func (b *DevBrowser) LoadConfig() {
 		if _, err := fmt.Sscanf(size, "%d,%d", &w, &h); err == nil {
 			b.width = w
 			b.height = h
+			b.sizeConfigured = true
 		}
 	}
 }

@@ -47,6 +47,13 @@ func (h *DevBrowser) OpenBrowser(port string, https bool) {
 	}()
 
 	go func() {
+		// Detect monitor size and apply constraints ONLY if not already configured.
+		// If configured, we respect the user's stored preferences (which might be manual resized).
+		if !h.sizeConfigured {
+			h.detectMonitorSize()
+			h.startWithDetectedSize()
+		}
+
 		err := h.CreateBrowserContext()
 		if err != nil {
 			h.errChan <- err

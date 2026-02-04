@@ -1,8 +1,10 @@
 package devbrowser
 
 import (
+	"context"
 	"fmt"
 
+	"github.com/chromedp/cdproto/browser"
 	"github.com/chromedp/chromedp"
 )
 
@@ -27,16 +29,10 @@ func (b *DevBrowser) getManagementTools() []ToolMetadata {
 					return
 				}
 
-				var w, h int
-				switch mode {
-				case "desktop":
-					w, h = 1440, 900
-				case "mobile":
-					w, h = 375, 812
-				case "tablet":
-					w, h = 768, 1024
-				default:
-					b.Logger(fmt.Sprintf("Unknown mode: %s", mode))
+				// Get calculated size validating against monitor dimensions
+				w, h, err := b.getPresetSize(mode)
+				if err != nil {
+					b.Logger(err.Error())
 					return
 				}
 
@@ -50,7 +46,21 @@ func (b *DevBrowser) getManagementTools() []ToolMetadata {
 				}
 
 				if b.isOpen && b.ctx != nil {
-					err := chromedp.Run(b.ctx, chromedp.EmulateViewport(int64(w), int64(h)))
+					err := chromedp.Run(b.ctx,
+						chromedp.EmulateViewport(int64(w), int64(h)),
+						chromedp.ActionFunc(func(ctx context.Context) error {
+							t := chromedp.FromContext(ctx).Target
+							windowID, _, err := browser.GetWindowForTarget().WithTargetID(t.TargetID).Do(ctx)
+							if err != nil {
+								return err
+							}
+							return browser.SetWindowBounds(windowID, &browser.Bounds{
+								WindowState: browser.WindowStateNormal,
+								Width:       int64(w),
+								Height:      int64(h),
+							}).Do(ctx)
+						}),
+					)
 					if err != nil {
 						b.Logger(fmt.Sprintf("Error applying viewport: %v", err))
 						return
