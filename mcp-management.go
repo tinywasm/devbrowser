@@ -3,6 +3,7 @@ package devbrowser
 import (
 	"fmt"
 
+	"github.com/chromedp/cdproto/emulation"
 	"github.com/chromedp/chromedp"
 	"github.com/tinywasm/mcpserve"
 )
@@ -108,33 +109,30 @@ func (b *DevBrowser) applyDeviceEmulation() error {
 	mode := b.viewportMode
 	b.mu.Unlock()
 
-	var w, h int64
-	var mobile bool
+	var actions []chromedp.Action
 
 	switch mode {
 	case "mobile":
-		w, h = 375, 812
-		mobile = true
+		actions = append(actions,
+			chromedp.EmulateViewport(375, 812, chromedp.EmulateMobile),
+			emulation.SetTouchEmulationEnabled(true),
+		)
 	case "tablet":
-		w, h = 768, 1024
-		mobile = true
+		actions = append(actions,
+			chromedp.EmulateViewport(768, 1024, chromedp.EmulateMobile),
+			emulation.SetTouchEmulationEnabled(true),
+		)
 	case "desktop", "off", "":
 		// Clear overrides by emulating a standard desktop viewport
-		// We use 0,0 to reset device metrics override if supported,
-		// but standard practice is to just set it to the window size.
-		b.mu.Lock()
-		w, h = int64(b.width), int64(b.height)
-		b.mu.Unlock()
-		mobile = false
+		// We use ClearDeviceMetricsOverride to reset to the window size,
+		// allowing the browser layout to adjust naturally to DevTools.
+		actions = append(actions,
+			emulation.ClearDeviceMetricsOverride(),
+			emulation.SetTouchEmulationEnabled(false),
+		)
 	default:
 		return fmt.Errorf("unsupported mode: %s", mode)
 	}
 
-	// Apply emulation which mimics the Toggle Device Toolbar behavior
-	// We use EmulateViewport with explicit mobile flag.
-	if mobile {
-		return chromedp.Run(b.ctx, chromedp.EmulateViewport(w, h, chromedp.EmulateMobile))
-	}
-
-	return chromedp.Run(b.ctx, chromedp.EmulateViewport(w, h))
+	return chromedp.Run(b.ctx, actions...)
 }
