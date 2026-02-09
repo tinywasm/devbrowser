@@ -2,33 +2,37 @@ package devbrowser
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/chromedp/chromedp"
 )
 
 func (h *DevBrowser) CreateBrowserContext() error {
-	// Format window size as "width,height"
-	windowSize := fmt.Sprintf("%d,%d", h.width, h.height)
-
+	// Create allocator with custom options
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", h.headless),
 		chromedp.Flag("disable-blink-features", "WebFontsInterventionV2"),
 		chromedp.Flag("use-fake-ui-for-media-stream", true),
-		chromedp.Flag("no-focus-on-load", true),
-		chromedp.Flag("auto-open-devtools-for-tabs", h.width > 1200),
 		chromedp.Flag("window-position", h.position),
-		chromedp.Flag("window-size", windowSize),
+		chromedp.WindowSize(h.width, h.height),
 	)
 
-	allocCtx, _ := chromedp.NewExecAllocator(context.Background(), opts...)
-
-	// Adapter function to match the logger signature required by chromedp.WithLogf.
-	logfAdapter := func(format string, args ...any) {
-		h.Logger(fmt.Sprintf(format, args...))
+	// Conditionally add devtools flag
+	if h.width > 1200 {
+		opts = append(opts, chromedp.Flag("auto-open-devtools-for-tabs", true))
 	}
 
-	ctx, cancel := chromedp.NewContext(allocCtx, chromedp.WithLogf(logfAdapter))
+	// Disable cache by default unless explicitly enabled
+	// Note: disk-cache-size and media-cache-size flags cause "invalid exec pool flag" errors
+	// Use --disable-cache instead
+	if !h.cacheEnabled {
+		opts = append(opts,
+			chromedp.Flag("disable-cache", true),
+			chromedp.Flag("disable-gpu-shader-disk-cache", true),
+		)
+	}
+
+	allocCtx, _ := chromedp.NewExecAllocator(context.Background(), opts...)
+	ctx, cancel := chromedp.NewContext(allocCtx)
 	h.ctx = ctx
 	h.cancel = cancel
 

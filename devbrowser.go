@@ -63,7 +63,20 @@ type DevBrowser struct {
 	busy int32
 
 	testMode bool // Skip opening browser in tests
-	mu       sync.Mutex
+
+	// Cache configuration
+	cacheEnabled bool // Disabled by default for development
+	mu           sync.Mutex
+}
+
+// Option configures the DevBrowser
+type Option func(*DevBrowser)
+
+// WithCache configures whether the browser cache is enabled
+func WithCache(enabled bool) Option {
+	return func(b *DevBrowser) {
+		b.cacheEnabled = enabled
+	}
 }
 
 type JSError struct {
@@ -102,9 +115,9 @@ devbrowser.New creates a new DevBrowser instance.
 		ReturnFocus() error
 	}
 
-	example :  New(userInterface, st, exitChan)
+	example :  New(userInterface, st, exitChan, WithCache(true))
 */
-func New(ui userInterface, st store, exitChan chan bool) *DevBrowser {
+func New(ui userInterface, st store, exitChan chan bool, opts ...Option) *DevBrowser {
 
 	// Initialize clipboard for cross-platform support
 	err := clipboard.Init()
@@ -113,15 +126,21 @@ func New(ui userInterface, st store, exitChan chan bool) *DevBrowser {
 	}
 
 	browser := &DevBrowser{
-		ui:        ui,
-		db:        st,
-		width:     1024, // Default width
-		height:    768,  // Default height
-		position:  "0,0",
-		firstCall: true,
-		readyChan: make(chan bool),
-		errChan:   make(chan error),
-		exitChan:  exitChan,
+		ui:           ui,
+		db:           st,
+		width:        1024, // Default width
+		height:       768,  // Default height
+		position:     "0,0",
+		firstCall:    true,
+		readyChan:    make(chan bool),
+		errChan:      make(chan error),
+		exitChan:     exitChan,
+		cacheEnabled: false, // Default: Cache disabled for development
+	}
+
+	// Apply options
+	for _, opt := range opts {
+		opt(browser)
 	}
 
 	// Load all configuration from store
