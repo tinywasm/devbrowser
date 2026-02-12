@@ -2,6 +2,7 @@ package devbrowser
 
 import (
 	"context"
+	"strings"
 
 	"github.com/chromedp/chromedp"
 )
@@ -32,7 +33,19 @@ func (h *DevBrowser) CreateBrowserContext() error {
 	}
 
 	allocCtx, _ := chromedp.NewExecAllocator(context.Background(), opts...)
-	ctx, cancel := chromedp.NewContext(allocCtx)
+	ctx, cancel := chromedp.NewContext(allocCtx,
+		chromedp.WithErrorf(func(format string, args ...any) {
+			// Chrome sends new CDP enum values before cdproto is updated.
+			// These unmarshal errors are harmless — suppress them to avoid
+			// corrupting the TUI via stderr.
+			if strings.HasPrefix(format, "could not unmarshal event") {
+				return
+			}
+			errorArgs := append([]any{"ERROR: "}, args...)
+			// Forward error to devbrowser log
+			h.log(errorArgs...)
+		}),
+	)
 	h.ctx = ctx
 	h.cancel = cancel
 
