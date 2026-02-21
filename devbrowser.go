@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/chromedp"
 	"golang.design/x/clipboard"
 )
 

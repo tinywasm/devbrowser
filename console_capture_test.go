@@ -1,6 +1,5 @@
 package devbrowser
 
-
 import (
 	"fmt"
 	"net/http"
@@ -9,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 func TestConsoleCapture(t *testing.T) {

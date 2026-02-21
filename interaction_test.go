@@ -1,6 +1,5 @@
 package devbrowser
 
-
 import (
 	"context"
 	"fmt"
@@ -9,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 // TestBrowserInteraction verifies that we can click and fill elements

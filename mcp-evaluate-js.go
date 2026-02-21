@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/chromedp/cdproto/runtime"
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/cdproto/runtime"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 func (b *DevBrowser) getEvaluateJsTools() []mcpserve.ToolMetadata {

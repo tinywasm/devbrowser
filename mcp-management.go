@@ -3,8 +3,8 @@ package devbrowser
 import (
 	"fmt"
 
-	"github.com/chromedp/cdproto/emulation"
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/cdproto/emulation"
+	"github.com/tinywasm/devbrowser/chromedp"
 	"github.com/tinywasm/mcpserve"
 )
 

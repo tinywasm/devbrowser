@@ -8,8 +8,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/chromedp/cdproto/network"
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/cdproto/network"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 func (b *DevBrowser) getNetworkTools() []mcpserve.ToolMetadata {

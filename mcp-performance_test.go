@@ -9,8 +9,8 @@ import (
 // small heap, fast load, few DOM nodes, small WASM binary
 func optimizedSiteMetrics() map[string]any {
 	return map[string]any{
-		"heapUsed":       4.2 * 1048576,  // 4.2 MB
-		"heapTotal":      8.0 * 1048576,  // 8 MB
+		"heapUsed":       4.2 * 1048576, // 4.2 MB
+		"heapTotal":      8.0 * 1048576, // 8 MB
 		"heapLimit":      2048.0 * 1048576,
 		"domInteractive": 23.0,
 		"domLoaded":      45.0,
@@ -22,7 +22,7 @@ func optimizedSiteMetrics() map[string]any {
 		"wasmFiles": []any{
 			map[string]any{"name": "client.wasm", "size": 180.0, "duration": 40.0},
 		},
-		"resourceCount":  3.0,
+		"resourceCount":   3.0,
 		"totalTransferKB": 210.0,
 	}
 }
@@ -44,7 +44,7 @@ func heavySiteMetrics() map[string]any {
 		"wasmFiles": []any{
 			map[string]any{"name": "client.wasm", "size": 12800.0, "duration": 3200.0},
 		},
-		"resourceCount":  25.0,
+		"resourceCount":   25.0,
 		"totalTransferKB": 14000.0,
 	}
 }
@@ -124,11 +124,11 @@ func TestFormatPerformanceReport_EmptyMetrics(t *testing.T) {
 func TestFormatPerformanceReport_PartialMetrics(t *testing.T) {
 	// Only DOM and resources, no memory/timing/paint/wasm
 	metrics := map[string]any{
-		"domNodes":       5.0,
-		"domDepth":       2.0,
-		"resourceCount":  1.0,
+		"domNodes":        5.0,
+		"domDepth":        2.0,
+		"resourceCount":   1.0,
 		"totalTransferKB": 50.0,
-		"wasmFiles":      []any{},
+		"wasmFiles":       []any{},
 	}
 
 	report := formatPerformanceReport("http://localhost:6060/", metrics)

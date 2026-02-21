@@ -1,6 +1,5 @@
 package devbrowser
 
-
 import (
 	"context"
 	"fmt"
@@ -10,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 // TestPageStructureExtraction verifies that the JavaScript logic

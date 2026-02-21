@@ -1,6 +1,5 @@
 package devbrowser
 
-
 import (
 	"errors"
 	"sync"

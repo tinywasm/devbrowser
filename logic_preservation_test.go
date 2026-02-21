@@ -1,6 +1,5 @@
 package devbrowser
 
-
 import (
 	"fmt"
 	"testing"

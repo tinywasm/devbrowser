@@ -4,7 +4,7 @@ import (
 	"context"
 	"strings"
 
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 func (h *DevBrowser) CreateBrowserContext() error {

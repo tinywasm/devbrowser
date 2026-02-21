@@ -9,7 +9,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 // TestBrowserSwipe verifies that the browser_swipe_element tool performs drag actions.

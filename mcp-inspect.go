@@ -5,7 +5,7 @@ import "github.com/tinywasm/mcpserve"
 import (
 	"fmt"
 
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 // InspectElementJS extracts detailed element information like Chrome DevTools.

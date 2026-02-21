@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/chromedp/cdproto/input"
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/cdproto/input"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 func (b *DevBrowser) getInteractionTools() []mcpserve.ToolMetadata {

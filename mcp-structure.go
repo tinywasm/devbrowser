@@ -5,7 +5,7 @@ import "github.com/tinywasm/mcpserve"
 import (
 	"fmt"
 
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 // GetStructureJS is the JavaScript used to extract the page structure for LLM understanding.

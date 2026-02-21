@@ -1,6 +1,5 @@
 package devbrowser
 
-
 import "testing"
 
 func TestNewDefaults(t *testing.T) {

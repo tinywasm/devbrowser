@@ -4,10 +4,10 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/chromedp/cdproto/audits"
-	"github.com/chromedp/cdproto/log"
-	"github.com/chromedp/cdproto/runtime"
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/cdproto/audits"
+	"github.com/tinywasm/devbrowser/cdproto/log"
+	"github.com/tinywasm/devbrowser/cdproto/runtime"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 // initializeConsoleCapture sets up the console log capturing system using Chrome DevTools Protocol.
@@ -36,7 +36,7 @@ func (b *DevBrowser) initializeConsoleCapture() error {
 				// Get the string value from the RemoteObject
 				if arg.Value != nil {
 					// Extract the raw value without JSON encoding
-					val := fmt.Sprintf("%v", arg.Value)
+					val := string(arg.Value)
 					// Remove surrounding quotes if it's a string value
 					if len(val) > 2 && val[0] == '"' && val[len(val)-1] == '"' {
 						val = val[1 : len(val)-1]

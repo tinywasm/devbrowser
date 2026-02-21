@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 // TestBrowserNavigation verifies that the browser_navigate tool works

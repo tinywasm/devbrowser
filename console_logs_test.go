@@ -1,11 +1,10 @@
 package devbrowser
 
-
 import (
 	"testing"
 	"time"
 
-	"github.com/chromedp/chromedp"
+	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 func TestGetConsoleLogs(t *testing.T) {
