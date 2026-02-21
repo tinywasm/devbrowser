@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 // GetDeviceCaps index constants
@@ -1040,89 +1039,89 @@ type BLENDFUNCTION struct {
 
 var (
 	// Library
-	libgdi32   *windows.LazyDLL
-	libmsimg32 *windows.LazyDLL
+	libgdi32   *syscall.LazyDLL
+	libmsimg32 *syscall.LazyDLL
 
 	// Functions
-	abortDoc                *windows.LazyProc
-	addFontResourceEx       *windows.LazyProc
-	addFontMemResourceEx    *windows.LazyProc
-	alphaBlend              *windows.LazyProc
-	bitBlt                  *windows.LazyProc
-	choosePixelFormat       *windows.LazyProc
-	closeEnhMetaFile        *windows.LazyProc
-	combineRgn              *windows.LazyProc
-	copyEnhMetaFile         *windows.LazyProc
-	createBitmap            *windows.LazyProc
-	createCompatibleBitmap  *windows.LazyProc
-	createBrushIndirect     *windows.LazyProc
-	createCompatibleDC      *windows.LazyProc
-	createDC                *windows.LazyProc
-	createDIBSection        *windows.LazyProc
-	createFontIndirect      *windows.LazyProc
-	createEnhMetaFile       *windows.LazyProc
-	createIC                *windows.LazyProc
-	createPatternBrush      *windows.LazyProc
-	createRectRgn           *windows.LazyProc
-	deleteDC                *windows.LazyProc
-	deleteEnhMetaFile       *windows.LazyProc
-	deleteObject            *windows.LazyProc
-	ellipse                 *windows.LazyProc
-	endDoc                  *windows.LazyProc
-	endPage                 *windows.LazyProc
-	excludeClipRect         *windows.LazyProc
-	extCreatePen            *windows.LazyProc
-	fillRgn                 *windows.LazyProc
-	gdiFlush                *windows.LazyProc
-	getBkColor              *windows.LazyProc
-	getDeviceCaps           *windows.LazyProc
-	getDIBits               *windows.LazyProc
-	getEnhMetaFile          *windows.LazyProc
-	getEnhMetaFileHeader    *windows.LazyProc
-	getObject               *windows.LazyProc
-	getPixel                *windows.LazyProc
-	getRgnBox               *windows.LazyProc
-	getStockObject          *windows.LazyProc
-	getTextColor            *windows.LazyProc
-	getTextExtentExPoint    *windows.LazyProc
-	getTextExtentPoint32    *windows.LazyProc
-	getTextMetrics          *windows.LazyProc
-	getViewportOrgEx        *windows.LazyProc
-	gradientFill            *windows.LazyProc
-	intersectClipRect       *windows.LazyProc
-	lineTo                  *windows.LazyProc
-	moveToEx                *windows.LazyProc
-	playEnhMetaFile         *windows.LazyProc
-	polyline                *windows.LazyProc
-	rectangle               *windows.LazyProc
-	removeFontResourceEx    *windows.LazyProc
-	removeFontMemResourceEx *windows.LazyProc
-	resetDC                 *windows.LazyProc
-	restoreDC               *windows.LazyProc
-	roundRect               *windows.LazyProc
-	selectObject            *windows.LazyProc
-	setBkColor              *windows.LazyProc
-	setBkMode               *windows.LazyProc
-	setBrushOrgEx           *windows.LazyProc
-	setDIBits               *windows.LazyProc
-	setPixel                *windows.LazyProc
-	setPixelFormat          *windows.LazyProc
-	setStretchBltMode       *windows.LazyProc
-	setTextColor            *windows.LazyProc
-	setViewportOrgEx        *windows.LazyProc
-	saveDC                  *windows.LazyProc
-	startDoc                *windows.LazyProc
-	startPage               *windows.LazyProc
-	stretchBlt              *windows.LazyProc
-	swapBuffers             *windows.LazyProc
-	textOut                 *windows.LazyProc
-	transparentBlt          *windows.LazyProc
+	abortDoc                *syscall.LazyProc
+	addFontResourceEx       *syscall.LazyProc
+	addFontMemResourceEx    *syscall.LazyProc
+	alphaBlend              *syscall.LazyProc
+	bitBlt                  *syscall.LazyProc
+	choosePixelFormat       *syscall.LazyProc
+	closeEnhMetaFile        *syscall.LazyProc
+	combineRgn              *syscall.LazyProc
+	copyEnhMetaFile         *syscall.LazyProc
+	createBitmap            *syscall.LazyProc
+	createCompatibleBitmap  *syscall.LazyProc
+	createBrushIndirect     *syscall.LazyProc
+	createCompatibleDC      *syscall.LazyProc
+	createDC                *syscall.LazyProc
+	createDIBSection        *syscall.LazyProc
+	createFontIndirect      *syscall.LazyProc
+	createEnhMetaFile       *syscall.LazyProc
+	createIC                *syscall.LazyProc
+	createPatternBrush      *syscall.LazyProc
+	createRectRgn           *syscall.LazyProc
+	deleteDC                *syscall.LazyProc
+	deleteEnhMetaFile       *syscall.LazyProc
+	deleteObject            *syscall.LazyProc
+	ellipse                 *syscall.LazyProc
+	endDoc                  *syscall.LazyProc
+	endPage                 *syscall.LazyProc
+	excludeClipRect         *syscall.LazyProc
+	extCreatePen            *syscall.LazyProc
+	fillRgn                 *syscall.LazyProc
+	gdiFlush                *syscall.LazyProc
+	getBkColor              *syscall.LazyProc
+	getDeviceCaps           *syscall.LazyProc
+	getDIBits               *syscall.LazyProc
+	getEnhMetaFile          *syscall.LazyProc
+	getEnhMetaFileHeader    *syscall.LazyProc
+	getObject               *syscall.LazyProc
+	getPixel                *syscall.LazyProc
+	getRgnBox               *syscall.LazyProc
+	getStockObject          *syscall.LazyProc
+	getTextColor            *syscall.LazyProc
+	getTextExtentExPoint    *syscall.LazyProc
+	getTextExtentPoint32    *syscall.LazyProc
+	getTextMetrics          *syscall.LazyProc
+	getViewportOrgEx        *syscall.LazyProc
+	gradientFill            *syscall.LazyProc
+	intersectClipRect       *syscall.LazyProc
+	lineTo                  *syscall.LazyProc
+	moveToEx                *syscall.LazyProc
+	playEnhMetaFile         *syscall.LazyProc
+	polyline                *syscall.LazyProc
+	rectangle               *syscall.LazyProc
+	removeFontResourceEx    *syscall.LazyProc
+	removeFontMemResourceEx *syscall.LazyProc
+	resetDC                 *syscall.LazyProc
+	restoreDC               *syscall.LazyProc
+	roundRect               *syscall.LazyProc
+	selectObject            *syscall.LazyProc
+	setBkColor              *syscall.LazyProc
+	setBkMode               *syscall.LazyProc
+	setBrushOrgEx           *syscall.LazyProc
+	setDIBits               *syscall.LazyProc
+	setPixel                *syscall.LazyProc
+	setPixelFormat          *syscall.LazyProc
+	setStretchBltMode       *syscall.LazyProc
+	setTextColor            *syscall.LazyProc
+	setViewportOrgEx        *syscall.LazyProc
+	saveDC                  *syscall.LazyProc
+	startDoc                *syscall.LazyProc
+	startPage               *syscall.LazyProc
+	stretchBlt              *syscall.LazyProc
+	swapBuffers             *syscall.LazyProc
+	textOut                 *syscall.LazyProc
+	transparentBlt          *syscall.LazyProc
 )
 
 func init() {
 	// Library
-	libgdi32 = windows.NewLazySystemDLL("gdi32.dll")
-	libmsimg32 = windows.NewLazySystemDLL("msimg32.dll")
+	libgdi32 = syscall.NewLazyDLL("gdi32.dll")
+	libmsimg32 = syscall.NewLazyDLL("msimg32.dll")
 
 	// Functions
 	abortDoc = libgdi32.NewProc("AbortDoc")

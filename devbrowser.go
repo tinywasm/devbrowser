@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/tinywasm/devbrowser/chromedp"
-	"golang.design/x/clipboard"
 )
 
 type store interface {
@@ -120,10 +119,10 @@ devbrowser.New creates a new DevBrowser instance.
 func New(ui userInterface, st store, exitChan chan bool, opts ...Option) *DevBrowser {
 
 	// Initialize clipboard for cross-platform support
-	err := clipboard.Init()
-	if err != nil {
-		// Can't log yet, no logger injected
-	}
+	// err := clipboard.Init()
+	// if err != nil {
+	// 	// Can't log yet, no logger injected
+	// }
 
 	browser := &DevBrowser{
 		ui:           ui,

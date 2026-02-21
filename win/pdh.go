@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 // PDH error codes, which can be returned by all Pdh* functions. Taken from mingw-w64 pdhmsg.h
@@ -164,22 +163,22 @@ type PDH_FMT_COUNTERVALUE_ITEM_LONG struct {
 
 var (
 	// Library
-	libpdhDll *windows.LazyDLL
+	libpdhDll *syscall.LazyDLL
 
 	// Functions
-	pdh_AddCounterW               *windows.LazyProc
-	pdh_AddEnglishCounterW        *windows.LazyProc
-	pdh_CloseQuery                *windows.LazyProc
-	pdh_CollectQueryData          *windows.LazyProc
-	pdh_GetFormattedCounterValue  *windows.LazyProc
-	pdh_GetFormattedCounterArrayW *windows.LazyProc
-	pdh_OpenQuery                 *windows.LazyProc
-	pdh_ValidatePathW             *windows.LazyProc
+	pdh_AddCounterW               *syscall.LazyProc
+	pdh_AddEnglishCounterW        *syscall.LazyProc
+	pdh_CloseQuery                *syscall.LazyProc
+	pdh_CollectQueryData          *syscall.LazyProc
+	pdh_GetFormattedCounterValue  *syscall.LazyProc
+	pdh_GetFormattedCounterArrayW *syscall.LazyProc
+	pdh_OpenQuery                 *syscall.LazyProc
+	pdh_ValidatePathW             *syscall.LazyProc
 )
 
 func init() {
 	// Library
-	libpdhDll = windows.NewLazySystemDLL("pdh.dll")
+	libpdhDll = syscall.NewLazyDLL("pdh.dll")
 
 	// Functions
 	pdh_AddCounterW = libpdhDll.NewProc("PdhAddCounterW")

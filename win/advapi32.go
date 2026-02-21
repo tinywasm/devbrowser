@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 const KEY_READ REGSAM = 0x20019
@@ -58,19 +57,19 @@ const (
 
 var (
 	// Library
-	libadvapi32 *windows.LazyDLL
+	libadvapi32 *syscall.LazyDLL
 
 	// Functions
-	regCloseKey     *windows.LazyProc
-	regOpenKeyEx    *windows.LazyProc
-	regQueryValueEx *windows.LazyProc
-	regEnumValue    *windows.LazyProc
-	regSetValueEx   *windows.LazyProc
+	regCloseKey     *syscall.LazyProc
+	regOpenKeyEx    *syscall.LazyProc
+	regQueryValueEx *syscall.LazyProc
+	regEnumValue    *syscall.LazyProc
+	regSetValueEx   *syscall.LazyProc
 )
 
 func init() {
 	// Library
-	libadvapi32 = windows.NewLazySystemDLL("advapi32.dll")
+	libadvapi32 = syscall.NewLazyDLL("advapi32.dll")
 
 	// Functions
 	regCloseKey = libadvapi32.NewProc("RegCloseKey")

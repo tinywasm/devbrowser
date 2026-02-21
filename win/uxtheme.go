@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 // TMT property ids
@@ -483,23 +482,23 @@ type DTTOPTS struct {
 
 var (
 	// Library
-	libuxtheme *windows.LazyDLL
+	libuxtheme *syscall.LazyDLL
 
 	// Functions
-	closeThemeData      *windows.LazyProc
-	drawThemeBackground *windows.LazyProc
-	drawThemeTextEx     *windows.LazyProc
-	getThemeColor       *windows.LazyProc
-	getThemePartSize    *windows.LazyProc
-	getThemeTextExtent  *windows.LazyProc
-	isAppThemed         *windows.LazyProc
-	openThemeData       *windows.LazyProc
-	setWindowTheme      *windows.LazyProc
+	closeThemeData      *syscall.LazyProc
+	drawThemeBackground *syscall.LazyProc
+	drawThemeTextEx     *syscall.LazyProc
+	getThemeColor       *syscall.LazyProc
+	getThemePartSize    *syscall.LazyProc
+	getThemeTextExtent  *syscall.LazyProc
+	isAppThemed         *syscall.LazyProc
+	openThemeData       *syscall.LazyProc
+	setWindowTheme      *syscall.LazyProc
 )
 
 func init() {
 	// Library
-	libuxtheme = windows.NewLazySystemDLL("uxtheme.dll")
+	libuxtheme = syscall.NewLazyDLL("uxtheme.dll")
 
 	// Functions
 	closeThemeData = libuxtheme.NewProc("CloseThemeData")

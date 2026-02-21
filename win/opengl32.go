@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 // for second parameter of WglSwapLayerBuffers
@@ -94,30 +93,30 @@ type GLYPHMETRICSFLOAT struct {
 
 var (
 	// Library
-	lib *windows.LazyDLL
+	lib *syscall.LazyDLL
 
 	// Functions
-	wglCopyContext            *windows.LazyProc
-	wglCreateContext          *windows.LazyProc
-	wglCreateLayerContext     *windows.LazyProc
-	wglDeleteContext          *windows.LazyProc
-	wglDescribeLayerPlane     *windows.LazyProc
-	wglGetCurrentContext      *windows.LazyProc
-	wglGetCurrentDC           *windows.LazyProc
-	wglGetLayerPaletteEntries *windows.LazyProc
-	wglGetProcAddress         *windows.LazyProc
-	wglMakeCurrent            *windows.LazyProc
-	wglRealizeLayerPalette    *windows.LazyProc
-	wglSetLayerPaletteEntries *windows.LazyProc
-	wglShareLists             *windows.LazyProc
-	wglSwapLayerBuffers       *windows.LazyProc
-	wglUseFontBitmaps         *windows.LazyProc
-	wglUseFontOutlines        *windows.LazyProc
+	wglCopyContext            *syscall.LazyProc
+	wglCreateContext          *syscall.LazyProc
+	wglCreateLayerContext     *syscall.LazyProc
+	wglDeleteContext          *syscall.LazyProc
+	wglDescribeLayerPlane     *syscall.LazyProc
+	wglGetCurrentContext      *syscall.LazyProc
+	wglGetCurrentDC           *syscall.LazyProc
+	wglGetLayerPaletteEntries *syscall.LazyProc
+	wglGetProcAddress         *syscall.LazyProc
+	wglMakeCurrent            *syscall.LazyProc
+	wglRealizeLayerPalette    *syscall.LazyProc
+	wglSetLayerPaletteEntries *syscall.LazyProc
+	wglShareLists             *syscall.LazyProc
+	wglSwapLayerBuffers       *syscall.LazyProc
+	wglUseFontBitmaps         *syscall.LazyProc
+	wglUseFontOutlines        *syscall.LazyProc
 )
 
 func init() {
 	// Library
-	lib = windows.NewLazySystemDLL("opengl32.dll")
+	lib = syscall.NewLazyDLL("opengl32.dll")
 
 	// Functions
 	wglCopyContext = lib.NewProc("wglCopyContext")

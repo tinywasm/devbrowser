@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 type CSIDL uint32
@@ -318,27 +317,27 @@ type SHSTOCKICONINFO struct {
 
 var (
 	// Library
-	libshell32 *windows.LazyDLL
+	libshell32 *syscall.LazyDLL
 
 	// Functions
-	dragAcceptFiles        *windows.LazyProc
-	dragFinish             *windows.LazyProc
-	dragQueryFile          *windows.LazyProc
-	extractIcon            *windows.LazyProc
-	shBrowseForFolder      *windows.LazyProc
-	shDefExtractIcon       *windows.LazyProc
-	shGetFileInfo          *windows.LazyProc
-	shGetPathFromIDList    *windows.LazyProc
-	shGetSpecialFolderPath *windows.LazyProc
-	shParseDisplayName     *windows.LazyProc
-	shGetStockIconInfo     *windows.LazyProc
-	shellExecute           *windows.LazyProc
-	shell_NotifyIcon       *windows.LazyProc
+	dragAcceptFiles        *syscall.LazyProc
+	dragFinish             *syscall.LazyProc
+	dragQueryFile          *syscall.LazyProc
+	extractIcon            *syscall.LazyProc
+	shBrowseForFolder      *syscall.LazyProc
+	shDefExtractIcon       *syscall.LazyProc
+	shGetFileInfo          *syscall.LazyProc
+	shGetPathFromIDList    *syscall.LazyProc
+	shGetSpecialFolderPath *syscall.LazyProc
+	shParseDisplayName     *syscall.LazyProc
+	shGetStockIconInfo     *syscall.LazyProc
+	shellExecute           *syscall.LazyProc
+	shell_NotifyIcon       *syscall.LazyProc
 )
 
 func init() {
 	// Library
-	libshell32 = windows.NewLazySystemDLL("shell32.dll")
+	libshell32 = syscall.NewLazyDLL("shell32.dll")
 
 	// Functions
 	dragAcceptFiles = libshell32.NewProc("DragAcceptFiles")

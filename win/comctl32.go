@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 // Button control messages
@@ -255,23 +254,23 @@ type NMCUSTOMDRAW struct {
 
 var (
 	// Library
-	libcomctl32 *windows.LazyDLL
+	libcomctl32 *syscall.LazyDLL
 
 	// Functions
-	imageList_Add         *windows.LazyProc
-	imageList_AddMasked   *windows.LazyProc
-	imageList_Create      *windows.LazyProc
-	imageList_Destroy     *windows.LazyProc
-	imageList_DrawEx      *windows.LazyProc
-	imageList_ReplaceIcon *windows.LazyProc
-	initCommonControlsEx  *windows.LazyProc
-	loadIconMetric        *windows.LazyProc
-	loadIconWithScaleDown *windows.LazyProc
+	imageList_Add         *syscall.LazyProc
+	imageList_AddMasked   *syscall.LazyProc
+	imageList_Create      *syscall.LazyProc
+	imageList_Destroy     *syscall.LazyProc
+	imageList_DrawEx      *syscall.LazyProc
+	imageList_ReplaceIcon *syscall.LazyProc
+	initCommonControlsEx  *syscall.LazyProc
+	loadIconMetric        *syscall.LazyProc
+	loadIconWithScaleDown *syscall.LazyProc
 )
 
 func init() {
 	// Library
-	libcomctl32 = windows.NewLazySystemDLL("comctl32.dll")
+	libcomctl32 = syscall.NewLazyDLL("comctl32.dll")
 
 	// Functions
 	imageList_Add = libcomctl32.NewProc("ImageList_Add")
