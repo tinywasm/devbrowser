@@ -10,7 +10,7 @@ package win
 import (
 	"unsafe"
 
-	"golang.org/x/sys/windows"
+	"syscall"
 )
 
 const (
@@ -72,7 +72,7 @@ func HIWORD(dw uint32) uint16 {
 }
 
 func UTF16PtrToString(s *uint16) string {
-	return windows.UTF16PtrToString(s)
+	return syscall.UTF16ToString(s)
 }
 
 func MAKEINTRESOURCE(id uintptr) *uint16 {

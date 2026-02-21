@@ -4,7 +4,6 @@ import (
 	"fmt"
 
 	"github.com/tinywasm/mcpserve"
-	"golang.design/x/clipboard"
 )
 
 func (b *DevBrowser) getScreenshotTools() []mcpserve.ToolMetadata {
@@ -39,8 +38,11 @@ func (b *DevBrowser) getScreenshotTools() []mcpserve.ToolMetadata {
 				}
 
 				// Write PNG image to clipboard
-				clipboard.Write(clipboard.FmtImage, res.ImageData)
-				b.Logger("Screenshot copied to clipboard")
+				if err := writeToClipboard(res.ImageData); err == nil {
+					b.Logger("Screenshot copied to clipboard")
+				} else {
+					b.Logger(fmt.Sprintf("Failed to copy screenshot to clipboard: %v", err))
+				}
 
 				// Build visual context report (what AI "sees" without image bytes)
 				contextReport := fmt.Sprintf(

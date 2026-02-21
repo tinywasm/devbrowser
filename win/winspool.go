@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 // EnumPrinters flags
@@ -34,18 +33,18 @@ type PRINTER_INFO_4 struct {
 
 var (
 	// Library
-	libwinspool *windows.LazyDLL
+	libwinspool *syscall.LazyDLL
 
 	// Functions
-	deviceCapabilities *windows.LazyProc
-	documentProperties *windows.LazyProc
-	enumPrinters       *windows.LazyProc
-	getDefaultPrinter  *windows.LazyProc
+	deviceCapabilities *syscall.LazyProc
+	documentProperties *syscall.LazyProc
+	enumPrinters       *syscall.LazyProc
+	getDefaultPrinter  *syscall.LazyProc
 )
 
 func init() {
 	// Library
-	libwinspool = windows.NewLazySystemDLL("winspool.drv")
+	libwinspool = syscall.NewLazyDLL("winspool.drv")
 
 	// Functions
 	deviceCapabilities = libwinspool.NewProc("DeviceCapabilitiesW")

@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 const MAX_PATH = 260
@@ -57,38 +56,38 @@ const (
 
 var (
 	// Library
-	libkernel32 *windows.LazyDLL
+	libkernel32 *syscall.LazyDLL
 
 	// Functions
-	activateActCtx                     *windows.LazyProc
-	closeHandle                        *windows.LazyProc
-	createActCtx                       *windows.LazyProc
-	fileTimeToSystemTime               *windows.LazyProc
-	findResource                       *windows.LazyProc
-	getConsoleTitle                    *windows.LazyProc
-	getConsoleWindow                   *windows.LazyProc
-	getCurrentThreadId                 *windows.LazyProc
-	getLastError                       *windows.LazyProc
-	getLocaleInfo                      *windows.LazyProc
-	getLogicalDriveStrings             *windows.LazyProc
-	getModuleHandle                    *windows.LazyProc
-	getNumberFormat                    *windows.LazyProc
-	getPhysicallyInstalledSystemMemory *windows.LazyProc
-	getProfileString                   *windows.LazyProc
-	getThreadLocale                    *windows.LazyProc
-	getThreadUILanguage                *windows.LazyProc
-	getVersion                         *windows.LazyProc
-	globalAlloc                        *windows.LazyProc
-	globalFree                         *windows.LazyProc
-	globalLock                         *windows.LazyProc
-	globalUnlock                       *windows.LazyProc
-	moveMemory                         *windows.LazyProc
-	mulDiv                             *windows.LazyProc
-	loadResource                       *windows.LazyProc
-	lockResource                       *windows.LazyProc
-	setLastError                       *windows.LazyProc
-	sizeofResource                     *windows.LazyProc
-	systemTimeToFileTime               *windows.LazyProc
+	activateActCtx                     *syscall.LazyProc
+	closeHandle                        *syscall.LazyProc
+	createActCtx                       *syscall.LazyProc
+	fileTimeToSystemTime               *syscall.LazyProc
+	findResource                       *syscall.LazyProc
+	getConsoleTitle                    *syscall.LazyProc
+	getConsoleWindow                   *syscall.LazyProc
+	getCurrentThreadId                 *syscall.LazyProc
+	getLastError                       *syscall.LazyProc
+	getLocaleInfo                      *syscall.LazyProc
+	getLogicalDriveStrings             *syscall.LazyProc
+	getModuleHandle                    *syscall.LazyProc
+	getNumberFormat                    *syscall.LazyProc
+	getPhysicallyInstalledSystemMemory *syscall.LazyProc
+	getProfileString                   *syscall.LazyProc
+	getThreadLocale                    *syscall.LazyProc
+	getThreadUILanguage                *syscall.LazyProc
+	getVersion                         *syscall.LazyProc
+	globalAlloc                        *syscall.LazyProc
+	globalFree                         *syscall.LazyProc
+	globalLock                         *syscall.LazyProc
+	globalUnlock                       *syscall.LazyProc
+	moveMemory                         *syscall.LazyProc
+	mulDiv                             *syscall.LazyProc
+	loadResource                       *syscall.LazyProc
+	lockResource                       *syscall.LazyProc
+	setLastError                       *syscall.LazyProc
+	sizeofResource                     *syscall.LazyProc
+	systemTimeToFileTime               *syscall.LazyProc
 )
 
 type (
@@ -143,7 +142,7 @@ type ACTCTX struct {
 
 func init() {
 	// Library
-	libkernel32 = windows.NewLazySystemDLL("kernel32.dll")
+	libkernel32 = syscall.NewLazyDLL("kernel32.dll")
 
 	// Functions
 	activateActCtx = libkernel32.NewProc("ActivateActCtx")

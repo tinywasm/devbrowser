@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 type GpStatus int32
@@ -133,15 +132,15 @@ type ARGB uint32
 
 var (
 	// Library
-	libgdiplus *windows.LazyDLL
+	libgdiplus *syscall.LazyDLL
 
 	// Functions
-	gdipCreateBitmapFromFile    *windows.LazyProc
-	gdipCreateBitmapFromHBITMAP *windows.LazyProc
-	gdipCreateHBITMAPFromBitmap *windows.LazyProc
-	gdipDisposeImage            *windows.LazyProc
-	gdiplusShutdown             *windows.LazyProc
-	gdiplusStartup              *windows.LazyProc
+	gdipCreateBitmapFromFile    *syscall.LazyProc
+	gdipCreateBitmapFromHBITMAP *syscall.LazyProc
+	gdipCreateHBITMAPFromBitmap *syscall.LazyProc
+	gdipDisposeImage            *syscall.LazyProc
+	gdiplusShutdown             *syscall.LazyProc
+	gdiplusStartup              *syscall.LazyProc
 )
 
 var (
@@ -150,7 +149,7 @@ var (
 
 func init() {
 	// Library
-	libgdiplus = windows.NewLazySystemDLL("gdiplus.dll")
+	libgdiplus = syscall.NewLazyDLL("gdiplus.dll")
 
 	// Functions
 	gdipCreateBitmapFromFile = libgdiplus.NewProc("GdipCreateBitmapFromFile")

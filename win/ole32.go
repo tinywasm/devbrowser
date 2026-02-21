@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 const (
@@ -431,22 +430,22 @@ type COSERVERINFO struct {
 
 var (
 	// Library
-	libole32 *windows.LazyDLL
+	libole32 *syscall.LazyDLL
 
 	// Functions
-	coCreateInstance      *windows.LazyProc
-	coGetClassObject      *windows.LazyProc
-	coInitializeEx        *windows.LazyProc
-	coTaskMemFree         *windows.LazyProc
-	coUninitialize        *windows.LazyProc
-	oleInitialize         *windows.LazyProc
-	oleSetContainedObject *windows.LazyProc
-	oleUninitialize       *windows.LazyProc
+	coCreateInstance      *syscall.LazyProc
+	coGetClassObject      *syscall.LazyProc
+	coInitializeEx        *syscall.LazyProc
+	coTaskMemFree         *syscall.LazyProc
+	coUninitialize        *syscall.LazyProc
+	oleInitialize         *syscall.LazyProc
+	oleSetContainedObject *syscall.LazyProc
+	oleUninitialize       *syscall.LazyProc
 )
 
 func init() {
 	// Library
-	libole32 = windows.NewLazySystemDLL("ole32.dll")
+	libole32 = syscall.NewLazyDLL("ole32.dll")
 
 	// Functions
 	coCreateInstance = libole32.NewProc("CoCreateInstance")

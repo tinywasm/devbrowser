@@ -11,7 +11,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 // Common error codes
@@ -234,19 +233,19 @@ type PRINTDLGEX struct {
 
 var (
 	// Library
-	libcomdlg32 *windows.LazyDLL
+	libcomdlg32 *syscall.LazyDLL
 
 	// Functions
-	chooseColor          *windows.LazyProc
-	commDlgExtendedError *windows.LazyProc
-	getOpenFileName      *windows.LazyProc
-	getSaveFileName      *windows.LazyProc
-	printDlgEx           *windows.LazyProc
+	chooseColor          *syscall.LazyProc
+	commDlgExtendedError *syscall.LazyProc
+	getOpenFileName      *syscall.LazyProc
+	getSaveFileName      *syscall.LazyProc
+	printDlgEx           *syscall.LazyProc
 )
 
 func init() {
 	// Library
-	libcomdlg32 = windows.NewLazySystemDLL("comdlg32.dll")
+	libcomdlg32 = syscall.NewLazyDLL("comdlg32.dll")
 
 	// Functions
 	chooseColor = libcomdlg32.NewProc("ChooseColorW")

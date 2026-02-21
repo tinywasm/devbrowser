@@ -12,7 +12,6 @@ import (
 	"syscall"
 	"unsafe"
 
-	"golang.org/x/sys/windows"
 )
 
 type DISPID int32
@@ -421,17 +420,17 @@ type DISPPARAMS struct {
 
 var (
 	// Library
-	liboleaut32 *windows.LazyDLL
+	liboleaut32 *syscall.LazyDLL
 
 	// Functions
-	sysAllocString *windows.LazyProc
-	sysFreeString  *windows.LazyProc
-	sysStringLen   *windows.LazyProc
+	sysAllocString *syscall.LazyProc
+	sysFreeString  *syscall.LazyProc
+	sysStringLen   *syscall.LazyProc
 )
 
 func init() {
 	// Library
-	liboleaut32 = windows.NewLazySystemDLL("oleaut32.dll")
+	liboleaut32 = syscall.NewLazyDLL("oleaut32.dll")
 
 	// Functions
 	sysAllocString = liboleaut32.NewProc("SysAllocString")
