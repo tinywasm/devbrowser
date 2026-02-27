@@ -6,5 +6,5 @@ github.com/tinywasm/mcpserve v0.0.24 h1:ByKxOnRXQFZoxAo9KLZbSVsibvrBRMj+GgdJ39xV
 github.com/tinywasm/mcpserve v0.0.24/go.mod h1:wfaduwCIZYxijkiqcryZW42rXCYmdmGCgSeCV3VKbH4=
 github.com/tinywasm/screenshot v0.0.1 h1:QKRkjU6NFeurYYAqGFL6Eyi3rTt4lbyJTGNQ17d7Zjg=
 github.com/tinywasm/screenshot v0.0.1/go.mod h1:EC/RxJDtjMhks4kiurJp5Ns6Z0Bia4RnS6d+9Ci6Gko=
-github.com/tinywasm/sse v0.0.10 h1:+8SsjabKrkMZZ1hgaApQz3WOvnmgaduiGxSPVqd0mNU=
-github.com/tinywasm/sse v0.0.10/go.mod h1:srTHTLi+j2PEkqaKqjcJ2tTkHVhY4wpUDkCx/G/Ajdw=
+github.com/tinywasm/sse v0.0.11 h1:LM1r1yMR5JC+OMkPpP7Whnzhftl4p3IgWeSGzbN6cwM=
+github.com/tinywasm/sse v0.0.11/go.mod h1:srTHTLi+j2PEkqaKqjcJ2tTkHVhY4wpUDkCx/G/Ajdw=
