@@ -3,7 +3,7 @@ module github.com/tinywasm/devbrowser
 go 1.25.2
 
 require (
-	github.com/tinywasm/mcpserve v0.0.26
+	github.com/tinywasm/mcpserve v0.0.28
 	github.com/tinywasm/screenshot v0.0.1
 )
 
