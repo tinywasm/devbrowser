@@ -47,12 +47,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t StreamFormat) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *StreamFormat) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // StreamCompression compression type to use for traces returned via streams.
@@ -73,12 +73,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t StreamCompression) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *StreamCompression) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // MemoryDumpLevelOfDetail details exposed when memory request explicitly
@@ -102,12 +102,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t MemoryDumpLevelOfDetail) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *MemoryDumpLevelOfDetail) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // Backend backend type to use for tracing. chrome uses the Chrome-integrated
@@ -133,12 +133,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t Backend) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *Backend) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // RecordMode controls how the trace buffer stores data.
@@ -161,12 +161,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t RecordMode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *RecordMode) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // TransferMode whether to report trace events as series of dataCollected
@@ -188,10 +188,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t TransferMode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *TransferMode) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

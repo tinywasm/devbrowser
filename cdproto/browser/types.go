@@ -37,12 +37,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t WindowState) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *WindowState) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // Bounds browser window bounds information.
@@ -101,12 +101,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t PermissionType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *PermissionType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // PermissionSetting [no description].
@@ -128,12 +128,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t PermissionSetting) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *PermissionSetting) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // PermissionDescriptor definition of PermissionDescriptor defined in the
@@ -167,12 +167,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CommandID) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CommandID) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // Bucket chrome histogram bucket.
@@ -213,12 +213,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t DownloadProgressState) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *DownloadProgressState) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SetDownloadBehaviorBehavior whether to allow all or deny all download
@@ -244,10 +244,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SetDownloadBehaviorBehavior) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SetDownloadBehaviorBehavior) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

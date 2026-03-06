@@ -33,10 +33,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t EnableTimeDomain) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *EnableTimeDomain) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

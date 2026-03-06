@@ -60,12 +60,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CookieExclusionReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CookieExclusionReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CookieWarningReason [no description].
@@ -96,12 +96,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CookieWarningReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CookieWarningReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CookieOperation [no description].
@@ -122,12 +122,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CookieOperation) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CookieOperation) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CookieIssueDetails this information is currently necessary, as the
@@ -165,12 +165,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t MixedContentResolutionStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *MixedContentResolutionStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // MixedContentResourceType [no description].
@@ -218,12 +218,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t MixedContentResourceType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *MixedContentResourceType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // MixedContentIssueDetails [no description].
@@ -262,12 +262,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t BlockedByResponseReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *BlockedByResponseReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // BlockedByResponseIssueDetails details for a request that has been blocked
@@ -300,12 +300,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t HeavyAdResolutionStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *HeavyAdResolutionStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // HeavyAdReason [no description].
@@ -327,12 +327,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t HeavyAdReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *HeavyAdReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // HeavyAdIssueDetails [no description].
@@ -366,12 +366,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ContentSecurityPolicyViolationType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ContentSecurityPolicyViolationType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SourceCodeLocation [no description].
@@ -415,12 +415,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SharedArrayBufferIssueType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SharedArrayBufferIssueType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SharedArrayBufferIssueDetails details for a issue arising from an SAB
@@ -497,12 +497,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AttributionReportingIssueType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AttributionReportingIssueType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SharedDictionaryError [no description].
@@ -544,12 +544,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SharedDictionaryError) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SharedDictionaryError) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // AttributionReportingIssueDetails details for issues around "Attribution
@@ -612,12 +612,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t GenericIssueErrorType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *GenericIssueErrorType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // GenericIssueDetails depending on the concrete errorType, different
@@ -687,12 +687,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ClientHintIssueReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ClientHintIssueReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // FederatedAuthRequestIssueDetails [no description].
@@ -772,7 +772,7 @@ func (t FederatedAuthRequestIssueReason) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *FederatedAuthRequestIssueReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // FederatedAuthUserInfoRequestIssueDetails [no description].
@@ -810,12 +810,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t FederatedAuthUserInfoRequestIssueReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *FederatedAuthUserInfoRequestIssueReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ClientHintIssueDetails this issue tracks client hints related issues. It's
@@ -855,12 +855,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t StyleSheetLoadingIssueReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *StyleSheetLoadingIssueReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // StylesheetLoadingIssueDetails this issue warns when a referenced
@@ -893,12 +893,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t PropertyRuleIssueReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *PropertyRuleIssueReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // PropertyRuleIssueDetails this issue warns about errors in property rules
@@ -950,12 +950,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t InspectorIssueCode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *InspectorIssueCode) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // InspectorIssueDetails this struct holds a list of optional fields with
@@ -1025,10 +1025,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t GetEncodedResponseEncoding) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *GetEncodedResponseEncoding) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

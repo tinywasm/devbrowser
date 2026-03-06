@@ -39,12 +39,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CachedResponseType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CachedResponseType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // DataEntry data entry.

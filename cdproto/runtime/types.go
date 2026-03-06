@@ -224,12 +224,17 @@ func (t Timestamp) Time() time.Time {
 
 // MarshalJSON satisfies json.Marshaler.
 func (t Timestamp) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(float64(time.Time(t).UnixMilli()))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *Timestamp) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	var v float64
+	if err := json.Unmarshal(buf, &v); err != nil {
+		return err
+	}
+	*t = Timestamp(time.UnixMilli(int64(v)))
+	return nil
 }
 
 // TimeDelta number of milliseconds.
@@ -302,12 +307,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SerializationOptionsSerialization) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SerializationOptionsSerialization) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // DeepSerializedValueType [no description].
@@ -350,12 +355,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t DeepSerializedValueType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *DeepSerializedValueType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // Type object type.
@@ -383,12 +388,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t Type) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *Type) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // Subtype object subtype hint. Specified for object type values only. NOTE:
@@ -428,12 +433,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t Subtype) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *Subtype) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // APIType type of the call.
@@ -470,10 +475,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t APIType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *APIType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

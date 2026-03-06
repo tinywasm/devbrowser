@@ -68,12 +68,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SubsamplingFormat) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SubsamplingFormat) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ImageType image format of a given image.
@@ -95,12 +95,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ImageType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ImageType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ImageDecodeAcceleratorCapability describes a supported image decoding

@@ -26,12 +26,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t LoginState) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *LoginState) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // DialogType the types of FedCM dialogs.
@@ -54,12 +54,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t DialogType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *DialogType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // DialogButton the buttons on the FedCM dialog.
@@ -81,12 +81,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t DialogButton) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *DialogButton) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // AccountURLType the URLs that each account has.
@@ -107,12 +107,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AccountURLType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AccountURLType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // Account corresponds to IdentityRequestAccount.

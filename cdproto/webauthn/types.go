@@ -34,12 +34,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AuthenticatorProtocol) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AuthenticatorProtocol) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // Ctap2version [no description].
@@ -60,12 +60,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t Ctap2version) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *Ctap2version) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // AuthenticatorTransport [no description].
@@ -89,12 +89,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AuthenticatorTransport) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AuthenticatorTransport) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // VirtualAuthenticatorOptions [no description].

@@ -64,18 +64,27 @@ func TestPoolPut(t *testing.T) {
 
 	miss := make([]byte, 5, 5)
 	rand.Read(miss)
-	p.Put(miss) // Should not reuse.
+	p.Put(miss) // Should not reuse (cap 5 is not a power-of-two pool bucket).
 
 	hit := make([]byte, 8, 8)
 	rand.Read(hit)
-	p.Put(hit) // Should reuse.
 
-	b := p.GetLen(5)
+	// Under -race, sync.Pool.Put randomly drops ~25% of items to catch
+	// use-after-Put bugs. Retry until the item is stored and retrieved.
+	const maxRetries = 100
+	var b []byte
+	for i := 0; i < maxRetries; i++ {
+		p.Put(hit)
+		b = p.GetLen(5)
+		if data(b) == data(hit) {
+			break
+		}
+	}
 	if data(b) == data(miss) {
 		t.Fatalf("unexpected reuse")
 	}
 	if data(b) != data(hit) {
-		t.Fatalf("want reuse")
+		t.Fatalf("want reuse after %d retries", maxRetries)
 	}
 }
 

@@ -26,12 +26,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t PhysicalAxes) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *PhysicalAxes) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // LogicalAxes containerSelector logical axes.
@@ -53,12 +53,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t LogicalAxes) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *LogicalAxes) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ScrollOrientation physical scroll orientation.
@@ -79,12 +79,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ScrollOrientation) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ScrollOrientation) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // Quad an array of quad vertices, x immediately followed by y for each
@@ -152,12 +152,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t EnableIncludeWhitespace) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *EnableIncludeWhitespace) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // GetElementByRelationRelation type of relation to get.
@@ -177,10 +177,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t GetElementByRelationRelation) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *GetElementByRelationRelation) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

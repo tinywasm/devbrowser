@@ -119,15 +119,6 @@ const (
 	PermissionsPolicyFeatureXrSpatialTracking            PermissionsPolicyFeature = "xr-spatial-tracking"
 )
 
-// MarshalJSON satisfies json.Marshaler.
-func (t PermissionsPolicyFeature) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
-}
-
-// UnmarshalJSON satisfies json.Unmarshaler.
-func (t *PermissionsPolicyFeature) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
-}
 
 // PermissionsPolicyBlockReason reason for a permissions policy feature to be
 // disabled.
@@ -150,12 +141,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t PermissionsPolicyBlockReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *PermissionsPolicyBlockReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // PermissionsPolicyBlockLocator [no description].
@@ -245,12 +236,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t TransitionType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *TransitionType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // NavigationEntry navigation history entry.
@@ -297,12 +288,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t DialogType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *DialogType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // AppManifestError error while paring app manifest.
@@ -410,12 +401,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ClientNavigationReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ClientNavigationReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ClientNavigationDisposition [no description].
@@ -438,12 +429,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ClientNavigationDisposition) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ClientNavigationDisposition) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // InstallabilityErrorArgument [no description].
@@ -486,12 +477,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ReferrerPolicy) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ReferrerPolicy) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CompilationCacheParams per-script compilation cache parameters for
@@ -642,12 +633,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AutoResponseMode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AutoResponseMode) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // NavigationType the type of a frameNavigated event.
@@ -668,12 +659,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t NavigationType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *NavigationType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // BackForwardCacheNotRestoredReason list of not restored reasons for
@@ -829,15 +820,6 @@ const (
 	BackForwardCacheNotRestoredReasonRequestedByWebViewClient                                 BackForwardCacheNotRestoredReason = "RequestedByWebViewClient"
 )
 
-// MarshalJSON satisfies json.Marshaler.
-func (t BackForwardCacheNotRestoredReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
-}
-
-// UnmarshalJSON satisfies json.Unmarshaler.
-func (t *BackForwardCacheNotRestoredReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
-}
 
 // BackForwardCacheNotRestoredReasonType types of not restored reasons for
 // back-forward cache.
@@ -859,12 +841,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t BackForwardCacheNotRestoredReasonType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *BackForwardCacheNotRestoredReasonType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // BackForwardCacheBlockingDetails [no description].
@@ -914,12 +896,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t FileChooserOpenedMode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *FileChooserOpenedMode) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // FrameDetachedReason [no description].
@@ -940,12 +922,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t FrameDetachedReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *FrameDetachedReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CaptureScreenshotFormat image compression format (defaults to png).
@@ -967,12 +949,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CaptureScreenshotFormat) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CaptureScreenshotFormat) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CaptureSnapshotFormat format (defaults to mhtml).
@@ -992,12 +974,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CaptureSnapshotFormat) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CaptureSnapshotFormat) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // PrintToPDFTransferMode return as stream.
@@ -1018,12 +1000,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t PrintToPDFTransferMode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *PrintToPDFTransferMode) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ScreencastFormat image compression format.
@@ -1044,12 +1026,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ScreencastFormat) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ScreencastFormat) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SetWebLifecycleStateState target lifecycle state.
@@ -1070,10 +1052,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SetWebLifecycleStateState) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SetWebLifecycleStateState) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

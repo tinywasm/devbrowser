@@ -102,12 +102,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ContrastAlgorithm) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ContrastAlgorithm) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // HighlightConfig configuration data for the highlighting of page elements.
@@ -155,12 +155,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ColorFormat) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ColorFormat) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // GridNodeHighlightConfig configurations for Persistent Grid Highlight.
@@ -269,12 +269,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t InspectMode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *InspectMode) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // LineStylePattern the line pattern (default: solid).
@@ -295,10 +295,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t LineStylePattern) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *LineStylePattern) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

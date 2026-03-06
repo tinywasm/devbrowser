@@ -72,12 +72,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t FillingStrategy) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *FillingStrategy) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // FilledField [no description].

@@ -130,12 +130,16 @@ func genReserveTestCases(s ws.State, n, m, exp int) []reserveTestCase {
 	return ret
 }
 
-func fakeMake(n int) (r []byte) {
-	rh := (*reflect.SliceHeader)(unsafe.Pointer(&r))
-	*rh = reflect.SliceHeader{
-		Len: n,
-		Cap: n,
+// fakeMake creates a []byte with len=cap=n without allocating backing memory.
+// Used for tests with very large n values (e.g. math.MaxInt64) that must not panic.
+func fakeMake(n int) []byte {
+	type sliceHeader struct {
+		Data uintptr
+		Len  int
+		Cap  int
 	}
+	var r []byte
+	*(*sliceHeader)(unsafe.Pointer(&r)) = sliceHeader{Len: n, Cap: n}
 	return r
 }
 

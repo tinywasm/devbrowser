@@ -45,12 +45,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t GestureSourceType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *GestureSourceType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // MouseButton [no description].
@@ -75,12 +75,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t MouseButton) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *MouseButton) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // TimeSinceEpoch UTC time in seconds, counted from January 1, 1970.
@@ -95,12 +95,17 @@ func (t TimeSinceEpoch) Time() time.Time {
 
 // MarshalJSON satisfies json.Marshaler.
 func (t TimeSinceEpoch) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(float64(time.Time(t).UnixNano() / int64(time.Second)))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *TimeSinceEpoch) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	var v float64
+	if err := json.Unmarshal(buf, &v); err != nil {
+		return err
+	}
+	*t = TimeSinceEpoch(time.Unix(0, int64(v*float64(time.Second))))
+	return nil
 }
 
 // DragDataItem [no description].
@@ -159,15 +164,6 @@ func (t Modifier) String() string {
 	return fmt.Sprintf("Modifier(%d)", t)
 }
 
-// MarshalJSON satisfies json.Marshaler.
-func (t Modifier) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
-}
-
-// UnmarshalJSON satisfies json.Unmarshaler.
-func (t *Modifier) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
-}
 
 // ModifierCommand is an alias for ModifierMeta.
 const ModifierCommand Modifier = ModifierMeta
@@ -192,12 +188,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t DispatchDragEventType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *DispatchDragEventType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // KeyType type of the key event.
@@ -220,12 +216,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t KeyType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *KeyType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // MouseType type of the mouse event.
@@ -248,12 +244,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t MouseType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *MouseType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // DispatchMouseEventPointerType pointer type (default: "mouse").
@@ -274,12 +270,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t DispatchMouseEventPointerType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *DispatchMouseEventPointerType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // TouchType type of the touch event. TouchEnd and TouchCancel must not
@@ -304,10 +300,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t TouchType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *TouchType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

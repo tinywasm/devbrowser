@@ -123,12 +123,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ScriptLanguage) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ScriptLanguage) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // DebugSymbols debug symbols available for a wasm script.
@@ -165,12 +165,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ScopeType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ScopeType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // BreakLocationType [no description].
@@ -192,12 +192,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t BreakLocationType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *BreakLocationType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // DebugSymbolsType type of the debug symbols.
@@ -220,12 +220,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t DebugSymbolsType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *DebugSymbolsType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // PausedReason pause reason.
@@ -257,12 +257,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t PausedReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *PausedReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ContinueToLocationTargetCallFrames [no description].
@@ -283,12 +283,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ContinueToLocationTargetCallFrames) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ContinueToLocationTargetCallFrames) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // RestartFrameMode the mode parameter must be present and set to 'StepInto',
@@ -309,12 +309,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t RestartFrameMode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *RestartFrameMode) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SetInstrumentationBreakpointInstrumentation instrumentation name.
@@ -335,12 +335,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SetInstrumentationBreakpointInstrumentation) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SetInstrumentationBreakpointInstrumentation) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ExceptionsState pause on exceptions mode.
@@ -363,12 +363,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ExceptionsState) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ExceptionsState) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SetScriptSourceStatus whether the operation was successful or not. Only Ok
@@ -394,10 +394,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SetScriptSourceStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SetScriptSourceStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

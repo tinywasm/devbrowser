@@ -55,7 +55,8 @@ func main() {
 
 		log.Printf("signal %q received; shutting down with %s timeout", sig, timeout)
 
-		ctx, _ := context.WithTimeout(context.Background(), timeout)
+		ctx, cancel := context.WithTimeout(context.Background(), timeout)
+		defer cancel()
 		if err := s.Shutdown(ctx); err != nil {
 			log.Fatal(err)
 		}

@@ -32,12 +32,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ServiceName) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ServiceName) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // EventMetadata a key-value pair for additional event information to pass

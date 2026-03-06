@@ -62,12 +62,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t VirtualTimePolicy) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *VirtualTimePolicy) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // UserAgentBrandVersion used to specify User Agent Client Hints to emulate.
@@ -122,12 +122,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SensorType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SensorType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SensorMetadata [no description].
@@ -192,12 +192,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t DisabledImageType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *DisabledImageType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // OrientationType orientation type.
@@ -220,12 +220,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t OrientationType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *OrientationType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // DisplayFeatureOrientation orientation of a display feature in relation to
@@ -247,12 +247,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t DisplayFeatureOrientation) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *DisplayFeatureOrientation) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // DevicePostureType current posture of the device.
@@ -273,12 +273,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t DevicePostureType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *DevicePostureType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SetEmitTouchEventsForMouseConfiguration touch/gesture events
@@ -300,12 +300,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SetEmitTouchEventsForMouseConfiguration) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SetEmitTouchEventsForMouseConfiguration) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SetEmulatedVisionDeficiencyType vision deficiency to emulate. Order:
@@ -333,10 +333,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SetEmulatedVisionDeficiencyType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SetEmulatedVisionDeficiencyType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

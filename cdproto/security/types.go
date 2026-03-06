@@ -37,12 +37,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t MixedContentType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *MixedContentType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // State the security level of a page or resource.
@@ -67,12 +67,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t State) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *State) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CertificateSecurityState details about the security state of the page
@@ -118,12 +118,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SafetyTipStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SafetyTipStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SafetyTipInfo [no description].
@@ -178,10 +178,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CertificateErrorAction) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CertificateErrorAction) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

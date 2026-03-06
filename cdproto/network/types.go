@@ -45,12 +45,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ResourceType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ResourceType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // RequestID unique request identifier.
@@ -103,12 +103,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ErrorReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ErrorReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // Headers request / response headers as keys / values of JSON object.
@@ -142,12 +142,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ConnectionType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ConnectionType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CookieSameSite represents the cookie's 'SameSite' status:
@@ -170,12 +170,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CookieSameSite) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CookieSameSite) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CookiePriority represents the cookie's 'Priority' status:
@@ -198,12 +198,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CookiePriority) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CookiePriority) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CookieSourceScheme represents the source scheme of the origin that
@@ -228,12 +228,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CookieSourceScheme) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CookieSourceScheme) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ResourceTiming timing information for the request.
@@ -284,12 +284,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ResourcePriority) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ResourcePriority) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // PostDataEntry post data entry for HTTP request.
@@ -373,12 +373,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CertificateTransparencyCompliance) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CertificateTransparencyCompliance) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // BlockedReason the reason why request was blocked.
@@ -411,12 +411,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t BlockedReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *BlockedReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CorsError the reason why request was blocked.
@@ -469,12 +469,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CorsError) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CorsError) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CorsErrorStatus [no description].
@@ -505,12 +505,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ServiceWorkerResponseSource) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ServiceWorkerResponseSource) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // TrustTokenParams determines what type of Trust Token operation is executed
@@ -543,12 +543,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t TrustTokenOperationType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *TrustTokenOperationType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // AlternateProtocolUsage the reason why Chrome uses a specific transport
@@ -576,12 +576,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AlternateProtocolUsage) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AlternateProtocolUsage) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ServiceWorkerRouterSource source of service worker router.
@@ -604,12 +604,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ServiceWorkerRouterSource) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ServiceWorkerRouterSource) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ServiceWorkerRouterInfo [no description].
@@ -773,12 +773,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SetCookieBlockedReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SetCookieBlockedReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CookieBlockedReason types of reasons why a cookie may not be sent with a
@@ -814,12 +814,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CookieBlockedReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CookieBlockedReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CookieExemptionReason types of reasons why a cookie should have been
@@ -849,12 +849,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CookieExemptionReason) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CookieExemptionReason) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // BlockedSetCookieWithReason a cookie which was not stored from a response
@@ -948,12 +948,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t InterceptionStage) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *InterceptionStage) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // RequestPattern request pattern for interception.
@@ -1015,12 +1015,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SignedExchangeErrorField) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SignedExchangeErrorField) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SignedExchangeError information about a signed exchange response.
@@ -1062,12 +1062,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ContentEncoding) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ContentEncoding) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // PrivateNetworkRequestPolicy [no description].
@@ -1091,12 +1091,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t PrivateNetworkRequestPolicy) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *PrivateNetworkRequestPolicy) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // IPAddressSpace [no description].
@@ -1119,12 +1119,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t IPAddressSpace) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *IPAddressSpace) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ConnectTiming [no description].
@@ -1165,12 +1165,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CrossOriginOpenerPolicyValue) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CrossOriginOpenerPolicyValue) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CrossOriginOpenerPolicyStatus [no description].
@@ -1202,12 +1202,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t CrossOriginEmbedderPolicyValue) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *CrossOriginEmbedderPolicyValue) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // CrossOriginEmbedderPolicyStatus [no description].
@@ -1238,12 +1238,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ContentSecurityPolicySource) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ContentSecurityPolicySource) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ContentSecurityPolicyStatus [no description].
@@ -1284,12 +1284,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ReportStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ReportStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ReportID [no description].
@@ -1373,12 +1373,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ReferrerPolicy) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ReferrerPolicy) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // TrustTokenParamsRefreshPolicy only set for "token-redemption" operation
@@ -1400,12 +1400,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t TrustTokenParamsRefreshPolicy) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *TrustTokenParamsRefreshPolicy) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // InitiatorType type of this initiator.
@@ -1430,12 +1430,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t InitiatorType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *InitiatorType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // AuthChallengeSource source of the authentication challenge.
@@ -1456,12 +1456,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AuthChallengeSource) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AuthChallengeSource) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // AuthChallengeResponseResponse the decision on what to do in response to
@@ -1486,12 +1486,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AuthChallengeResponseResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AuthChallengeResponseResponse) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // TrustTokenOperationDoneStatus detailed success or error status of the
@@ -1525,10 +1525,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t TrustTokenOperationDoneStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *TrustTokenOperationDoneStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

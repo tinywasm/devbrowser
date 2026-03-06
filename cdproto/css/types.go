@@ -42,12 +42,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t StyleSheetOrigin) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *StyleSheetOrigin) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // PseudoElementMatches CSS rule collection for a single pseudo style.
@@ -176,12 +176,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t RuleType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *RuleType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // RuleUsage CSS coverage information.
@@ -470,10 +470,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t MediaSource) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *MediaSource) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

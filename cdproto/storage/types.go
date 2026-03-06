@@ -47,12 +47,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t Type) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *Type) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // UsageForType usage for a storage type.
@@ -110,12 +110,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t InterestGroupAccessType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *InterestGroupAccessType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // InterestGroupAuctionEventType enum of auction events.
@@ -136,12 +136,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t InterestGroupAuctionEventType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *InterestGroupAuctionEventType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // InterestGroupAuctionFetchType enum of network fetches auctions can do.
@@ -165,12 +165,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t InterestGroupAuctionFetchType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *InterestGroupAuctionFetchType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SharedStorageAccessType enum of shared storage access types.
@@ -210,12 +210,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SharedStorageAccessType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SharedStorageAccessType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SharedStorageEntry struct for a single key-value pair in an origin's
@@ -287,12 +287,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t BucketsDurability) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *BucketsDurability) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // Bucket [no description].
@@ -333,12 +333,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AttributionReportingSourceType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AttributionReportingSourceType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // UnsignedInt64asBase10 [no description].
@@ -437,12 +437,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AttributionReportingTriggerDataMatching) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AttributionReportingTriggerDataMatching) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // AttributionReportingSourceRegistration [no description].
@@ -495,12 +495,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AttributionReportingSourceRegistrationResult) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AttributionReportingSourceRegistrationResult) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // AttributionReportingSourceRegistrationTimeConfig [no description].
@@ -521,12 +521,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AttributionReportingSourceRegistrationTimeConfig) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AttributionReportingSourceRegistrationTimeConfig) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // AttributionReportingAggregatableValueDictEntry [no description].
@@ -623,12 +623,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AttributionReportingEventLevelResult) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AttributionReportingEventLevelResult) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // AttributionReportingAggregatableResult [no description].
@@ -661,12 +661,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AttributionReportingAggregatableResult) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AttributionReportingAggregatableResult) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // RelatedWebsiteSet a single Related Website Set object.

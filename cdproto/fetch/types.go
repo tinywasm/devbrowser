@@ -38,12 +38,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t RequestStage) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *RequestStage) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // RequestPattern [no description].
@@ -100,12 +100,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AuthChallengeSource) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AuthChallengeSource) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // AuthChallengeResponseResponse the decision on what to do in response to
@@ -130,10 +130,10 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AuthChallengeResponseResponse) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AuthChallengeResponseResponse) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }

@@ -794,12 +794,17 @@ func init() {
 
 // MarshalJSON satisfies json.Marshaler.
 func (t MonotonicTime) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(float64(time.Time(t).UnixNano() / int64(time.Second)))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *MonotonicTime) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	var v float64
+	if err := json.Unmarshal(buf, &v); err != nil {
+		return err
+	}
+	*t = MonotonicTime(time.Unix(0, int64(v*float64(time.Second))))
+	return nil
 }
 
 // TimeSinceEpochMilli special timestamp type for Response's responseTime
@@ -815,12 +820,17 @@ func (t TimeSinceEpochMilli) Time() time.Time {
 
 // MarshalJSON satisfies json.Marshaler.
 func (t TimeSinceEpochMilli) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(float64(time.Time(t).UnixMilli()))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *TimeSinceEpochMilli) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	var v float64
+	if err := json.Unmarshal(buf, &v); err != nil {
+		return err
+	}
+	*t = TimeSinceEpochMilli(time.UnixMilli(int64(v)))
+	return nil
 }
 
 // FrameID unique frame identifier.
@@ -831,11 +841,6 @@ type FrameID string
 // String returns the FrameID as string value.
 func (t FrameID) String() string {
 	return string(t)
-}
-
-// UnmarshalJSON satisfies json.Unmarshaler.
-func (t *FrameID) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
 }
 
 // AdFrameType indicates whether a frame has been identified as an ad.
@@ -855,16 +860,6 @@ const (
 	AdFrameTypeRoot  AdFrameType = "root"
 )
 
-// MarshalJSON satisfies json.Marshaler.
-func (t AdFrameType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
-}
-
-// UnmarshalJSON satisfies json.Unmarshaler.
-func (t *AdFrameType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
-}
-
 // AdFrameExplanation [no description].
 //
 // See: https://chromedevtools.github.io/devtools-protocol/tot/Page#type-AdFrameExplanation
@@ -881,16 +876,6 @@ const (
 	AdFrameExplanationCreatedByAdScript   AdFrameExplanation = "CreatedByAdScript"
 	AdFrameExplanationMatchedBlockingRule AdFrameExplanation = "MatchedBlockingRule"
 )
-
-// MarshalJSON satisfies json.Marshaler.
-func (t AdFrameExplanation) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
-}
-
-// UnmarshalJSON satisfies json.Unmarshaler.
-func (t *AdFrameExplanation) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
-}
 
 // AdFrameStatus indicates whether a frame has been identified as an ad and
 // why.
@@ -920,15 +905,6 @@ const (
 	SecureContextTypeInsecureAncestor SecureContextType = "InsecureAncestor"
 )
 
-// MarshalJSON satisfies json.Marshaler.
-func (t SecureContextType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
-}
-
-// UnmarshalJSON satisfies json.Unmarshaler.
-func (t *SecureContextType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
-}
 
 // CrossOriginIsolatedContextType indicates whether the frame is cross-origin
 // isolated and why it is the case.
@@ -948,15 +924,6 @@ const (
 	CrossOriginIsolatedContextTypeNotIsolatedFeatureDisabled CrossOriginIsolatedContextType = "NotIsolatedFeatureDisabled"
 )
 
-// MarshalJSON satisfies json.Marshaler.
-func (t CrossOriginIsolatedContextType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
-}
-
-// UnmarshalJSON satisfies json.Unmarshaler.
-func (t *CrossOriginIsolatedContextType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
-}
 
 // GatedAPIFeatures [no description].
 //
@@ -976,15 +943,6 @@ const (
 	GatedAPIFeaturesPerformanceProfile                GatedAPIFeatures = "PerformanceProfile"
 )
 
-// MarshalJSON satisfies json.Marshaler.
-func (t GatedAPIFeatures) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
-}
-
-// UnmarshalJSON satisfies json.Unmarshaler.
-func (t *GatedAPIFeatures) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
-}
 
 // OriginTrialTokenStatus origin
 // Trial(https://www.chromium.org/blink/origin-trials) support. Status for an
@@ -1014,15 +972,6 @@ const (
 	OriginTrialTokenStatusUnknownTrial           OriginTrialTokenStatus = "UnknownTrial"
 )
 
-// MarshalJSON satisfies json.Marshaler.
-func (t OriginTrialTokenStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
-}
-
-// UnmarshalJSON satisfies json.Unmarshaler.
-func (t *OriginTrialTokenStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
-}
 
 // OriginTrialStatus status for an Origin Trial.
 //
@@ -1042,15 +991,6 @@ const (
 	OriginTrialStatusTrialNotAllowed       OriginTrialStatus = "TrialNotAllowed"
 )
 
-// MarshalJSON satisfies json.Marshaler.
-func (t OriginTrialStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
-}
-
-// UnmarshalJSON satisfies json.Unmarshaler.
-func (t *OriginTrialStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
-}
 
 // OriginTrialUsageRestriction [no description].
 //
@@ -1068,15 +1008,6 @@ const (
 	OriginTrialUsageRestrictionSubset OriginTrialUsageRestriction = "Subset"
 )
 
-// MarshalJSON satisfies json.Marshaler.
-func (t OriginTrialUsageRestriction) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
-}
-
-// UnmarshalJSON satisfies json.Unmarshaler.
-func (t *OriginTrialUsageRestriction) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
-}
 
 // OriginTrialToken [no description].
 //

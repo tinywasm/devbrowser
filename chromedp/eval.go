@@ -76,7 +76,9 @@ func parseRemoteObject(v *runtime.RemoteObject, res interface{}) (err error) {
 	}
 
 	value := v.Value
-	if value == nil {
+	// Chrome may send "value": null explicitly for JS null values, resulting in
+	// []byte("null") instead of nil. Treat both as a null/undefined signal.
+	if value == nil || string(value) == "null" {
 		rv := reflect.ValueOf(res)
 		if rv.Kind() == reflect.Ptr {
 			switch rv.Elem().Kind() {

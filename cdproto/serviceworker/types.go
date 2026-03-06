@@ -46,12 +46,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t VersionRunningStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *VersionRunningStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // VersionStatus [no description].
@@ -76,12 +76,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t VersionStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *VersionStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // Version serviceWorker version.

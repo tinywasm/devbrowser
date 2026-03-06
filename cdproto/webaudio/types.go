@@ -36,12 +36,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ContextType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ContextType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ContextState enum of AudioContextState from the spec.
@@ -63,12 +63,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ContextState) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ContextState) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // NodeType enum of AudioNode types.
@@ -100,12 +100,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ChannelCountMode) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ChannelCountMode) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ChannelInterpretation enum of AudioNode::ChannelInterpretation from the
@@ -127,12 +127,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ChannelInterpretation) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ChannelInterpretation) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ParamType enum of AudioParam types.
@@ -163,12 +163,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t AutomationRate) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *AutomationRate) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ContextRealtimeData fields in AudioContext that change in real-time.

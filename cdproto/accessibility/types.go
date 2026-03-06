@@ -50,12 +50,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ValueType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ValueType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ValueSourceType enum of possible property sources.
@@ -80,12 +80,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ValueSourceType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ValueSourceType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ValueNativeSourceType enum of possible native property sources (as a
@@ -115,12 +115,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t ValueNativeSourceType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *ValueNativeSourceType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // ValueSource a single source for a computed AX property.
@@ -231,7 +231,7 @@ func (t PropertyName) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *PropertyName) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // Node a node in the accessibility tree.

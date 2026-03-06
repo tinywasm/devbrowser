@@ -49,12 +49,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t RuleSetErrorType) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *RuleSetErrorType) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SpeculationAction the type of preloading attempted. It corresponds to
@@ -77,12 +77,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SpeculationAction) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SpeculationAction) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // SpeculationTargetHint corresponds to mojom::SpeculationTargetHint. See
@@ -104,12 +104,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t SpeculationTargetHint) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *SpeculationTargetHint) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // IngAttemptKey a key that identifies a preloading attempt. The url used is
@@ -228,7 +228,7 @@ func (t PrerenderFinalStatus) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *PrerenderFinalStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // IngStatus preloading status values, see also PreloadingTriggeringOutcome.
@@ -254,12 +254,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t IngStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *IngStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // PrefetchStatus tODO(https://crbug.com/1384419): revisit the list of
@@ -311,12 +311,12 @@ const (
 
 // MarshalJSON satisfies json.Marshaler.
 func (t PrefetchStatus) MarshalJSON() ([]byte, error) {
-	return json.Marshal(t)
+	return json.Marshal(string(t))
 }
 
 // UnmarshalJSON satisfies json.Unmarshaler.
 func (t *PrefetchStatus) UnmarshalJSON(buf []byte) error {
-	return json.Unmarshal(buf, t)
+	return json.Unmarshal(buf, (*string)(t))
 }
 
 // PrerenderMismatchedHeaders information of headers to be displayed when the
