@@ -6,12 +6,12 @@ import (
 	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getScreenshotTools() []mcp.ToolMetadata {
-	return []mcp.ToolMetadata{
+func (b *DevBrowser) getScreenshotTools() []mcp.Tool {
+	return []mcp.Tool{
 		{
 			Name:        "browser_screenshot",
 			Description: "Capture screenshot of current browser viewport to verify visual rendering, layout correctness, or UI state. Returns PNG image as MCP resource (binary efficient format).",
-			Parameters: []mcp.ParameterMetadata{
+			Parameters: []mcp.Parameter{
 				{
 					Name:        "fullpage",
 					Description: "Capture full page height instead of viewport only",

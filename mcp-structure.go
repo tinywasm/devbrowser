@@ -1,11 +1,10 @@
 package devbrowser
 
-import "github.com/tinywasm/mcp"
-
 import (
 	"fmt"
 
 	"github.com/tinywasm/devbrowser/chromedp"
+	"github.com/tinywasm/mcp"
 )
 
 // GetStructureJS is the JavaScript used to extract the page structure for LLM understanding.
@@ -97,12 +96,12 @@ const GetStructureJS = `
 })()
 `
 
-func (b *DevBrowser) getStructureTools() []mcp.ToolMetadata {
-	return []mcp.ToolMetadata{
+func (b *DevBrowser) getStructureTools() []mcp.Tool {
+	return []mcp.Tool{
 		{
 			Name:        "browser_get_content",
 			Description: "Get a text-based representation of the page content, optimized for LLM reading. Reduced token count compared to screenshots.",
-			Parameters:  []mcp.ParameterMetadata{},
+			Parameters:  []mcp.Parameter{},
 			Execute: func(args map[string]any) {
 				if !b.isOpen {
 					b.Logger("Browser is not open. Please open it first with browser_open")

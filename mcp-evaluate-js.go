@@ -1,21 +1,20 @@
 package devbrowser
 
-import "github.com/tinywasm/mcp"
-
 import (
 	"encoding/json"
 	"fmt"
 
 	"github.com/tinywasm/devbrowser/cdproto/runtime"
 	"github.com/tinywasm/devbrowser/chromedp"
+	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getEvaluateJsTools() []mcp.ToolMetadata {
-	return []mcp.ToolMetadata{
+func (b *DevBrowser) getEvaluateJsTools() []mcp.Tool {
+	return []mcp.Tool{
 		{
 			Name:        "browser_evaluate_js",
 			Description: "Execute JavaScript code in browser context to inspect DOM, call WASM exports, test functions, or debug application state. Returns execution result or error.",
-			Parameters: []mcp.ParameterMetadata{
+			Parameters: []mcp.Parameter{
 				{
 					Name:        "script",
 					Description: "JavaScript code to execute in browser context",

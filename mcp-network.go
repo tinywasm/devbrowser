@@ -1,7 +1,5 @@
 package devbrowser
 
-import "github.com/tinywasm/mcp"
-
 import (
 	"fmt"
 	"strings"
@@ -10,14 +8,15 @@ import (
 
 	"github.com/tinywasm/devbrowser/cdproto/network"
 	"github.com/tinywasm/devbrowser/chromedp"
+	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getNetworkTools() []mcp.ToolMetadata {
-	return []mcp.ToolMetadata{
+func (b *DevBrowser) getNetworkTools() []mcp.Tool {
+	return []mcp.Tool{
 		{
 			Name:        "browser_get_network_logs",
 			Description: "Get network requests and responses to debug API calls, asset loading failures, CORS errors, or slow requests. Shows URL, status, method, and timing.",
-			Parameters: []mcp.ParameterMetadata{
+			Parameters: []mcp.Parameter{
 				{
 					Name:        "filter",
 					Description: "Filter by request type",

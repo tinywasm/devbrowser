@@ -146,12 +146,12 @@ func formatPerformanceReport(pageURL string, metrics map[string]any) string {
 	return b.String()
 }
 
-func (b *DevBrowser) getPerformanceTools() []mcp.ToolMetadata {
-	return []mcp.ToolMetadata{
+func (b *DevBrowser) getPerformanceTools() []mcp.Tool {
+	return []mcp.Tool{
 		{
 			Name:        "browser_get_performance",
 			Description: "Get page performance metrics (memory, timing, DOM stats, WASM resources) to diagnose excessive RAM usage, slow loads, or rendering issues. Returns a compact text report optimized for minimal token usage.",
-			Parameters:  []mcp.ParameterMetadata{},
+			Parameters:  []mcp.Parameter{},
 			Execute: func(args map[string]any) {
 				if !b.isOpen {
 					b.Logger("Browser is not open")

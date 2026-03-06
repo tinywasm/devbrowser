@@ -1,7 +1,5 @@
 package devbrowser
 
-import "github.com/tinywasm/mcp"
-
 import (
 	"context"
 	"fmt"
@@ -10,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/tinywasm/devbrowser/chromedp"
+	"github.com/tinywasm/mcp"
 )
 
 // TestBrowserSwipe verifies that the browser_swipe_element tool performs drag actions.
@@ -97,7 +96,7 @@ func TestBrowserSwipe(t *testing.T) {
 
 	// 4. Get the swipe tool
 	tools := db.getInteractionTools()
-	var swipeTool mcp.ToolMetadata
+	var swipeTool mcp.Tool
 	for _, tool := range tools {
 		if tool.Name == "browser_swipe_element" {
 			swipeTool = tool

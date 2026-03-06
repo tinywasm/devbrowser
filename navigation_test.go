@@ -1,7 +1,5 @@
 package devbrowser
 
-import "github.com/tinywasm/mcp"
-
 import (
 	"context"
 	"fmt"
@@ -12,6 +10,7 @@ import (
 	"time"
 
 	"github.com/tinywasm/devbrowser/chromedp"
+	"github.com/tinywasm/mcp"
 )
 
 // TestBrowserNavigation verifies that the browser_navigate tool works
@@ -46,7 +45,7 @@ func TestBrowserNavigation(t *testing.T) {
 
 	// 4. Get the navigation tool
 	tools := db.getNavigationTools()
-	var navigateTool mcp.ToolMetadata
+	var navigateTool mcp.Tool
 	for _, tool := range tools {
 		if tool.Name == "browser_navigate" {
 			navigateTool = tool

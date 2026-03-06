@@ -8,7 +8,7 @@ func TestGetMCPToolsMetadata_AllToolsRegistered(t *testing.T) {
 	db, _ := DefaultTestBrowser()
 	defer db.CloseBrowser()
 
-	tools := db.GetMCPToolsMetadata()
+	tools := db.GetMCPTools()
 
 	expectedToolNames := []string{
 		"browser_get_console",

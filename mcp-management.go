@@ -8,12 +8,12 @@ import (
 	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getManagementTools() []mcp.ToolMetadata {
-	return []mcp.ToolMetadata{
+func (b *DevBrowser) getManagementTools() []mcp.Tool {
+	return []mcp.Tool{
 		{
 			Name:        "browser_emulate_device",
 			Description: "Emulate a mobile device or tablet viewport without resizing the physical window. This toggle affects rendering and touch events. This change is persisted.",
-			Parameters: []mcp.ParameterMetadata{
+			Parameters: []mcp.Parameter{
 				{
 					Name:        "mode",
 					Description: "Device mode: 'desktop' (no emulation), 'mobile' (375x812), 'tablet' (768x1024), or 'off' (clear all overrides)",

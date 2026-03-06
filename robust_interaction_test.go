@@ -1,7 +1,5 @@
 package devbrowser
 
-import "github.com/tinywasm/mcp"
-
 import (
 	"context"
 	"fmt"
@@ -10,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/tinywasm/devbrowser/chromedp"
+	"github.com/tinywasm/mcp"
 )
 
 // TestRobustClickVerification verifies that browser_click_element falls back to JS click
@@ -61,7 +60,7 @@ func TestRobustClickVerification(t *testing.T) {
 
 	// 4. Get the interaction tool
 	tools := db.getInteractionTools()
-	var clickTool mcp.ToolMetadata
+	var clickTool mcp.Tool
 	for _, tool := range tools {
 		if tool.Name == "browser_click_element" {
 			clickTool = tool

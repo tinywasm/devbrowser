@@ -1,17 +1,17 @@
 package devbrowser
 
-import "github.com/tinywasm/mcp"
-
 import (
 	"fmt"
+
+	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getConsoleTools() []mcp.ToolMetadata {
-	return []mcp.ToolMetadata{
+func (b *DevBrowser) getConsoleTools() []mcp.Tool {
+	return []mcp.Tool{
 		{
 			Name:        "browser_get_console",
 			Description: "Get browser JavaScript console logs to debug WASM runtime errors, console.log outputs, or frontend issues.",
-			Parameters: []mcp.ParameterMetadata{
+			Parameters: []mcp.Parameter{
 				{
 					Name:        "lines",
 					Description: "Number of recent entries to retrieve",

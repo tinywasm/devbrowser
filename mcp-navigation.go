@@ -1,15 +1,17 @@
 package devbrowser
 
-import "github.com/tinywasm/mcp"
+import (
+	"fmt"
 
-import "fmt"
+	"github.com/tinywasm/mcp"
+)
 
-func (b *DevBrowser) getNavigationTools() []mcp.ToolMetadata {
-	return []mcp.ToolMetadata{
+func (b *DevBrowser) getNavigationTools() []mcp.Tool {
+	return []mcp.Tool{
 		{
 			Name:        "browser_navigate",
 			Description: "Navigate the browser to a specific URL",
-			Parameters: []mcp.ParameterMetadata{
+			Parameters: []mcp.Parameter{
 				{
 					Name:        "url",
 					Description: "Complete URL (including http:// or https://)",

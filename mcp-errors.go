@@ -1,21 +1,20 @@
 package devbrowser
 
-import "github.com/tinywasm/mcp"
-
 import (
 	"fmt"
 	"time"
 
 	"github.com/tinywasm/devbrowser/cdproto/runtime"
 	"github.com/tinywasm/devbrowser/chromedp"
+	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getErrorTools() []mcp.ToolMetadata {
-	return []mcp.ToolMetadata{
+func (b *DevBrowser) getErrorTools() []mcp.Tool {
+	return []mcp.Tool{
 		{
 			Name:        "browser_get_errors",
 			Description: "Get JavaScript runtime errors and uncaught exceptions to quickly identify crashes, bugs, or WASM panics. Returns error messages with stack traces.",
-			Parameters: []mcp.ParameterMetadata{
+			Parameters: []mcp.Parameter{
 				{
 					Name:        "limit",
 					Description: "Maximum number of recent errors to return",
