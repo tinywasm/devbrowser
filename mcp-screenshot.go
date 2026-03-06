@@ -3,15 +3,15 @@ package devbrowser
 import (
 	"fmt"
 
-	"github.com/tinywasm/mcpserve"
+	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getScreenshotTools() []mcpserve.ToolMetadata {
-	return []mcpserve.ToolMetadata{
+func (b *DevBrowser) getScreenshotTools() []mcp.ToolMetadata {
+	return []mcp.ToolMetadata{
 		{
 			Name:        "browser_screenshot",
 			Description: "Capture screenshot of current browser viewport to verify visual rendering, layout correctness, or UI state. Returns PNG image as MCP resource (binary efficient format).",
-			Parameters: []mcpserve.ParameterMetadata{
+			Parameters: []mcp.ParameterMetadata{
 				{
 					Name:        "fullpage",
 					Description: "Capture full page height instead of viewport only",
@@ -58,7 +58,7 @@ func (b *DevBrowser) getScreenshotTools() []mcpserve.ToolMetadata {
 				)
 
 				// Send both text context and binary data
-				b.Logger(contextReport, mcpserve.BinaryData{MimeType: "image/png", Data: res.ImageData})
+				b.Logger(contextReport, mcp.BinaryData{MimeType: "image/png", Data: res.ImageData})
 			},
 		},
 	}

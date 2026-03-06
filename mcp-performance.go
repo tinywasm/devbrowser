@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/tinywasm/devbrowser/chromedp"
-	"github.com/tinywasm/mcpserve"
+	"github.com/tinywasm/mcp"
 )
 
 // GetPerformanceJS extracts page performance metrics optimized for LLM consumption.
@@ -146,12 +146,12 @@ func formatPerformanceReport(pageURL string, metrics map[string]any) string {
 	return b.String()
 }
 
-func (b *DevBrowser) getPerformanceTools() []mcpserve.ToolMetadata {
-	return []mcpserve.ToolMetadata{
+func (b *DevBrowser) getPerformanceTools() []mcp.ToolMetadata {
+	return []mcp.ToolMetadata{
 		{
 			Name:        "browser_get_performance",
 			Description: "Get page performance metrics (memory, timing, DOM stats, WASM resources) to diagnose excessive RAM usage, slow loads, or rendering issues. Returns a compact text report optimized for minimal token usage.",
-			Parameters:  []mcpserve.ParameterMetadata{},
+			Parameters:  []mcp.ParameterMetadata{},
 			Execute: func(args map[string]any) {
 				if !b.isOpen {
 					b.Logger("Browser is not open")

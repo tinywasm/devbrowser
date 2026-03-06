@@ -5,15 +5,15 @@ import (
 
 	"github.com/tinywasm/devbrowser/cdproto/emulation"
 	"github.com/tinywasm/devbrowser/chromedp"
-	"github.com/tinywasm/mcpserve"
+	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getManagementTools() []mcpserve.ToolMetadata {
-	return []mcpserve.ToolMetadata{
+func (b *DevBrowser) getManagementTools() []mcp.ToolMetadata {
+	return []mcp.ToolMetadata{
 		{
 			Name:        "browser_emulate_device",
 			Description: "Emulate a mobile device or tablet viewport without resizing the physical window. This toggle affects rendering and touch events. This change is persisted.",
-			Parameters: []mcpserve.ParameterMetadata{
+			Parameters: []mcp.ParameterMetadata{
 				{
 					Name:        "mode",
 					Description: "Device mode: 'desktop' (no emulation), 'mobile' (375x812), 'tablet' (768x1024), or 'off' (clear all overrides)",
@@ -94,7 +94,7 @@ func (b *DevBrowser) getManagementTools() []mcpserve.ToolMetadata {
 						res.HTMLStructure,
 					)
 
-					b.Logger(contextReport, mcpserve.BinaryData{MimeType: "image/png", Data: res.ImageData})
+					b.Logger(contextReport, mcp.BinaryData{MimeType: "image/png", Data: res.ImageData})
 				} else {
 					b.Logger(statusMsg)
 				}

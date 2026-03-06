@@ -1,6 +1,6 @@
 package devbrowser
 
-import "github.com/tinywasm/mcpserve"
+import "github.com/tinywasm/mcp"
 
 import (
 	"context"
@@ -12,12 +12,12 @@ import (
 	"github.com/tinywasm/devbrowser/chromedp"
 )
 
-func (b *DevBrowser) getInteractionTools() []mcpserve.ToolMetadata {
-	return []mcpserve.ToolMetadata{
+func (b *DevBrowser) getInteractionTools() []mcp.ToolMetadata {
+	return []mcp.ToolMetadata{
 		{
 			Name:        "browser_click_element",
 			Description: "Click DOM element by CSS selector to test interactions, trigger events, or simulate user actions. Useful for testing buttons, links, and interactive components.",
-			Parameters: []mcpserve.ParameterMetadata{
+			Parameters: []mcp.ParameterMetadata{
 				{
 					Name:        "selector",
 					Description: "CSS selector for element to click (e.g., '#submit-btn', '.nav-item')",
@@ -107,7 +107,7 @@ func (b *DevBrowser) getInteractionTools() []mcpserve.ToolMetadata {
 		{
 			Name:        "browser_fill_element",
 			Description: "Fill a form field (input, textarea) with text. Simulates typing.",
-			Parameters: []mcpserve.ParameterMetadata{
+			Parameters: []mcp.ParameterMetadata{
 				{
 					Name:        "selector",
 					Description: "CSS selector for the input element (e.g., '#username')",
@@ -188,7 +188,7 @@ func (b *DevBrowser) getInteractionTools() []mcpserve.ToolMetadata {
 		{
 			Name:        "browser_swipe_element",
 			Description: "Simulate a swipe gesture on an element (up, down, left, right).",
-			Parameters: []mcpserve.ParameterMetadata{
+			Parameters: []mcp.ParameterMetadata{
 				{
 					Name:        "selector",
 					Description: "CSS selector for the element to swipe on",

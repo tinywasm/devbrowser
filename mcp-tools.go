@@ -1,10 +1,10 @@
 package devbrowser
 
-import "github.com/tinywasm/mcpserve"
+import "github.com/tinywasm/mcp"
 
 // GetMCPToolsMetadata returns metadata for all DevBrowser MCP tools
-func (b *DevBrowser) GetMCPToolsMetadata() []mcpserve.ToolMetadata {
-	tools := []mcpserve.ToolMetadata{}
+func (b *DevBrowser) GetMCPToolsMetadata() []mcp.ToolMetadata {
+	tools := []mcp.ToolMetadata{}
 	tools = append(tools, b.getManagementTools()...)
 	tools = append(tools, b.getConsoleTools()...)
 	tools = append(tools, b.getScreenshotTools()...)
