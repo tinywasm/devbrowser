@@ -206,6 +206,10 @@ func (b *DevBrowser) SetLog(f func(message ...any)) {
 	b.log = f
 }
 
+func (b *DevBrowser) GetLog() func(message ...any) {
+	return b.log
+}
+
 func (b *DevBrowser) Logger(messages ...any) {
 	if b.log != nil {
 		b.log(messages...)
