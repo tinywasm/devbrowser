@@ -8,62 +8,62 @@ import (
 )
 
 func (h *DevBrowser) OpenBrowser(port string, https bool) {
-	h.mu.Lock()
-	isFirst := h.firstCall
-	h.firstCall = false
-	h.lastPort = port
-	h.lastHttps = https
+	h.Mu.Lock()
+	isFirst := h.FirstCall
+	h.FirstCall = false
+	h.LastPort = port
+	h.LastHttps = https
 
-	//h.Logger(fmt.Sprintf("DEBUG: OpenBrowser called. port=%s, https=%v, isOpen=%v, firstCall=%v", port, https, h.isOpen, isFirst))
+	//h.Logger(fmt.Sprintf("DEBUG: OpenBrowser called. port=%s, https=%v, isOpen=%v, firstCall=%v", port, https, h.IsOpenFlag, isFirst))
 
 	// Logic: on first call, only open if autoStart is true.
 	// On subsequent calls (e.g. user action), always open.
-	if isFirst && !h.autoStart {
+	if isFirst && !h.AutoStart {
 		//h.Logger("DEBUG: OpenBrowser skipped on first call (autoStart=false)")
-		h.mu.Unlock()
+		h.Mu.Unlock()
 		return
 	}
 
-	if h.isOpen {
+	if h.IsOpenFlag {
 		//h.Logger("DEBUG: OpenBrowser returning early, already open")
-		h.mu.Unlock()
+		h.Mu.Unlock()
 		return
 	}
 
-	if h.testMode {
-		h.openedOnce = true
-		h.mu.Unlock()
+	if h.TestMode {
+		h.OpenedOnce = true
+		h.Mu.Unlock()
 		h.Logger("Skipping browser open in TestMode")
 		return
 	}
-	h.isOpen = true
-	h.openedOnce = true
-	h.mu.Unlock()
+	h.IsOpenFlag = true
+	h.OpenedOnce = true
+	h.Mu.Unlock()
 
 	// Add listener for exit signal (only once per open session)
 	go func() {
-		<-h.exitChan
+		<-h.ExitChan
 		h.CloseBrowser()
 	}()
 
 	go func() {
 		// Detect monitor size and apply constraints ONLY if not already configured.
 		// If configured, we respect the user's stored preferences (which might be manual resized).
-		if !h.sizeConfigured {
-			h.detectMonitorSize()
-			h.startWithDetectedSize()
+		if !h.SizeConfigured {
+			h.DetectMonitorSize()
+			h.StartWithDetectedSize()
 		}
 
 		err := h.CreateBrowserContext()
 		if err != nil {
-			h.errChan <- err
+			h.ErrChan <- err
 			return
 		}
 
 		// Restore device emulation if set
-		h.mu.Lock()
-		mode := h.viewportMode
-		h.mu.Unlock()
+		h.Mu.Lock()
+		mode := h.ViewportMode
+		h.Mu.Unlock()
 		if mode != "" && mode != "off" && mode != "desktop" {
 			// We need a context where the page is already loaded or at least ready
 			// but applyDeviceEmulation can be called on the context once it's created.
@@ -86,11 +86,11 @@ func (h *DevBrowser) OpenBrowser(port string, https bool) {
 		h.initializeNetworkCapture()
 		h.initializeErrorCapture()
 
-		if err := chromedp.Run(h.ctx,
+		if err := chromedp.Run(h.Ctx,
 			chromedp.Navigate(url),
 			chromedp.WaitReady("body"),
 		); err != nil {
-			h.errChan <- fmt.Errorf("error navigating to %s: %v", url, err)
+			h.ErrChan <- fmt.Errorf("error navigating to %s: %v", url, err)
 			return
 		}
 
@@ -98,16 +98,16 @@ func (h *DevBrowser) OpenBrowser(port string, https bool) {
 		time.Sleep(100 * time.Millisecond)
 
 		// Restore device emulation if set
-		h.mu.Lock()
-		vMode := h.viewportMode
-		h.mu.Unlock()
+		h.Mu.Lock()
+		vMode := h.ViewportMode
+		h.Mu.Unlock()
 		if vMode != "" && vMode != "off" && vMode != "desktop" {
 			if err := h.applyDeviceEmulation(); err != nil {
 				h.Logger(fmt.Sprintf("Failed to restore emulation: %v", err))
 			}
 		}
 
-		h.readyChan <- true
+		h.ReadyChan <- true
 
 		// Monitor browser context for manual close
 		go h.monitorBrowserClose()
@@ -115,18 +115,18 @@ func (h *DevBrowser) OpenBrowser(port string, https bool) {
 
 	// Esperar señal de inicio o error
 	select {
-	case err := <-h.errChan:
+	case err := <-h.ErrChan:
 		// use helper to ensure logging goes through configured logger
 		h.Logger("Error opening DevBrowser: ", err)
 		h.CloseBrowser()
 		return
-	case <-h.readyChan:
+	case <-h.ReadyChan:
 		h.Logger(h.StatusMessage())
 
 		// Start monitoring browser geometry changes
 		go h.monitorBrowserGeometry()
 
-		h.ui.RefreshUI()
+		h.UI.RefreshUI()
 		return
 	}
 }

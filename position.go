@@ -8,11 +8,11 @@ import (
 
 func (h *DevBrowser) BrowserPositionAndSizeChanged(fieldName string, oldValue, newValue string) error {
 
-	if !h.isOpen {
+	if !h.IsOpenFlag {
 		return nil
 	}
 
-	err := h.setBrowserPositionAndSize(newValue)
+	err := h.SetBrowserPositionAndSize(newValue)
 	if err != nil {
 		return err
 	}
@@ -20,7 +20,7 @@ func (h *DevBrowser) BrowserPositionAndSizeChanged(fieldName string, oldValue, n
 	return h.RestartBrowser()
 }
 
-func (b *DevBrowser) setBrowserPositionAndSize(newConfig string) (err error) {
+func (b *DevBrowser) SetBrowserPositionAndSize(newConfig string) (err error) {
 
 	this := errors.New("setBrowserPositionAndSize")
 
@@ -29,13 +29,13 @@ func (b *DevBrowser) setBrowserPositionAndSize(newConfig string) (err error) {
 	if err != nil {
 		return errors.Join(this, err)
 	}
-	b.position = position
+	b.Position = position
 
-	b.width, err = strconv.Atoi(width)
+	b.Width, err = strconv.Atoi(width)
 	if err != nil {
 		return errors.Join(this, err)
 	}
-	b.height, err = strconv.Atoi(height)
+	b.Height, err = strconv.Atoi(height)
 	if err != nil {
 		return errors.Join(this, err)
 	}

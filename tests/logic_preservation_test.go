@@ -1,12 +1,13 @@
-package devbrowser
+package devbrowser_test
 
 import (
+	"github.com/tinywasm/devbrowser"
 	"fmt"
 	"testing"
 )
 
 // TestLogicPreservation_ConfigPriority enforces the critical business logic:
-// "Stored configuration takes precedence over monitor detection on startup."
+// "devbrowser.Stored configuration takes precedence over monitor detection on startup."
 //
 // Scenario: A user has manually resized the browser or moved it to a specific setup.
 // We must NOT override this with the auto-detected monitor size on startup.
@@ -18,41 +19,41 @@ func TestLogicPreservation_ConfigPriority(t *testing.T) {
 	mockMonitorW, mockMonitorH := 4000, 2000
 
 	// Temporarily replace the monitor query function
-	originalQuery := queryMonitorSize
-	defer func() { queryMonitorSize = originalQuery }()
+	originalQuery := devbrowser.QueryMonitorSize
+	defer func() { devbrowser.QueryMonitorSize = originalQuery }()
 
-	queryMonitorSize = func() (int, int) {
+	devbrowser.QueryMonitorSize = func() (int, int) {
 		return mockMonitorW, mockMonitorH
 	}
 
-	// User's Configured Size (Stored)
+	// User's Configured Size (devbrowser.Stored)
 	// e.g. a small window preferred by the user: 800x600
 	storedW, storedH := 800, 600
 
-	b := &DevBrowser{
-		width:          storedW,
-		height:         storedH,
-		sizeConfigured: true,                // This flag means "loaded from storage"
-		log:            func(msg ...any) {}, // No-op logger
+	b := &devbrowser.DevBrowser{
+		Width:          storedW,
+		Height:         storedH,
+		SizeConfigured: true,                // This flag means "loaded from storage"
+		Log:            func(msg ...any) {}, // No-op logger
 	}
 
 	// EXECUTE STARTUP LOGIC
 	// Logic from OpenBrowser.go:
 	// if !h.sizeConfigured { h.detectMonitorSize(); h.startWithDetectedSize() }
-	if !b.sizeConfigured {
-		b.detectMonitorSize()
-		b.startWithDetectedSize()
+	if !b.SizeConfigured {
+		b.DetectMonitorSize()
+		b.StartWithDetectedSize()
 	}
 
 	// ASSERT
 	// Logic Preservation Check:
 	// Did we keep the stored config?
-	if b.width != storedW || b.height != storedH {
+	if b.Width != storedW || b.Height != storedH {
 		t.Errorf("CRITICAL LOGIC FAILURE: Startup logic overwrote stored config.\n"+
-			"Expected (Stored): %dx%d\n"+
+			"Expected (devbrowser.Stored): %dx%d\n"+
 			"Got (After Startup): %dx%d\n"+
 			"Explanation: If sizeConfigured is true, we MUST NOT auto-adjust to monitor on startup.",
-			storedW, storedH, b.width, b.height)
+			storedW, storedH, b.Width, b.Height)
 	}
 
 	// Verify we didn't even populate monitor stats (Startup optimization: skip detection if not needed)
@@ -75,27 +76,27 @@ func TestLogicPreservation_LazyLoadingMCP(t *testing.T) {
 	// 1366x768
 	mockMonitorW, mockMonitorH := 1366, 768
 
-	originalQuery := queryMonitorSize
-	defer func() { queryMonitorSize = originalQuery }()
+	originalQuery := devbrowser.QueryMonitorSize
+	defer func() { devbrowser.QueryMonitorSize = originalQuery }()
 
 	detectCalled := false
-	queryMonitorSize = func() (int, int) {
+	devbrowser.QueryMonitorSize = func() (int, int) {
 		detectCalled = true
 		return mockMonitorW, mockMonitorH
 	}
 
-	b := &DevBrowser{
-		width:          800,
-		height:         600,
-		sizeConfigured: true, // Started with config
-		log:            func(msg ...any) {},
+	b := &devbrowser.DevBrowser{
+		Width:          800,
+		Height:         600,
+		SizeConfigured: true, // Started with config
+		Log:            func(msg ...any) {},
 	}
 
 	// EXECUTE MCP ACTION
 	// Request "desktop" preset (nominally 1440x900)
 	// This should trigger lazy detection and constrain to 1366x768 (fitting height inside 768)
 	// The getPresetSize method calls detectMonitorSize internally if fields are 0.
-	w, h, err := b.getPresetSize("desktop")
+	w, h, err := b.GetPresetSize("desktop")
 	if err != nil {
 		t.Fatalf("getPresetSize failed: %v", err)
 	}
@@ -124,24 +125,24 @@ func TestLogicPreservation_LazyLoadingMCP(t *testing.T) {
 func TestLogicPreservation_NoConfigStartup(t *testing.T) {
 	mockMonitorW, mockMonitorH := 1920, 1080
 
-	originalQuery := queryMonitorSize
-	defer func() { queryMonitorSize = originalQuery }()
+	originalQuery := devbrowser.QueryMonitorSize
+	defer func() { devbrowser.QueryMonitorSize = originalQuery }()
 
-	queryMonitorSize = func() (int, int) {
+	devbrowser.QueryMonitorSize = func() (int, int) {
 		return mockMonitorW, mockMonitorH
 	}
 
-	b := &DevBrowser{
-		width:          1024, // Default defined in New()
-		height:         768,
-		sizeConfigured: false, // NO stored config
-		log:            func(msg ...any) {},
+	b := &devbrowser.DevBrowser{
+		Width:          1024, // Default defined in devbrowser.New()
+		Height:         768,
+		SizeConfigured: false, // NO stored config
+		Log:            func(msg ...any) {},
 	}
 
 	// EXECUTE STARTUP LOGIC
-	if !b.sizeConfigured {
-		b.detectMonitorSize()
-		b.startWithDetectedSize()
+	if !b.SizeConfigured {
+		b.DetectMonitorSize()
+		b.StartWithDetectedSize()
 	}
 
 	// In this case (1920x1080), the default 1024x768 fits, so it shouldn't change.
@@ -152,32 +153,32 @@ func TestLogicPreservation_TinyScreenStartup(t *testing.T) {
 	// Tiny Raspberry Pi Screen: 800x480
 	mockMonitorW, mockMonitorH := 800, 480
 
-	originalQuery := queryMonitorSize
-	defer func() { queryMonitorSize = originalQuery }()
+	originalQuery := devbrowser.QueryMonitorSize
+	defer func() { devbrowser.QueryMonitorSize = originalQuery }()
 
-	queryMonitorSize = func() (int, int) {
+	devbrowser.QueryMonitorSize = func() (int, int) {
 		return mockMonitorW, mockMonitorH
 	}
 
-	b := &DevBrowser{
-		width:          1024, // Default default
-		height:         768,
-		sizeConfigured: false, // NO stored config
-		log:            func(msg ...any) {},
+	b := &devbrowser.DevBrowser{
+		Width:          1024, // Default default
+		Height:         768,
+		SizeConfigured: false, // NO stored config
+		Log:            func(msg ...any) {},
 	}
 
 	// EXECUTE STARTUP LOGIC
-	if !b.sizeConfigured {
-		b.detectMonitorSize()
-		b.startWithDetectedSize()
+	if !b.SizeConfigured {
+		b.DetectMonitorSize()
+		b.StartWithDetectedSize()
 	}
 
 	// ASSERT
 	// Should be clamped to monitor
-	if b.width > mockMonitorW {
-		t.Errorf("Startup Auto-Size Failed: Width %d > Monitor %d", b.width, mockMonitorW)
+	if b.Width > mockMonitorW {
+		t.Errorf("Startup Auto-Size Failed: Width %d > Monitor %d", b.Width, mockMonitorW)
 	}
-	if b.height > mockMonitorH {
-		t.Errorf("Startup Auto-Size Failed: Height %d > Monitor %d", b.height, mockMonitorH)
+	if b.Height > mockMonitorH {
+		t.Errorf("Startup Auto-Size Failed: Height %d > Monitor %d", b.Height, mockMonitorH)
 	}
 }

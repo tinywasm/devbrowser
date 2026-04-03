@@ -1,4 +1,4 @@
-package devbrowser
+package devbrowser_test
 
 import (
 	"fmt"
@@ -40,23 +40,21 @@ func TestConsoleCapture(t *testing.T) {
 	}))
 	defer ts.Close()
 
-	// 2. Initialize DevBrowser Context manually
+	// 2. Initialize devbrowser.DevBrowser Context manually
 	db, _ := DefaultTestBrowser()
 
 	if err := db.CreateBrowserContext(); err != nil {
 		t.Fatalf("Failed to create browser context: %v", err)
 	}
 	// We need to initialize capture manually since we aren't using OpenBrowser
-	// initializeConsoleCapture is private (lowercase), but we are in the same package `devbrowser`
-	// so we can call it.
-	if err := db.initializeConsoleCapture(); err != nil {
+	if err := db.InitializeConsoleCapture(); err != nil {
 		t.Fatalf("Failed to init capture: %v", err)
 	}
 
 	defer db.CloseBrowser()
 
 	// 3. Navigate to test page and wait for events
-	err := chromedp.Run(db.ctx,
+	err := chromedp.Run(db.Ctx,
 		chromedp.Navigate(ts.URL),
 		chromedp.Sleep(1000*time.Millisecond),
 	)

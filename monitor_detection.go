@@ -6,9 +6,9 @@ import (
 	"github.com/tinywasm/screenshot"
 )
 
-// queryMonitorSize is a function variable to allow mocking in tests.
+// QueryMonitorSize is a function variable to allow mocking in tests.
 // It returns width, height of the primary display.
-var queryMonitorSize = func() (int, int) {
+var QueryMonitorSize = func() (int, int) {
 	n := screenshot.NumActiveDisplays()
 	if n <= 0 {
 		return 0, 0
@@ -20,18 +20,18 @@ var queryMonitorSize = func() (int, int) {
 
 // detectMonitorSize attempts to retrieve the primary monitor's dimensions.
 // It updates the DevBrowser's monitorWidth and monitorHeight fields.
-func (b *DevBrowser) detectMonitorSize() {
-	w, h := queryMonitorSize()
+func (b *DevBrowser) DetectMonitorSize() {
+	w, h := QueryMonitorSize()
 
 	if w == 0 || h == 0 {
-		b.log("No active displays found or extraction failed")
+		b.Log("No active displays found or extraction failed")
 		return
 	}
 
-	b.mu.Lock()
-	b.monitorWidth = w
-	b.monitorHeight = h
-	b.mu.Unlock()
+	b.Mu.Lock()
+	b.MonitorWidth = w
+	b.MonitorHeight = h
+	b.Mu.Unlock()
 
-	b.log(fmt.Sprintf("Detected monitor size: %dx%d", w, h))
+	b.Log(fmt.Sprintf("Detected monitor size: %dx%d", w, h))
 }

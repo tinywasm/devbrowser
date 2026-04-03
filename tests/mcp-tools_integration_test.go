@@ -1,4 +1,4 @@
-package devbrowser
+package devbrowser_test
 
 import (
 	"testing"
@@ -21,6 +21,9 @@ func TestGetMCPToolsMetadata_AllToolsRegistered(t *testing.T) {
 		"browser_swipe_element",
 		"browser_inspect_element",
 		"browser_get_performance",
+		"browser_get_network_logs",
+		"browser_evaluate_js",
+		"browser_get_errors",
 	}
 
 	if len(tools) != len(expectedToolNames) {

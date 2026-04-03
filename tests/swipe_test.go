@@ -1,6 +1,7 @@
-package devbrowser
+package devbrowser_test
 
 import (
+	"github.com/tinywasm/devbrowser"
 	"context"
 	"fmt"
 	"net/http"
@@ -21,14 +22,14 @@ func TestBrowserSwipe(t *testing.T) {
 			<html>
 			<style>
 				#slider {
-					width: 300px;
-					height: 20px;
+					Width: 300px;
+					Height: 20px;
 					background: #ccc;
 					position: relative;
 				}
 				#handle {
-					width: 20px;
-					height: 20px;
+					Width: 20px;
+					Height: 20px;
 					background: red;
 					position: absolute;
 					left: 0;
@@ -80,14 +81,14 @@ func TestBrowserSwipe(t *testing.T) {
 	defer cancel()
 
 	// 3. Create a devbrowser instance
-	db := &DevBrowser{
-		ctx:    ctx,
-		cancel: cancel,
-		isOpen: true,
-		log:    func(args ...any) {},
+	db := &devbrowser.DevBrowser{
+		Ctx:    ctx,
+		Cancel: cancel,
+		IsOpenFlag: true,
+		Log:    func(args ...any) {},
 	}
-	db.width = 1024
-	db.height = 768
+	db.Width = 1024
+	db.Height = 768
 
 	// Navigate
 	if err := chromedp.Run(ctx, chromedp.Navigate(ts.URL)); err != nil {
@@ -95,34 +96,39 @@ func TestBrowserSwipe(t *testing.T) {
 	}
 
 	// 4. Get the swipe tool
-	tools := db.getInteractionTools()
-	var swipeTool mcp.Tool
-	for _, tool := range tools {
-		if tool.Name == "browser_swipe_element" {
-			swipeTool = tool
+	tools := db.GetInteractionTools()
+	var swipeTool *mcp.Tool
+	for i := range tools {
+		if tools[i].Name == "browser_swipe_element" {
+			swipeTool = &tools[i]
 			break
 		}
 	}
 
-	if swipeTool.Name == "" {
+	if swipeTool == nil {
 		t.Fatal("browser_swipe_element tool not found")
 	}
 
 	// 5. Execute swipe: Swipe right by 100px on the handle
-	swipeTool.Execute(map[string]any{
-		"selector":  "#handle",
-		"direction": "right",
-		"distance":  100.0,
-	})
+	args := devbrowser.SwipeElementArgs{Selector: "#handle", Direction: "right", Distance: 100}
+	req := mcp.Request{
+		Params: struct {
+			Name      string
+			Arguments string `json:",omitempty"`
+		}{
+			Name:      "browser_swipe_element",
+			Arguments: devbrowser.EncodeSchema(&args),
+		},
+		Action: 'u',
+	}
+	_, err := swipeTool.Execute(nil, req)
+	if err != nil {
+		t.Fatalf("Swipe failed: %v", err)
+	}
 
 	// 6. Verify handle moved
-	// Initial left was 0. Should be ~90-100 depending on exact center math and mouse events.
-	// Our mock logic sets left = clientX - 10.
-	// Center of handle (20x20) at start (left=0) is x=10.
-	// Swipe right 100px -> new mouse x = 110.
-	// JS logic: newLeft = 110 - 10 = 100.
 	var leftValue string
-	err := chromedp.Run(ctx,
+	err = chromedp.Run(ctx,
 		chromedp.Evaluate(`document.getElementById('handle').style.left`, &leftValue),
 	)
 	if err != nil {

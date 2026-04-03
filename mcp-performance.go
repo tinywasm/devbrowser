@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/tinywasm/context"
 	"github.com/tinywasm/devbrowser/chromedp"
 	"github.com/tinywasm/mcp"
 )
@@ -69,8 +70,8 @@ const GetPerformanceJS = `
 })()
 `
 
-// formatPerformanceReport builds a compact text report from raw JS metrics.
-func formatPerformanceReport(pageURL string, metrics map[string]any) string {
+// FormatPerformanceReport builds a compact text report from raw JS metrics.
+func FormatPerformanceReport(pageURL string, metrics map[string]any) string {
 	var b strings.Builder
 	b.WriteString(fmt.Sprintf("Performance: %s\n", pageURL))
 
@@ -146,31 +147,32 @@ func formatPerformanceReport(pageURL string, metrics map[string]any) string {
 	return b.String()
 }
 
-func (b *DevBrowser) getPerformanceTools() []mcp.Tool {
+func (b *DevBrowser) GetPerformanceTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_get_performance",
 			Description: "Get page performance metrics (memory, timing, DOM stats, WASM resources) to diagnose excessive RAM usage, slow loads, or rendering issues. Returns a compact text report optimized for minimal token usage.",
-			Parameters:  []mcp.Parameter{},
-			Execute: func(args map[string]any) {
-				if !b.isOpen {
-					b.Logger("Browser is not open")
-					return
+			InputSchema: EncodeSchema(new(GetPerformanceArgs)),
+			Resource:    "browser",
+			Action:      'r',
+			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				if !b.IsOpenFlag {
+					return nil, fmt.Errorf("Browser is not open")
 				}
 
 				var pageURL string
 				var metrics map[string]any
 
-				err := chromedp.Run(b.ctx,
+				err := chromedp.Run(b.Ctx,
 					chromedp.Location(&pageURL),
 					chromedp.Evaluate(GetPerformanceJS, &metrics),
 				)
 				if err != nil {
-					b.Logger(fmt.Sprintf("Failed to get performance metrics: %v", err))
-					return
+					return nil, fmt.Errorf("Failed to get performance metrics: %v", err)
 				}
 
-				b.Logger(formatPerformanceReport(pageURL, metrics))
+				report := FormatPerformanceReport(pageURL, metrics)
+				return mcp.Text(report), nil
 			},
 		},
 	}

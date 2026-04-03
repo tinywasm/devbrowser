@@ -4,71 +4,54 @@ import (
 	"encoding/json"
 	"fmt"
 
+	"github.com/tinywasm/context"
 	"github.com/tinywasm/devbrowser/cdproto/runtime"
 	"github.com/tinywasm/devbrowser/chromedp"
 	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getEvaluateJsTools() []mcp.Tool {
+func (b *DevBrowser) GetEvaluateJsTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_evaluate_js",
 			Description: "Execute JavaScript code in browser context to inspect DOM, call WASM exports, test functions, or debug application state. Returns execution result or error.",
-			Parameters: []mcp.Parameter{
-				{
-					Name:        "script",
-					Description: "JavaScript code to execute in browser context",
-					Required:    true,
-					Type:        "string",
-				},
-				{
-					Name:        "await_promise",
-					Description: "Wait for Promise resolution if script returns Promise",
-					Required:    false,
-					Type:        "boolean",
-					Default:     false,
-				},
-			},
-			Execute: func(args map[string]any) {
-				if !b.isOpen {
-					b.Logger("Browser is not open. Please open it first with browser_open")
-					return
+			InputSchema: EncodeSchema(new(EvaluateJSArgs)),
+			Resource:    "browser",
+			Action:      'u',
+			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				if !b.IsOpenFlag {
+					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
 				}
 
-				script, ok := args["script"].(string)
-				if !ok || script == "" {
-					b.Logger("Script parameter is required")
-					return
+				var args EvaluateJSArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
 				}
-
-				awaitPromise, _ := args["await_promise"].(bool)
 
 				var res interface{}
-				err := chromedp.Run(b.ctx,
-					chromedp.Evaluate(script, &res, func(p *runtime.EvaluateParams) *runtime.EvaluateParams {
-						return p.WithAwaitPromise(awaitPromise)
+				err := chromedp.Run(b.Ctx,
+					chromedp.Evaluate(args.Script, &res, func(p *runtime.EvaluateParams) *runtime.EvaluateParams {
+						return p.WithAwaitPromise(args.AwaitPromise)
 					}),
 				)
 
 				if err != nil {
-					b.Logger(fmt.Sprintf("Error: %v", err))
-					return
+					return nil, err
 				}
 
 				switch v := res.(type) {
 				case nil:
-					b.Logger("undefined")
+					return mcp.Text("undefined"), nil
 				case string:
-					b.Logger(v)
+					return mcp.Text(v), nil
 				case float64, bool:
-					b.Logger(fmt.Sprintf("%v", v))
+					return mcp.Text(fmt.Sprintf("%v", v)), nil
 				default:
 					jsonRes, err := json.Marshal(v)
 					if err != nil {
-						b.Logger(fmt.Sprintf("Error: failed to serialize result: %v", err))
-						return
+						return nil, fmt.Errorf("failed to serialize result: %v", err)
 					}
-					b.Logger(string(jsonRes))
+					return mcp.Text(string(jsonRes)), nil
 				}
 			},
 		},

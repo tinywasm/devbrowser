@@ -13,19 +13,19 @@ import (
 // initializeConsoleCapture sets up the console log capturing system using Chrome DevTools Protocol.
 // This captures ALL console messages including those from page load, using runtime events.
 func (b *DevBrowser) initializeConsoleCapture() error {
-	if b.ctx == nil {
+	if b.Ctx == nil {
 		return errors.New("browser context not initialized")
 	}
 
 	// Initialize the console logs slice
-	b.consoleLogs = []string{}
+	b.ConsoleLogs = []string{}
 
 	// Listen for console API called events and console cleared events
-	chromedp.ListenTarget(b.ctx, func(ev interface{}) {
+	chromedp.ListenTarget(b.Ctx, func(ev interface{}) {
 		switch ev := ev.(type) {
 		case *runtime.EventConsoleAPICalled:
-			b.logsMutex.Lock()
-			defer b.logsMutex.Unlock()
+			b.LogsMutex.Lock()
+			defer b.LogsMutex.Unlock()
 
 			// Format the arguments without prefix
 			var message string
@@ -48,22 +48,22 @@ func (b *DevBrowser) initializeConsoleCapture() error {
 			}
 
 			// Add to logs without type prefix to save tokens
-			b.consoleLogs = append(b.consoleLogs, message)
+			b.ConsoleLogs = append(b.ConsoleLogs, message)
 
 		case *runtime.EventExceptionThrown:
-			b.logsMutex.Lock()
-			defer b.logsMutex.Unlock()
+			b.LogsMutex.Lock()
+			defer b.LogsMutex.Unlock()
 
 			// Capture uncaught exceptions
 			msg := fmt.Sprintf("[Exception] %s", ev.ExceptionDetails.Text)
 			if ev.ExceptionDetails.Exception != nil && ev.ExceptionDetails.Exception.Description != "" {
 				msg += ": " + ev.ExceptionDetails.Exception.Description
 			}
-			b.consoleLogs = append(b.consoleLogs, msg)
+			b.ConsoleLogs = append(b.ConsoleLogs, msg)
 
 		case *log.EventEntryAdded:
-			b.logsMutex.Lock()
-			defer b.logsMutex.Unlock()
+			b.LogsMutex.Lock()
+			defer b.LogsMutex.Unlock()
 
 			// Capture browser logs (network errors, security warnings, etc.)
 			// Format: [Level] Source: Text
@@ -71,28 +71,28 @@ func (b *DevBrowser) initializeConsoleCapture() error {
 			if ev.Entry.URL != "" {
 				msg += fmt.Sprintf(" (%s)", ev.Entry.URL)
 			}
-			b.consoleLogs = append(b.consoleLogs, msg)
+			b.ConsoleLogs = append(b.ConsoleLogs, msg)
 
 		case *audits.EventIssueAdded:
-			b.logsMutex.Lock()
-			defer b.logsMutex.Unlock()
+			b.LogsMutex.Lock()
+			defer b.LogsMutex.Unlock()
 
 			// Capture Audit Issues (Cookie warnings, Mixed Content, etc.)
 			msg := fmt.Sprintf("[Issue] %s", ev.Issue.Code)
 			// Details are often complex structs, so we stick to the code mostly.
 			// Ideally we could parse Issue.Details but it is a complex union type.
-			b.consoleLogs = append(b.consoleLogs, msg)
+			b.ConsoleLogs = append(b.ConsoleLogs, msg)
 
 		case *runtime.EventExecutionContextsCleared:
 			// Clear logs when execution contexts are cleared (page reload/navigation)
-			b.logsMutex.Lock()
-			b.consoleLogs = []string{}
-			b.logsMutex.Unlock()
+			b.LogsMutex.Lock()
+			b.ConsoleLogs = []string{}
+			b.LogsMutex.Unlock()
 		}
 	})
 
 	// Enable console, log, and audits domains to start receiving events
-	err := chromedp.Run(b.ctx,
+	err := chromedp.Run(b.Ctx,
 		runtime.Enable(),
 		log.Enable(),
 		audits.Enable(),
@@ -107,29 +107,29 @@ func (b *DevBrowser) initializeConsoleCapture() error {
 // GetConsoleLogs returns captured console logs from the browser.
 // Returns an error if the browser context is not initialized.
 func (b *DevBrowser) GetConsoleLogs() ([]string, error) {
-	if b.ctx == nil {
+	if b.Ctx == nil {
 		return nil, errors.New("browser context not initialized")
 	}
 
-	b.logsMutex.Lock()
-	defer b.logsMutex.Unlock()
+	b.LogsMutex.Lock()
+	defer b.LogsMutex.Unlock()
 
 	// Return a copy of the logs to avoid race conditions
-	logsCopy := make([]string, len(b.consoleLogs))
-	copy(logsCopy, b.consoleLogs)
+	logsCopy := make([]string, len(b.ConsoleLogs))
+	copy(logsCopy, b.ConsoleLogs)
 
 	return logsCopy, nil
 }
 
 // ClearConsoleLogs clears the captured console logs.
 func (b *DevBrowser) ClearConsoleLogs() error {
-	if b.ctx == nil {
+	if b.Ctx == nil {
 		return errors.New("browser context not initialized")
 	}
 
-	b.logsMutex.Lock()
-	defer b.logsMutex.Unlock()
+	b.LogsMutex.Lock()
+	defer b.LogsMutex.Unlock()
 
-	b.consoleLogs = []string{}
+	b.ConsoleLogs = []string{}
 	return nil
 }
