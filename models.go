@@ -80,3 +80,14 @@ type GetContentArgs struct {
 type EmptyArgs struct {
 	Reserved int `input:"-"`
 }
+
+// ormc:formonly
+type OpenBrowserArgs struct {
+	Port  string `input:"-"`
+	Https bool   `input:"-"`
+}
+
+// ormc:formonly
+type CloseBrowserArgs struct {
+	Reserved int `input:"-"`
+}

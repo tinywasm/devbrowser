@@ -160,6 +160,11 @@ func (b *DevBrowser) GetPerformanceTools() []mcp.Tool {
 					return nil, fmt.Errorf("Browser is not open")
 				}
 
+				var args GetPerformanceArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
+				}
+
 				var pageURL string
 				var metrics map[string]any
 

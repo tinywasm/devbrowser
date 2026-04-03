@@ -110,6 +110,11 @@ func (b *DevBrowser) GetStructureTools() []mcp.Tool {
 					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
 				}
 
+				var args GetContentArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
+				}
+
 				var pageTitle, pageURL, structure string
 				var windowWidth, windowHeight int
 

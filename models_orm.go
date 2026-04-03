@@ -252,3 +252,38 @@ func (m *EmptyArgs) Pointers() []any {
 func (m *EmptyArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
 }
+
+var _schemaOpenBrowserArgs = []fmt.Field{
+		{Name: "port", Type: fmt.FieldText},
+		{Name: "https", Type: fmt.FieldBool},
+	}
+
+func (m *OpenBrowserArgs) Schema() []fmt.Field { return _schemaOpenBrowserArgs }
+
+func (m *OpenBrowserArgs) Pointers() []any {
+	return []any{
+		&m.Port,
+		&m.Https,
+	}
+}
+
+func (m *OpenBrowserArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
+
+var _schemaCloseBrowserArgs = []fmt.Field{
+		{Name: "reserved", Type: fmt.FieldInt},
+	}
+
+func (m *CloseBrowserArgs) Schema() []fmt.Field { return _schemaCloseBrowserArgs }
+
+func (m *CloseBrowserArgs) Pointers() []any {
+	return []any{
+		&m.Reserved,
+	}
+}
+
+func (m *CloseBrowserArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
+
