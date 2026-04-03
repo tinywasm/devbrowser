@@ -2,65 +2,70 @@ package devbrowser
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
+	"github.com/tinywasm/context"
 	"github.com/tinywasm/devbrowser/cdproto/runtime"
 	"github.com/tinywasm/devbrowser/chromedp"
 	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getErrorTools() []mcp.Tool {
+func (b *DevBrowser) GetErrorTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_get_errors",
 			Description: "Get JavaScript runtime errors and uncaught exceptions to quickly identify crashes, bugs, or WASM panics. Returns error messages with stack traces.",
-			Parameters: []mcp.Parameter{
-				{
-					Name:        "limit",
-					Description: "Maximum number of recent errors to return",
-					Required:    false,
-					Type:        "number",
-					Default:     20,
-				},
-			},
-			Execute: func(args map[string]any) {
-				if !b.isOpen {
-					b.Logger("Browser is not open. Please open it first with browser_open")
-					return
+			InputSchema: EncodeSchema(new(GetErrorsArgs)),
+			Resource:    "browser",
+			Action:      'r',
+			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				if !b.IsOpenFlag {
+					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
 				}
 
-				limit := 20
-				if l, ok := args["limit"].(float64); ok {
-					limit = int(l)
+				var args GetErrorsArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
 				}
 
-				b.errorsMutex.Lock()
-				defer b.errorsMutex.Unlock()
+				limit := args.Limit
+				if limit == 0 {
+					limit = 20
+				}
 
-				if len(b.jsErrors) == 0 {
-					b.Logger("No JavaScript errors captured")
-					return
+				b.ErrorsMutex.Lock()
+				defer b.ErrorsMutex.Unlock()
+
+				if len(b.JsErrors) == 0 {
+					return mcp.Text("No JavaScript errors captured"), nil
 				}
 
 				start := 0
-				if len(b.jsErrors) > limit {
-					start = len(b.jsErrors) - limit
+				if len(b.JsErrors) > limit {
+					start = len(b.JsErrors) - limit
 				}
 
-				for _, err := range b.jsErrors[start:] {
-					b.Logger(fmt.Sprintf("Error: %s\n  at %s:%d:%d\n%s\n---", err.Message, err.Source, err.LineNumber, err.ColumnNumber, err.StackTrace))
+				var result strings.Builder
+				for i, err := range b.JsErrors[start:] {
+					if i > 0 {
+						result.WriteString("\n---\n")
+					}
+					result.WriteString(fmt.Sprintf("Error: %s\n  at %s:%d:%d\n%s", err.Message, err.Source, err.LineNumber, err.ColumnNumber, err.StackTrace))
 				}
+
+				return mcp.Text(result.String()), nil
 			},
 		},
 	}
 }
 
 func (b *DevBrowser) initializeErrorCapture() {
-	chromedp.ListenTarget(b.ctx, func(ev interface{}) {
+	chromedp.ListenTarget(b.Ctx, func(ev interface{}) {
 		switch ev := ev.(type) {
 		case *runtime.EventExceptionThrown:
-			b.errorsMutex.Lock()
-			defer b.errorsMutex.Unlock()
+			b.ErrorsMutex.Lock()
+			defer b.ErrorsMutex.Unlock()
 
 			exception := ev.ExceptionDetails
 			jsErr := JSError{
@@ -75,11 +80,11 @@ func (b *DevBrowser) initializeErrorCapture() {
 				jsErr.StackTrace = exception.Exception.Description
 			}
 
-			b.jsErrors = append(b.jsErrors, jsErr)
+			b.JsErrors = append(b.JsErrors, jsErr)
 		case *runtime.EventExecutionContextsCleared:
-			b.errorsMutex.Lock()
-			b.jsErrors = []JSError{}
-			b.errorsMutex.Unlock()
+			b.ErrorsMutex.Lock()
+			b.JsErrors = []JSError{}
+			b.ErrorsMutex.Unlock()
 		}
 	})
 }

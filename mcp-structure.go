@@ -3,6 +3,7 @@ package devbrowser
 import (
 	"fmt"
 
+	"github.com/tinywasm/context"
 	"github.com/tinywasm/devbrowser/chromedp"
 	"github.com/tinywasm/mcp"
 )
@@ -96,22 +97,23 @@ const GetStructureJS = `
 })()
 `
 
-func (b *DevBrowser) getStructureTools() []mcp.Tool {
+func (b *DevBrowser) GetStructureTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_get_content",
 			Description: "Get a text-based representation of the page content, optimized for LLM reading. Reduced token count compared to screenshots.",
-			Parameters:  []mcp.Parameter{},
-			Execute: func(args map[string]any) {
-				if !b.isOpen {
-					b.Logger("Browser is not open. Please open it first with browser_open")
-					return
+			InputSchema: EncodeSchema(new(GetContentArgs)),
+			Resource:    "browser",
+			Action:      'r',
+			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				if !b.IsOpenFlag {
+					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
 				}
 
 				var pageTitle, pageURL, structure string
 				var windowWidth, windowHeight int
 
-				err := chromedp.Run(b.ctx,
+				err := chromedp.Run(b.Ctx,
 					chromedp.Title(&pageTitle),
 					chromedp.Location(&pageURL),
 					chromedp.Evaluate(`window.innerWidth`, &windowWidth),
@@ -120,8 +122,7 @@ func (b *DevBrowser) getStructureTools() []mcp.Tool {
 				)
 
 				if err != nil {
-					b.Logger(fmt.Sprintf("Failed to get page structure: %v", err))
-					return
+					return nil, fmt.Errorf("Failed to get page structure: %v", err)
 				}
 
 				report := fmt.Sprintf(
@@ -133,6 +134,7 @@ func (b *DevBrowser) getStructureTools() []mcp.Tool {
 				)
 
 				b.Logger(report)
+				return mcp.Text(report), nil
 			},
 		},
 	}

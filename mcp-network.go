@@ -6,54 +6,45 @@ import (
 	"sync"
 	"time"
 
+	"github.com/tinywasm/context"
 	"github.com/tinywasm/devbrowser/cdproto/network"
 	"github.com/tinywasm/devbrowser/chromedp"
 	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getNetworkTools() []mcp.Tool {
+func (b *DevBrowser) GetNetworkTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_get_network_logs",
 			Description: "Get network requests and responses to debug API calls, asset loading failures, CORS errors, or slow requests. Shows URL, status, method, and timing.",
-			Parameters: []mcp.Parameter{
-				{
-					Name:        "filter",
-					Description: "Filter by request type",
-					Required:    false,
-					Type:        "string",
-					EnumValues:  []string{"all", "xhr", "fetch", "document", "script", "image"},
-					Default:     "all",
-				},
-				{
-					Name:        "limit",
-					Description: "Maximum number of recent requests to return",
-					Required:    false,
-					Type:        "number",
-					Default:     50,
-				},
-			},
-			Execute: func(args map[string]any) {
-				if !b.isOpen {
-					b.Logger("Browser is not open. Please open it first with browser_open")
-					return
+			InputSchema: EncodeSchema(new(GetNetworkLogsArgs)),
+			Resource:    "browser",
+			Action:      'r',
+			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				if !b.IsOpenFlag {
+					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
 				}
 
-				filter := "all"
-				if f, ok := args["filter"].(string); ok {
-					filter = f
+				var args GetNetworkLogsArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
 				}
 
-				limit := 50
-				if l, ok := args["limit"].(float64); ok {
-					limit = int(l)
+				filter := args.Filter
+				if filter == "" {
+					filter = "all"
 				}
 
-				b.networkMutex.Lock()
-				defer b.networkMutex.Unlock()
+				limit := args.Limit
+				if limit == 0 {
+					limit = 50
+				}
+
+				b.NetworkMutex.Lock()
+				defer b.NetworkMutex.Unlock()
 
 				var filteredLogs []NetworkLogEntry
-				for _, log := range b.networkLogs {
+				for _, log := range b.NetworkLogs {
 					if filter == "all" || strings.ToLower(log.Type) == filter {
 						filteredLogs = append(filteredLogs, log)
 					}
@@ -64,21 +55,28 @@ func (b *DevBrowser) getNetworkTools() []mcp.Tool {
 				}
 
 				if len(filteredLogs) == 0 {
+					var msg string
 					if filter == "all" {
-						b.Logger("No network requests captured")
+						msg = "No network requests captured"
 					} else {
-						b.Logger(fmt.Sprintf("No %s requests found", filter))
+						msg = fmt.Sprintf("No %s requests found", filter)
 					}
-					return
+					return mcp.Text(msg), nil
 				}
 
-				for _, log := range filteredLogs {
+				var result strings.Builder
+				for i, log := range filteredLogs {
+					if i > 0 {
+						result.WriteString("\n")
+					}
 					status := fmt.Sprintf("%d", log.Status)
 					if log.Failed {
 						status = "Failed"
 					}
-					b.Logger(fmt.Sprintf("%s %s %s (%dms) [%s] %s", status, log.Method, log.URL, log.Duration, log.Type, log.ErrorText))
+					result.WriteString(fmt.Sprintf("%s %s %s (%dms) [%s] %s", status, log.Method, log.URL, log.Duration, log.Type, log.ErrorText))
 				}
+
+				return mcp.Text(result.String()), nil
 			},
 		},
 	}
@@ -93,7 +91,7 @@ func (b *DevBrowser) initializeNetworkCapture() {
 	requests := make(map[network.RequestID]requestInfo)
 	var mutex sync.Mutex
 
-	chromedp.ListenTarget(b.ctx, func(ev interface{}) {
+	chromedp.ListenTarget(b.Ctx, func(ev interface{}) {
 		switch ev := ev.(type) {
 		case *network.EventRequestWillBeSent:
 			mutex.Lock()
@@ -104,9 +102,9 @@ func (b *DevBrowser) initializeNetworkCapture() {
 			}
 			mutex.Unlock()
 			if ev.Type == "Document" {
-				b.networkMutex.Lock()
-				b.networkLogs = []NetworkLogEntry{}
-				b.networkMutex.Unlock()
+				b.NetworkMutex.Lock()
+				b.NetworkLogs = []NetworkLogEntry{}
+				b.NetworkMutex.Unlock()
 			}
 
 		case *network.EventResponseReceived:
@@ -115,15 +113,15 @@ func (b *DevBrowser) initializeNetworkCapture() {
 			mutex.Unlock()
 			if ok {
 				duration := time.Since(reqInfo.Time).Milliseconds()
-				b.networkMutex.Lock()
-				b.networkLogs = append(b.networkLogs, NetworkLogEntry{
+				b.NetworkMutex.Lock()
+				b.NetworkLogs = append(b.NetworkLogs, NetworkLogEntry{
 					URL:      ev.Response.URL,
 					Method:   reqInfo.Method,
 					Status:   int(ev.Response.Status),
 					Type:     string(ev.Type),
 					Duration: duration,
 				})
-				b.networkMutex.Unlock()
+				b.NetworkMutex.Unlock()
 			}
 
 		case *network.EventLoadingFailed:
@@ -132,8 +130,8 @@ func (b *DevBrowser) initializeNetworkCapture() {
 			mutex.Unlock()
 			if ok {
 				duration := time.Since(reqInfo.Time).Milliseconds()
-				b.networkMutex.Lock()
-				b.networkLogs = append(b.networkLogs, NetworkLogEntry{
+				b.NetworkMutex.Lock()
+				b.NetworkLogs = append(b.NetworkLogs, NetworkLogEntry{
 					URL:       reqInfo.URL,
 					Method:    reqInfo.Method,
 					Type:      string(ev.Type),
@@ -141,7 +139,7 @@ func (b *DevBrowser) initializeNetworkCapture() {
 					Failed:    true,
 					ErrorText: ev.ErrorText,
 				})
-				b.networkMutex.Unlock()
+				b.NetworkMutex.Unlock()
 			}
 		}
 	})

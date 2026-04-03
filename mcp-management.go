@@ -3,85 +3,54 @@ package devbrowser
 import (
 	"fmt"
 
+	"github.com/tinywasm/context"
 	"github.com/tinywasm/devbrowser/cdproto/emulation"
 	"github.com/tinywasm/devbrowser/chromedp"
 	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getManagementTools() []mcp.Tool {
+func (b *DevBrowser) GetManagementTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_emulate_device",
 			Description: "Emulate a mobile device or tablet viewport without resizing the physical window. This toggle affects rendering and touch events. This change is persisted.",
-			Parameters: []mcp.Parameter{
-				{
-					Name:        "mode",
-					Description: "Device mode: 'desktop' (no emulation), 'mobile' (375x812), 'tablet' (768x1024), or 'off' (clear all overrides)",
-					Required:    true,
-					Type:        "string",
-					EnumValues:  []string{"desktop", "mobile", "tablet", "off"},
-				},
-				{
-					Name:        "capture",
-					Description: "If true, automatically returns a screenshot of the emulated viewport (efficiency boost: switch + see in one step)",
-					Required:    false,
-					Type:        "boolean",
-					Default:     false,
-				},
-				{
-					Name:        "selector",
-					Description: "If provided with capture=true, snippets only this element instead of the whole viewport",
-					Required:    false,
-					Type:        "string",
-				},
-			},
-			Execute: func(args map[string]any) {
-				mode, ok := args["mode"].(string)
-				if !ok {
-					b.Logger("Mode parameter is required")
-					return
+			InputSchema: EncodeSchema(new(EmulateDeviceArgs)),
+			Resource:    "browser",
+			Action:      'u',
+			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				var args EmulateDeviceArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
 				}
 
-				capture := false
-				if c, ok := args["capture"].(bool); ok {
-					capture = c
-				}
-
-				selector := ""
-				if s, ok := args["selector"].(string); ok {
-					selector = s
-				}
-
-				b.mu.Lock()
-				b.viewportMode = mode
-				b.mu.Unlock()
+				b.Mu.Lock()
+				b.ViewportMode = args.Mode
+				b.Mu.Unlock()
 
 				if err := b.SaveConfig(); err != nil {
 					b.Logger(fmt.Sprintf("Error saving emulation config: %v", err))
 				}
 
-				if b.isOpen && b.ctx != nil {
+				if b.IsOpen() && b.Ctx != nil {
 					if err := b.applyDeviceEmulation(); err != nil {
-						b.Logger(fmt.Sprintf("Error applying emulation: %v", err))
-						return
+						return nil, err
 					}
-					b.ui.RefreshUI()
+					b.UI.RefreshUI()
 				}
 
-				statusMsg := fmt.Sprintf("Device emulation set to %s", mode)
+				statusMsg := fmt.Sprintf("Device emulation set to %s", args.Mode)
 
-				if capture {
+				if args.Capture {
 					var res *ScreenshotResult
 					var err error
-					if selector != "" {
-						res, err = b.CaptureElementScreenshot(selector)
+					if args.Selector != "" {
+						res, err = b.CaptureElementScreenshot(args.Selector)
 					} else {
 						res, err = b.CaptureScreenshot(false)
 					}
 
 					if err != nil {
-						b.Logger(fmt.Sprintf("%s. Failed to capture screenshot: %v", statusMsg, err))
-						return
+						return nil, fmt.Errorf("%s. Failed to capture screenshot: %v", statusMsg, err)
 					}
 
 					// Build visual context report
@@ -94,20 +63,22 @@ func (b *DevBrowser) getManagementTools() []mcp.Tool {
 						res.HTMLStructure,
 					)
 
-					b.Logger(contextReport, mcp.BinaryData{MimeType: "image/png", Data: res.ImageData})
+					b.Logger(contextReport)
+					return mcp.Text(contextReport), nil
 				} else {
 					b.Logger(statusMsg)
+					return mcp.Text(statusMsg), nil
 				}
 			},
 		},
 	}
 }
 
-// applyDeviceEmulation applies the current b.viewportMode using CDP emulation commands.
+// applyDeviceEmulation applies the current b.ViewportMode using CDP emulation commands.
 func (b *DevBrowser) applyDeviceEmulation() error {
-	b.mu.Lock()
-	mode := b.viewportMode
-	b.mu.Unlock()
+	b.Mu.Lock()
+	mode := b.ViewportMode
+	b.Mu.Unlock()
 
 	var actions []chromedp.Action
 
@@ -134,5 +105,5 @@ func (b *DevBrowser) applyDeviceEmulation() error {
 		return fmt.Errorf("unsupported mode: %s", mode)
 	}
 
-	return chromedp.Run(b.ctx, actions...)
+	return chromedp.Run(b.Ctx, actions...)
 }

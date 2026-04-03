@@ -1,6 +1,7 @@
-package devbrowser
+package devbrowser_test
 
 import (
+	"github.com/tinywasm/devbrowser"
 	"context"
 	"fmt"
 	"net/http"
@@ -62,7 +63,7 @@ func TestPageStructureExtraction(t *testing.T) {
 	err := chromedp.Run(ctx,
 		chromedp.Navigate(ts.URL),
 		chromedp.Sleep(500*time.Millisecond), // Wait for render
-		chromedp.Evaluate(GetStructureJS, &structure),
+		chromedp.Evaluate(devbrowser.GetStructureJS, &structure),
 	)
 
 	if err != nil {

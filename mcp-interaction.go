@@ -1,246 +1,148 @@
 package devbrowser
 
 import (
-	"context"
+	stdctx "context"
 	"fmt"
 	"strconv"
 	"time"
 
+	"github.com/tinywasm/context"
 	"github.com/tinywasm/devbrowser/cdproto/input"
 	"github.com/tinywasm/devbrowser/chromedp"
 	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getInteractionTools() []mcp.Tool {
+func (b *DevBrowser) GetInteractionTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_click_element",
 			Description: "Click DOM element by CSS selector to test interactions, trigger events, or simulate user actions. Useful for testing buttons, links, and interactive components.",
-			Parameters: []mcp.Parameter{
-				{
-					Name:        "selector",
-					Description: "CSS selector for element to click (e.g., '#submit-btn', '.nav-item')",
-					Required:    true,
-					Type:        "string",
-				},
-				{
-					Name:        "wait_after",
-					Description: "Milliseconds to wait after click for effects to complete",
-					Required:    false,
-					Type:        "number",
-					Default:     100,
-				},
-				{
-					Name:        "timeout",
-					Description: "Maximum milliseconds to wait for the element to be visible",
-					Required:    false,
-					Type:        "number",
-					Default:     5000,
-				},
-			},
-			Execute: func(args map[string]any) {
-				if !b.isOpen {
-					b.Logger("Browser is not open. Please open it first with browser_open")
-					return
+			InputSchema: EncodeSchema(new(ClickElementArgs)),
+			Resource:    "browser",
+			Action:      'u',
+			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				if !b.IsOpenFlag {
+					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
 				}
 
-				selector, ok := args["selector"].(string)
-				if !ok || selector == "" {
-					b.Logger("Selector parameter is required")
-					return
+				var args ClickElementArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
 				}
 
-				waitAfter := 100
-				if w, ok := args["wait_after"].(float64); ok {
-					waitAfter = int(w)
+				waitAfter := args.WaitAfter
+				if waitAfter == 0 {
+					waitAfter = 100
 				}
 
-				timeoutMs := 5000.0
-				if t, ok := args["timeout"].(float64); ok {
-					timeoutMs = t
+				timeout := args.Timeout
+				if timeout == 0 {
+					timeout = 5000
 				}
 
-				// Create context with timeout
-				ctx, cancel := context.WithTimeout(b.ctx, time.Duration(timeoutMs)*time.Millisecond)
+				tctx, cancel := stdctx.WithTimeout(b.Ctx, time.Duration(timeout)*time.Millisecond)
 				defer cancel()
 
 				// 1. Wait for element to be present in DOM (WaitReady)
-				err := chromedp.Run(ctx, chromedp.WaitReady(selector, chromedp.ByQuery))
+				err := chromedp.Run(tctx, chromedp.WaitReady(args.Selector, chromedp.ByQuery))
 				if err != nil {
-					if err == context.DeadlineExceeded {
-						b.Logger(fmt.Sprintf("Timeout exceeded waiting for element presence: %s", selector))
-					} else {
-						b.Logger(fmt.Sprintf("Error waiting for element %s: %v", selector, err))
-					}
-					return
+					return nil, fmt.Errorf("Error waiting for element %s: %v", args.Selector, err)
 				}
 
-				// 2. Attempt standard click with a short timeout (500ms)
-				// If it fails (e.g., covered, not visible), fallback to JS click
-				clickCtx, clickCancel := context.WithTimeout(ctx, 500*time.Millisecond)
-				err = chromedp.Run(clickCtx, chromedp.Click(selector, chromedp.ByQuery))
-				clickCancel()
+				// 2. Attempt standard click
+				// Use chromedp.MouseClickNode if we want more robust clicking?
+				// No, let's just use Click but maybe it's being blocked.
+				err = chromedp.Run(tctx, chromedp.Click(args.Selector, chromedp.ByQuery))
 
+				var msg string
 				if err == nil {
-					b.Logger(fmt.Sprintf("Clicked element: %s", selector))
+					msg = fmt.Sprintf("Clicked element: %s", args.Selector)
 				} else {
 					// 3. Fallback: JavaScript click
-					b.Logger(fmt.Sprintf("Standard click failed (%v), attempting JS fallback for: %s", err, selector))
+					b.Logger(fmt.Sprintf("Standard click failed (%v), attempting JS fallback for: %s", err, args.Selector))
 
 					// Use strconv.Quote to safely escape the selector for JS string
-					jsClick := fmt.Sprintf("document.querySelector(%s).click()", strconv.Quote(selector))
+					jsClick := fmt.Sprintf("document.querySelector(%s).click()", strconv.Quote(args.Selector))
 
-					if err := chromedp.Run(ctx, chromedp.Evaluate(jsClick, nil)); err != nil {
-						b.Logger(fmt.Sprintf("JS click fallback failed for %s: %v", selector, err))
-						return
+					if err := chromedp.Run(tctx, chromedp.Evaluate(jsClick, nil)); err != nil {
+						return nil, fmt.Errorf("JS click fallback failed for %s: %v", args.Selector, err)
 					}
-					b.Logger(fmt.Sprintf("Clicked element (JS fallback): %s", selector))
+					msg = fmt.Sprintf("Clicked element (JS fallback): %s", args.Selector)
 				}
 
 				// Wait after action
 				if waitAfter > 0 {
-					chromedp.Run(ctx, chromedp.Sleep(time.Duration(waitAfter)*time.Millisecond))
+					chromedp.Run(tctx, chromedp.Sleep(time.Duration(waitAfter)*time.Millisecond))
 				}
+
+				b.Logger(msg)
+				return mcp.Text(msg), nil
 			},
 		},
 		{
 			Name:        "browser_fill_element",
 			Description: "Fill a form field (input, textarea) with text. Simulates typing.",
-			Parameters: []mcp.Parameter{
-				{
-					Name:        "selector",
-					Description: "CSS selector for the input element (e.g., '#username')",
-					Required:    true,
-					Type:        "string",
-				},
-				{
-					Name:        "value",
-					Description: "Text value to enter",
-					Required:    true,
-					Type:        "string",
-				},
-				{
-					Name:        "wait_after",
-					Description: "Milliseconds to wait after typing",
-					Required:    false,
-					Type:        "number",
-					Default:     100,
-				},
-				{
-					Name:        "timeout",
-					Description: "Maximum milliseconds to wait for the element to be visible",
-					Required:    false,
-					Type:        "number",
-					Default:     5000,
-				},
-			},
-			Execute: func(args map[string]any) {
-				if !b.isOpen {
-					b.Logger("Browser is not open. Please open it first with browser_open")
-					return
+			InputSchema: EncodeSchema(new(FillElementArgs)),
+			Resource:    "browser",
+			Action:      'u',
+			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				if !b.IsOpenFlag {
+					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
 				}
 
-				selector, ok := args["selector"].(string)
-				if !ok || selector == "" {
-					b.Logger("Selector parameter is required")
-					return
+				var args FillElementArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
 				}
 
-				value, ok := args["value"].(string)
-				if !ok {
-					b.Logger("Value parameter is required")
-					return
+				waitAfter := args.WaitAfter
+				if waitAfter == 0 {
+					waitAfter = 100
 				}
 
-				waitAfter := 100
-				if w, ok := args["wait_after"].(float64); ok {
-					waitAfter = int(w)
+				timeout := args.Timeout
+				if timeout == 0 {
+					timeout = 5000
 				}
 
-				timeoutMs := 5000.0
-				if t, ok := args["timeout"].(float64); ok {
-					timeoutMs = t
-				}
-
-				// Create context with timeout
-				ctx, cancel := context.WithTimeout(b.ctx, time.Duration(timeoutMs)*time.Millisecond)
+				tctx, cancel := stdctx.WithTimeout(b.Ctx, time.Duration(timeout)*time.Millisecond)
 				defer cancel()
 
-				err := chromedp.Run(ctx,
-					chromedp.WaitVisible(selector, chromedp.ByQuery),
-					chromedp.SendKeys(selector, value, chromedp.ByQuery),
+				err := chromedp.Run(tctx,
+					chromedp.WaitVisible(args.Selector, chromedp.ByQuery),
+					chromedp.SendKeys(args.Selector, args.Value, chromedp.ByQuery),
 					chromedp.Sleep(time.Duration(waitAfter)*time.Millisecond),
 				)
 
 				if err != nil {
-					if err == context.DeadlineExceeded {
-						b.Logger(fmt.Sprintf("Timeout exceeded waiting for element: %s", selector))
-					} else {
-						b.Logger(fmt.Sprintf("Error filling element %s: %v", selector, err))
-					}
-					return
+					return nil, fmt.Errorf("Error filling element %s: %v", args.Selector, err)
 				}
 
-				b.Logger(fmt.Sprintf("Filled element %s with '%s'", selector, value))
+				msg := fmt.Sprintf("Filled element %s with '%s'", args.Selector, args.Value)
+				b.Logger(msg)
+				return mcp.Text(msg), nil
 			},
 		},
 		{
 			Name:        "browser_swipe_element",
 			Description: "Simulate a swipe gesture on an element (up, down, left, right).",
-			Parameters: []mcp.Parameter{
-				{
-					Name:        "selector",
-					Description: "CSS selector for the element to swipe on",
-					Required:    true,
-					Type:        "string",
-				},
-				{
-					Name:        "direction",
-					Description: "Direction of swipe: 'up', 'down', 'left', 'right'",
-					Required:    true,
-					Type:        "string",
-					EnumValues:  []string{"up", "down", "left", "right"},
-				},
-				{
-					Name:        "distance",
-					Description: "Distance in pixels to swipe",
-					Required:    true,
-					Type:        "number",
-				},
-			},
-			Execute: func(args map[string]any) {
-				if !b.isOpen {
-					b.Logger("Browser is not open. Please open it first with browser_open")
-					return
+			InputSchema: EncodeSchema(new(SwipeElementArgs)),
+			Resource:    "browser",
+			Action:      'u',
+			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				if !b.IsOpenFlag {
+					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
 				}
 
-				selector, ok := args["selector"].(string)
-				if !ok || selector == "" {
-					b.Logger("Selector parameter is required")
-					return
+				var args SwipeElementArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
 				}
-
-				direction, ok := args["direction"].(string)
-				if !ok || direction == "" {
-					b.Logger("Direction parameter is required")
-					return
-				}
-
-				distanceVal, ok := args["distance"].(float64)
-				if !ok {
-					b.Logger("Distance parameter is required")
-					return
-				}
-				distance := int(distanceVal)
-
-				// Create context with timeout
-				ctx, cancel := context.WithTimeout(b.ctx, 5000*time.Millisecond)
-				defer cancel()
 
 				// Swipe Logic
-				err := chromedp.Run(ctx,
-					chromedp.WaitVisible(selector, chromedp.ByQuery),
-					chromedp.ActionFunc(func(ctx context.Context) error {
+				err := chromedp.Run(b.Ctx,
+					chromedp.WaitVisible(args.Selector, chromedp.ByQuery),
+					chromedp.ActionFunc(func(ctx stdctx.Context) error {
 						// 1. Get element dimensions to find center
 						// We use javascript to get bounding client rect as it is reliable
 						script := fmt.Sprintf(`
@@ -250,9 +152,10 @@ func (b *DevBrowser) getInteractionTools() []mcp.Tool {
 								const rect = el.getBoundingClientRect();
 								return {x: rect.left + rect.width/2, y: rect.top + rect.height/2};
 							})()
-						`, selector)
+						`, args.Selector)
 
 						var res map[string]float64
+						// Need to pass standard context.Context here
 						if err := chromedp.Evaluate(script, &res).Do(ctx); err != nil {
 							return err
 						}
@@ -262,15 +165,15 @@ func (b *DevBrowser) getInteractionTools() []mcp.Tool {
 						endX := startX
 						endY := startY
 
-						switch direction {
+						switch args.Direction {
 						case "up":
-							endY -= float64(distance)
+							endY -= float64(args.Distance)
 						case "down":
-							endY += float64(distance)
+							endY += float64(args.Distance)
 						case "left":
-							endX -= float64(distance)
+							endX -= float64(args.Distance)
 						case "right":
-							endX += float64(distance)
+							endX += float64(args.Distance)
 						}
 
 						// Perform Mouse sequence using cdproto/input
@@ -299,11 +202,12 @@ func (b *DevBrowser) getInteractionTools() []mcp.Tool {
 				)
 
 				if err != nil {
-					b.Logger(fmt.Sprintf("Error swiping element %s: %v", selector, err))
-					return
+					return nil, fmt.Errorf("Error swiping element %s: %v", args.Selector, err)
 				}
 
-				b.Logger(fmt.Sprintf("Swiped %s on %s by %dpx", direction, selector, distance))
+				msg := fmt.Sprintf("Swiped %s on %s by %dpx", args.Direction, args.Selector, args.Distance)
+				b.Logger(msg)
+				return mcp.Text(msg), nil
 			},
 		},
 	}

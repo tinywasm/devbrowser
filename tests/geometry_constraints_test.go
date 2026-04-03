@@ -1,11 +1,12 @@
-package devbrowser
+package devbrowser_test
 
 import (
+	"github.com/tinywasm/devbrowser"
 	"testing"
 )
 
 func TestCalculateConstrainedSize(t *testing.T) {
-	b := &DevBrowser{}
+	b := &devbrowser.DevBrowser{}
 
 	tests := []struct {
 		name  string
@@ -65,7 +66,7 @@ func TestCalculateConstrainedSize(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			gotW, gotH := b.calculateConstrainedSize(tt.reqW, tt.reqH, tt.monW, tt.monH)
+			gotW, gotH := b.CalculateConstrainedSize(tt.reqW, tt.reqH, tt.monW, tt.monH)
 			if gotW != tt.wantW || gotH != tt.wantH {
 				t.Errorf("calculateConstrainedSize() = %v, %v, want %v, %v", gotW, gotH, tt.wantW, tt.wantH)
 			}

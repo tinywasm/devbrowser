@@ -1,74 +1,82 @@
 package devbrowser
 
-import (
-	"github.com/tinywasm/mcp"
-)
-
 // ormc:formonly
 type EmulateDeviceArgs struct {
-	Mode     string `input:"required,enum=desktop;mobile;tablet;off"`
-	Capture  bool   `input:"default=false"`
-	Selector string `input:"optional"`
+	Mode     string `db:"not_null" input:"-"`
+	Capture  bool   `input:"-"`
+	Selector string `input:"-"`
 }
 
 // ormc:formonly
 type GetConsoleArgs struct {
-	Lines int `input:"default=50"`
+	Lines int `input:"number"`
 }
 
 // ormc:formonly
 type NavigateArgs struct {
-	URL string `input:"required"`
+	URL string `db:"not_null" input:"-"`
 }
 
 // ormc:formonly
 type ScreenshotArgs struct {
-	Fullpage bool `input:"default=false"`
+	Fullpage bool `input:"-"`
 }
 
 // ormc:formonly
 type InspectElementArgs struct {
-	Selector string `input:"required"`
+	Selector string `db:"not_null" input:"-"`
 }
 
 // ormc:formonly
 type ClickElementArgs struct {
-	Selector  string `input:"required"`
-	WaitAfter int    `input:"default=100"`
-	Timeout   int    `input:"default=5000"`
+	Selector  string `db:"not_null" input:"-"`
+	WaitAfter int    `input:"number"`
+	Timeout   int    `input:"number"`
 }
 
 // ormc:formonly
 type FillElementArgs struct {
-	Selector  string `input:"required"`
-	Value     string `input:"required"`
-	WaitAfter int    `input:"default=100"`
-	Timeout   int    `input:"default=5000"`
+	Selector  string `db:"not_null" input:"-"`
+	Value     string `db:"not_null" input:"-"`
+	WaitAfter int    `input:"number"`
+	Timeout   int    `input:"number"`
 }
 
 // ormc:formonly
 type SwipeElementArgs struct {
-	Selector  string `input:"required"`
-	Direction string `input:"required,enum=up;down;left;right"`
-	Distance  int    `input:"required"`
+	Selector  string `db:"not_null" input:"-"`
+	Direction string `db:"not_null" input:"-"`
+	Distance  int    `db:"not_null" input:"number"`
 }
 
 // ormc:formonly
 type EvaluateJSArgs struct {
-	Script       string `input:"required"`
-	AwaitPromise bool   `input:"default=false"`
+	Script       string `db:"not_null" input:"-"`
+	AwaitPromise bool   `input:"-"`
 }
 
 // ormc:formonly
-type EmptyArgs struct{}
+type GetNetworkLogsArgs struct {
+	Filter string `input:"-"`
+	Limit  int    `input:"number"`
+}
 
-func (a *EmulateDeviceArgs) Schema() string   { return "" } // ormc will overwrite
-func (a *GetConsoleArgs) Schema() string      { return "" } // ormc will overwrite
-func (a *NavigateArgs) Schema() string        { return "" } // ormc will overwrite
-func (a *ScreenshotArgs) Schema() string      { return "" } // ormc will overwrite
-func (a *InspectElementArgs) Schema() string  { return "" } // ormc will overwrite
-func (a *ClickElementArgs) Schema() string    { return "" } // ormc will overwrite
-func (a *FillElementArgs) Schema() string     { return "" } // ormc will overwrite
-func (a *SwipeElementArgs) Schema() string    { return "" } // ormc will overwrite
-func (a *EvaluateJSArgs) Schema() string      { return "" } // ormc will overwrite
-func (a *EmptyArgs) Schema() string           { return "" } // ormc will overwrite
+// ormc:formonly
+type GetErrorsArgs struct {
+	Limit int `input:"number"`
+}
+
+// ormc:formonly
+type GetPerformanceArgs struct {
+	Reserved int `input:"-"`
+}
+
+// ormc:formonly
+type GetContentArgs struct {
+	Reserved int `input:"-"`
+}
+
+// ormc:formonly
+type EmptyArgs struct {
+	Reserved int `input:"-"`
+}

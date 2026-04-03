@@ -1,4 +1,4 @@
-package devbrowser
+package devbrowser_test
 
 import (
 	"testing"
@@ -8,7 +8,7 @@ import (
 )
 
 func TestGetConsoleLogs(t *testing.T) {
-	// Create a new DevBrowser instance using the shared test helper
+	// Create a new devbrowser.DevBrowser instance using the shared test helper
 	logMessages := []string{}
 	logger := func(message ...any) {
 		for _, msg := range message {
@@ -23,12 +23,12 @@ func TestGetConsoleLogs(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to create browser context: %v", err)
 	}
-	defer db.cancel()
+	defer db.Cancel()
 
-	db.isOpen = true
+	db.IsOpenFlag = true
 
 	// Navigate to a blank page
-	err = chromedp.Run(db.ctx,
+	err = chromedp.Run(db.Ctx,
 		chromedp.Navigate("about:blank"),
 	)
 	if err != nil {
@@ -39,7 +39,7 @@ func TestGetConsoleLogs(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 
 	// Initialize the console capture system
-	err = db.initializeConsoleCapture()
+	err = db.InitializeConsoleCapture()
 	if err != nil {
 		t.Fatalf("failed to initialize console capture: %v", err)
 	}
@@ -51,7 +51,7 @@ func TestGetConsoleLogs(t *testing.T) {
 		console.warn('Test warning');
 		console.info('Test info');
 	`
-	err = chromedp.Run(db.ctx,
+	err = chromedp.Run(db.Ctx,
 		chromedp.Evaluate(script, nil),
 	)
 	if err != nil {
@@ -95,7 +95,7 @@ func TestGetConsoleLogs(t *testing.T) {
 }
 
 func TestClearConsoleLogs(t *testing.T) {
-	// Create a new DevBrowser instance using the shared test helper
+	// Create a new devbrowser.DevBrowser instance using the shared test helper
 	logger := func(message ...any) {}
 	db, _ := DefaultTestBrowser(logger)
 
@@ -104,12 +104,12 @@ func TestClearConsoleLogs(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to create browser context: %v", err)
 	}
-	defer db.cancel()
+	defer db.Cancel()
 
-	db.isOpen = true
+	db.IsOpenFlag = true
 
 	// Navigate to a blank page
-	err = chromedp.Run(db.ctx,
+	err = chromedp.Run(db.Ctx,
 		chromedp.Navigate("about:blank"),
 	)
 	if err != nil {
@@ -120,7 +120,7 @@ func TestClearConsoleLogs(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 
 	// Initialize the console capture system
-	err = db.initializeConsoleCapture()
+	err = db.InitializeConsoleCapture()
 	if err != nil {
 		t.Fatalf("failed to initialize console capture: %v", err)
 	}
@@ -130,7 +130,7 @@ func TestClearConsoleLogs(t *testing.T) {
 		console.log('Message 1');
 		console.log('Message 2');
 	`
-	err = chromedp.Run(db.ctx,
+	err = chromedp.Run(db.Ctx,
 		chromedp.Evaluate(script, nil),
 	)
 	if err != nil {
@@ -197,7 +197,7 @@ func TestClearConsoleLogsWithoutContext(t *testing.T) {
 }
 
 func TestConsoleLogsAutoCleanOnReload(t *testing.T) {
-	// Create a new DevBrowser instance using the shared test helper
+	// Create a new devbrowser.DevBrowser instance using the shared test helper
 	logger := func(message ...any) {}
 	db, _ := DefaultTestBrowser(logger)
 
@@ -206,12 +206,12 @@ func TestConsoleLogsAutoCleanOnReload(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to create browser context: %v", err)
 	}
-	defer db.cancel()
+	defer db.Cancel()
 
-	db.isOpen = true
+	db.IsOpenFlag = true
 
 	// Navigate to a blank page
-	err = chromedp.Run(db.ctx,
+	err = chromedp.Run(db.Ctx,
 		chromedp.Navigate("about:blank"),
 	)
 	if err != nil {
@@ -221,7 +221,7 @@ func TestConsoleLogsAutoCleanOnReload(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 
 	// Initialize the console capture system
-	err = db.initializeConsoleCapture()
+	err = db.InitializeConsoleCapture()
 	if err != nil {
 		t.Fatalf("failed to initialize console capture: %v", err)
 	}
@@ -231,7 +231,7 @@ func TestConsoleLogsAutoCleanOnReload(t *testing.T) {
 		console.log('First message');
 		console.log('Second message');
 	`
-	err = chromedp.Run(db.ctx,
+	err = chromedp.Run(db.Ctx,
 		chromedp.Evaluate(script, nil),
 	)
 	if err != nil {
@@ -251,7 +251,7 @@ func TestConsoleLogsAutoCleanOnReload(t *testing.T) {
 	}
 
 	// Reload the page - this should clear the console logs automatically
-	err = chromedp.Run(db.ctx,
+	err = chromedp.Run(db.Ctx,
 		chromedp.Reload(),
 	)
 	if err != nil {
@@ -274,7 +274,7 @@ func TestConsoleLogsAutoCleanOnReload(t *testing.T) {
 	script = `
 		console.log('After reload message');
 	`
-	err = chromedp.Run(db.ctx,
+	err = chromedp.Run(db.Ctx,
 		chromedp.Evaluate(script, nil),
 	)
 	if err != nil {

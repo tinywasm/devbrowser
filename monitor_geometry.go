@@ -13,10 +13,10 @@ import (
 // monitorBrowserGeometry monitors changes in browser window position and size
 // and automatically saves them to the database
 func (b *DevBrowser) monitorBrowserGeometry() {
-	b.mu.Lock()
-	ctx := b.ctx
-	isOpen := b.isOpen
-	b.mu.Unlock()
+	b.Mu.Lock()
+	ctx := b.Ctx
+	isOpen := b.IsOpenFlag
+	b.Mu.Unlock()
 
 	if ctx == nil || !isOpen {
 		return
@@ -43,9 +43,9 @@ func (b *DevBrowser) monitorBrowserGeometry() {
 
 // checkAndSaveGeometry checks current browser geometry and saves if changed
 func (b *DevBrowser) checkAndSaveGeometry() {
-	b.mu.Lock()
-	ctx := b.ctx
-	b.mu.Unlock()
+	b.Mu.Lock()
+	ctx := b.Ctx
+	b.Mu.Unlock()
 
 	if ctx == nil {
 		return
@@ -83,21 +83,21 @@ func (b *DevBrowser) checkAndSaveGeometry() {
 
 	// Check if position changed
 	newPosition := strconv.FormatInt(x, 10) + "," + strconv.FormatInt(y, 10)
-	if newPosition != b.position {
-		b.position = newPosition
-		b.db.Set(StoreKeyBrowserPosition, b.position)
+	if newPosition != b.Position {
+		b.Position = newPosition
+		b.DB.Set(StoreKeyBrowserPosition, b.Position)
 	}
 
 	// Check if width or height changed
 	newWidth := int(width)
 	newHeight := int(height)
 
-	if (newWidth != b.width && newWidth > 0) || (newHeight != b.height && newHeight > 0) {
-		b.width = newWidth
-		b.height = newHeight
-		b.sizeConfigured = true // Mark as manually configured
+	if (newWidth != b.Width && newWidth > 0) || (newHeight != b.Height && newHeight > 0) {
+		b.Width = newWidth
+		b.Height = newHeight
+		b.SizeConfigured = true // Mark as manually configured
 
-		size := fmt.Sprintf("%d,%d", b.width, b.height)
-		b.db.Set(StoreKeyBrowserSize, size)
+		size := fmt.Sprintf("%d,%d", b.Width, b.Height)
+		b.DB.Set(StoreKeyBrowserSize, size)
 	}
 }

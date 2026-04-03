@@ -9,63 +9,68 @@ import (
 	"github.com/tinywasm/devbrowser/chromedp"
 )
 
-type store interface {
+type Store interface {
 	Get(key string) (string, error)
 	Set(key, value string) error
 }
 
+type UserInterface interface {
+	RefreshUI()
+	ReturnFocus() error
+}
+
 type DevBrowser struct {
-	ui             userInterface
-	width          int    // ej "800" default "1024"
-	height         int    //ej: "600" default "768"
-	position       string //ej: "1930,0" (when you have second monitor) default: "0,0"
-	headless       bool   // true para modo headless (sin UI), false muestra el navegador
-	autoStart      bool   // true if browser should auto-open on startup
-	monitorWidth   int    // Detected monitor availability width
-	monitorHeight  int    // Detected monitor availability height
-	sizeConfigured bool   // Track if size was loaded from storage
-	viewportMode   string // Current emulation mode ("mobile", "tablet", "desktop", "off", "")
-	firstCall      bool   // Internal flag to track if OpenBrowser was called for the first time
-	openedOnce     bool   // Internal flag to track if browser was actually opened at least once
+	UI             UserInterface
+	Width          int    // ej "800" default "1024"
+	Height         int    //ej: "600" default "768"
+	Position       string //ej: "1930,0" (when you have second monitor) default: "0,0"
+	Headless       bool   // true para modo headless (sin UI), false muestra el navegador
+	AutoStart      bool   // true if browser should auto-open on startup
+	MonitorWidth   int    // Detected monitor availability width
+	MonitorHeight  int    // Detected monitor availability height
+	SizeConfigured bool   // Track if size was loaded from storage
+	ViewportMode   string // Current emulation mode ("mobile", "tablet", "desktop", "off", "")
+	FirstCall      bool   // Internal flag to track if OpenBrowser was called for the first time
+	OpenedOnce     bool   // Internal flag to track if browser was actually opened at least once
 
-	lastPort  string
-	lastHttps bool
+	LastPort  string
+	LastHttps bool
 
-	isOpen bool // Indica si el navegador está abierto
+	IsOpenFlag bool // Indica si el navegador está abierto
 
-	db store // Key-value store para configuración y estado
+	DB Store // Key-value store para configuración y estado
 
 	// chromedp fields
-	ctx    context.Context
-	cancel context.CancelFunc
+	Ctx    context.Context
+	Cancel context.CancelFunc
 
-	readyChan chan bool
-	errChan   chan error
-	exitChan  chan bool
+	ReadyChan chan bool
+	ErrChan   chan error
+	ExitChan  chan bool
 
-	log func(message ...any) // For logging output (Loggable interface)
+	Log func(message ...any) // For logging output (Loggable interface)
 
 	// Console log capture
-	consoleLogs []string
-	logsMutex   sync.Mutex
+	ConsoleLogs []string
+	LogsMutex   sync.Mutex
 
 	// Network log capture
-	networkLogs  []NetworkLogEntry
-	networkMutex sync.Mutex
+	NetworkLogs  []NetworkLogEntry
+	NetworkMutex sync.Mutex
 
 	// JS error capture
-	jsErrors    []JSError
-	errorsMutex sync.Mutex
+	JsErrors    []JSError
+	ErrorsMutex sync.Mutex
 
 	// Operation busy flag (atomic) to prevent race conditions and UI blocking
 	// 0 = idle, 1 = busy
-	busy int32
+	Busy int32
 
-	testMode bool // Skip opening browser in tests
+	TestMode bool // Skip opening browser in tests
 
 	// Cache configuration
-	cacheEnabled bool // Disabled by default for development
-	mu           sync.Mutex
+	CacheEnabled bool // Disabled by default for development
+	Mu           sync.Mutex
 }
 
 // Option configures the DevBrowser
@@ -74,7 +79,7 @@ type Option func(*DevBrowser)
 // WithCache configures whether the browser cache is enabled
 func WithCache(enabled bool) Option {
 	return func(b *DevBrowser) {
-		b.cacheEnabled = enabled
+		b.CacheEnabled = enabled
 	}
 }
 
@@ -97,11 +102,6 @@ type NetworkLogEntry struct {
 	ErrorText string
 }
 
-type userInterface interface {
-	RefreshUI()
-	ReturnFocus() error
-}
-
 /*
 devbrowser.New creates a new DevBrowser instance.
 
@@ -116,7 +116,7 @@ devbrowser.New creates a new DevBrowser instance.
 
 	example :  New(userInterface, st, exitChan, WithCache(true))
 */
-func New(ui userInterface, st store, exitChan chan bool, opts ...Option) *DevBrowser {
+func New(ui UserInterface, st Store, exitChan chan bool, opts ...Option) *DevBrowser {
 
 	// Initialize clipboard for cross-platform support
 	// err := clipboard.Init()
@@ -125,16 +125,16 @@ func New(ui userInterface, st store, exitChan chan bool, opts ...Option) *DevBro
 	// }
 
 	browser := &DevBrowser{
-		ui:           ui,
-		db:           st,
-		width:        1024, // Default width
-		height:       768,  // Default height
-		position:     "0,0",
-		firstCall:    true,
-		readyChan:    make(chan bool),
-		errChan:      make(chan error),
-		exitChan:     exitChan,
-		cacheEnabled: false, // Default: Cache disabled for development
+		UI:           ui,
+		DB:           st,
+		Width:        1024, // Default width
+		Height:       768,  // Default height
+		Position:     "0,0",
+		FirstCall:    true,
+		ReadyChan:    make(chan bool),
+		ErrChan:      make(chan error),
+		ExitChan:     exitChan,
+		CacheEnabled: false, // Default: Cache disabled for development
 	}
 
 	// Apply options
@@ -160,7 +160,7 @@ func New(ui userInterface, st store, exitChan chan bool, opts ...Option) *DevBro
 
 func (h *DevBrowser) BrowserStartUrlChanged(fieldName string, oldValue, newValue string) error {
 
-	if !h.isOpen {
+	if !h.IsOpenFlag {
 		return nil
 	}
 
@@ -176,26 +176,26 @@ func (h *DevBrowser) RestartBrowser() error {
 		return errors.Join(this, err)
 	}
 
-	h.OpenBrowser(h.lastPort, h.lastHttps)
+	h.OpenBrowser(h.LastPort, h.LastHttps)
 
 	return nil
 }
 
-func (b *DevBrowser) navigateToURL(url string) error {
-	if b.ctx == nil {
+func (b *DevBrowser) NavigateToURL(url string) error {
+	if b.Ctx == nil {
 		return errors.New("context not initialized")
 	}
 
-	if err := chromedp.Run(b.ctx, chromedp.Navigate(url)); err != nil {
+	if err := chromedp.Run(b.Ctx, chromedp.Navigate(url)); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (b *DevBrowser) Reload() error {
-	if b.ctx != nil && b.isOpen {
+	if b.Ctx != nil && b.IsOpenFlag {
 		b.Logger("Reload")
-		if err := chromedp.Run(b.ctx, chromedp.Reload()); err != nil {
+		if err := chromedp.Run(b.Ctx, chromedp.Reload()); err != nil {
 			return errors.New("Reload " + err.Error())
 		}
 	}
@@ -203,16 +203,16 @@ func (b *DevBrowser) Reload() error {
 }
 
 func (b *DevBrowser) SetLog(f func(message ...any)) {
-	b.log = f
+	b.Log = f
 }
 
 func (b *DevBrowser) GetLog() func(message ...any) {
-	return b.log
+	return b.Log
 }
 
 func (b *DevBrowser) Logger(messages ...any) {
-	if b.log != nil {
-		b.log(messages...)
+	if b.Log != nil {
+		b.Log(messages...)
 	}
 }
 
@@ -220,18 +220,18 @@ func (b *DevBrowser) Logger(messages ...any) {
 // Por defecto es false (muestra la ventana del navegador).
 // Debe llamarse antes de OpenBrowser().
 func (b *DevBrowser) SetHeadless(headless bool) {
-	b.headless = headless
+	b.Headless = headless
 }
 
 func (b *DevBrowser) SetTestMode(testMode bool) {
-	b.testMode = testMode
+	b.TestMode = testMode
 }
 
 // monitorBrowserClose monitors the browser context and updates state when browser is closed manually
 func (b *DevBrowser) monitorBrowserClose() {
-	b.mu.Lock()
-	ctx := b.ctx
-	b.mu.Unlock()
+	b.Mu.Lock()
+	ctx := b.Ctx
+	b.Mu.Unlock()
 
 	if ctx == nil {
 		return
@@ -240,15 +240,25 @@ func (b *DevBrowser) monitorBrowserClose() {
 	// Wait for context to be done (browser closed)
 	<-ctx.Done()
 
-	b.mu.Lock()
-	defer b.mu.Unlock()
+	b.Mu.Lock()
+	defer b.Mu.Unlock()
 
 	// Only handle if browser was marked as open (manual close by user)
-	if b.isOpen {
+	if b.IsOpenFlag {
 		b.Logger("Browser closed by user")
-		b.isOpen = false
-		b.ctx = nil
-		b.cancel = nil
-		b.ui.RefreshUI()
+		b.IsOpenFlag = false
+		b.Ctx = nil
+		b.Cancel = nil
+		if b.UI != nil {
+			b.UI.RefreshUI()
+		}
 	}
+}
+
+func (b *DevBrowser) IsOpen() bool {
+	return b.IsOpenFlag
+}
+
+func (b *DevBrowser) InitializeConsoleCapture() error {
+	return b.initializeConsoleCapture()
 }

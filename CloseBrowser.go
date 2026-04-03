@@ -5,24 +5,24 @@ import (
 )
 
 func (h *DevBrowser) CloseBrowser() error {
-	h.mu.Lock()
-	defer h.mu.Unlock()
+	h.Mu.Lock()
+	defer h.Mu.Unlock()
 
-	if !h.isOpen {
+	if !h.IsOpenFlag {
 		return errors.New("DevBrowser is already closed")
 	}
 
-	h.isOpen = false
+	h.IsOpenFlag = false
 
-	if h.cancel != nil {
-		h.cancel()
+	if h.Cancel != nil {
+		h.Cancel()
 	}
 
 	// Limpiar recursos
-	h.ctx = nil
-	h.cancel = nil
+	h.Ctx = nil
+	h.Cancel = nil
 
 	h.Logger(h.StatusMessage())
-	h.ui.RefreshUI()
+	h.UI.RefreshUI()
 	return nil
 }

@@ -1,4 +1,4 @@
-package devbrowser
+package devbrowser_test
 
 import (
 	"testing"
@@ -10,7 +10,7 @@ import (
 func TestLauncherAppendPanic(t *testing.T) {
 	db, _ := DefaultTestBrowser()
 	// provide a position just in case launcher handles it
-	db.position = "0,0"
+	db.Position = "0,0"
 
 	// Capture panic if it happens
 	didPanic := false

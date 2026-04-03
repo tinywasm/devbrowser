@@ -1,12 +1,13 @@
-package devbrowser
+package devbrowser_test
 
 import (
+	"github.com/tinywasm/devbrowser"
 	"errors"
 	"sync"
 )
 
 // Utilities for tests: provide a single initializer that tests can call to
-// create a trimmed-down DevBrowser suitable for unit tests. The function
+// create a trimmed-down devbrowser.DevBrowser suitable for unit tests. The function
 // accepts variadic options so callers don't have to pass anything. If a
 // logger function or a custom exit channel is provided it will be used.
 //
@@ -59,13 +60,13 @@ func (s *defaultStore) Set(key, value string) error {
 	return nil
 }
 
-// DefaultTestBrowser creates a DevBrowser instance for tests.
+// DefaultTestBrowser creates a devbrowser.DevBrowser instance for tests.
 //
 // Accepted variadic options (in any order):
 // - func(...any) : a logger function. If omitted a no-op logger is used.
 // - chan bool     : a custom exit channel. If omitted a new channel is created.
 // Any other option types are ignored.
-func DefaultTestBrowser(opts ...any) (*DevBrowser, chan bool) {
+func DefaultTestBrowser(opts ...any) (*devbrowser.DevBrowser, chan bool) {
 	var logger func(message ...any)
 	var exit chan bool
 
@@ -85,7 +86,7 @@ func DefaultTestBrowser(opts ...any) (*DevBrowser, chan bool) {
 		exit = make(chan bool)
 	}
 
-	db := New(defaultUI{}, &defaultStore{m: make(map[string]string)}, exit)
+	db := devbrowser.New(defaultUI{}, &defaultStore{m: make(map[string]string)}, exit)
 	db.SetLog(logger)
 	db.SetHeadless(true) // Los tests usan modo headless por defecto
 	return db, exit

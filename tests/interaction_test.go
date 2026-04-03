@@ -1,4 +1,4 @@
-package devbrowser
+package devbrowser_test
 
 import (
 	"context"

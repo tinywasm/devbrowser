@@ -3,54 +3,55 @@ package devbrowser
 import (
 	"fmt"
 
+	"github.com/tinywasm/context"
 	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getConsoleTools() []mcp.Tool {
+func (b *DevBrowser) GetConsoleTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_get_console",
 			Description: "Get browser JavaScript console logs to debug WASM runtime errors, console.log outputs, or frontend issues.",
-			Parameters: []mcp.Parameter{
-				{
-					Name:        "lines",
-					Description: "Number of recent entries to retrieve",
-					Required:    false,
-					Type:        "number",
-					Default:     50,
-				},
-			},
-			Execute: func(args map[string]any) {
-				if !b.isOpen {
-					b.Logger("Browser is not open. Please open it first with browser_open")
-					return
+			InputSchema: EncodeSchema(new(GetConsoleArgs)),
+			Resource:    "browser",
+			Action:      'r',
+			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				if !b.IsOpenFlag {
+					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
+				}
+
+				var args GetConsoleArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
 				}
 
 				logs, err := b.GetConsoleLogs()
 				if err != nil {
-					b.Logger(fmt.Sprintf("Failed to get console logs: %v", err))
-					return
+					return nil, fmt.Errorf("Failed to get console logs: %v", err)
 				}
 
 				if len(logs) == 0 {
-					b.Logger("No console logs available")
-					return
+					return mcp.Text("No console logs available"), nil
 				}
 
-				maxLines := 50
-				if linesValue, ok := args["lines"]; ok {
-					if linesFloat, ok := linesValue.(float64); ok {
-						maxLines = int(linesFloat)
-					}
+				maxLines := args.Lines
+				if maxLines == 0 {
+					maxLines = 50
 				}
 
 				if len(logs) > maxLines {
 					logs = logs[len(logs)-maxLines:]
 				}
 
-				for _, log := range logs {
-					b.Logger(log)
+				var result string
+				for i, log := range logs {
+					if i > 0 {
+						result += "\n"
+					}
+					result += log
 				}
+
+				return mcp.Text(result), nil
 			},
 		},
 	}

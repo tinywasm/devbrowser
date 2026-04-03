@@ -3,38 +3,31 @@ package devbrowser
 import (
 	"fmt"
 
+	"github.com/tinywasm/context"
 	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getScreenshotTools() []mcp.Tool {
+func (b *DevBrowser) GetScreenshotTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_screenshot",
 			Description: "Capture screenshot of current browser viewport to verify visual rendering, layout correctness, or UI state. Returns PNG image as MCP resource (binary efficient format).",
-			Parameters: []mcp.Parameter{
-				{
-					Name:        "fullpage",
-					Description: "Capture full page height instead of viewport only",
-					Required:    false,
-					Type:        "boolean",
-					Default:     false,
-				},
-			},
-			Execute: func(args map[string]any) {
-				fullpage := false
-				if fp, ok := args["fullpage"].(bool); ok {
-					fullpage = fp
+			InputSchema: EncodeSchema(new(ScreenshotArgs)),
+			Resource:    "browser",
+			Action:      'r',
+			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				var args ScreenshotArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
 				}
 
-				res, err := b.CaptureScreenshot(fullpage)
+				res, err := b.CaptureScreenshot(args.Fullpage)
 				if err != nil {
-					b.Logger(err.Error())
-					return
+					return nil, err
 				}
 
 				if len(res.ImageData) == 0 {
-					b.Logger("Screenshot capture returned empty buffer")
-					return
+					return nil, fmt.Errorf("Screenshot capture returned empty buffer")
 				}
 
 				// Write PNG image to clipboard
@@ -58,7 +51,8 @@ func (b *DevBrowser) getScreenshotTools() []mcp.Tool {
 				)
 
 				// Send both text context and binary data
-				b.Logger(contextReport, mcp.BinaryData{MimeType: "image/png", Data: res.ImageData})
+				b.Logger(contextReport)
+				return mcp.Text(contextReport), nil
 			},
 		},
 	}

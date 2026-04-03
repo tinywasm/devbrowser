@@ -3,41 +3,36 @@ package devbrowser
 import (
 	"fmt"
 
+	"github.com/tinywasm/context"
 	"github.com/tinywasm/mcp"
 )
 
-func (b *DevBrowser) getNavigationTools() []mcp.Tool {
+func (b *DevBrowser) GetNavigationTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_navigate",
 			Description: "Navigate the browser to a specific URL",
-			Parameters: []mcp.Parameter{
-				{
-					Name:        "url",
-					Description: "Complete URL (including http:// or https://)",
-					Required:    true,
-					Type:        "string",
-				},
-			},
-			Execute: func(args map[string]any) {
-				if !b.isOpen {
-					b.Logger("Browser is not open. Please open it first with browser_open")
-					return
+			InputSchema: EncodeSchema(new(NavigateArgs)),
+			Resource:    "browser",
+			Action:      'u',
+			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				if !b.IsOpenFlag {
+					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
 				}
 
-				url, ok := args["url"].(string)
-				if !ok || url == "" {
-					b.Logger("URL parameter is required")
-					return
+				var args NavigateArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
 				}
 
-				err := b.navigateToURL(url)
+				err := b.NavigateToURL(args.URL)
 				if err != nil {
-					b.Logger(fmt.Sprintf("Error navigating to %s: %v", url, err))
-					return
+					return nil, fmt.Errorf("Error navigating to %s: %v", args.URL, err)
 				}
 
-				b.Logger(fmt.Sprintf("Navigated to %s", url))
+				msg := fmt.Sprintf("Navigated to %s", args.URL)
+				b.Logger(msg)
+				return mcp.Text(msg), nil
 			},
 		},
 	}

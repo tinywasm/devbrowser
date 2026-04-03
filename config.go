@@ -15,46 +15,46 @@ const (
 // LoadConfig loads all browser configuration from the store
 func (b *DevBrowser) LoadConfig() {
 	// Load auto-start setting
-	if val, err := b.db.Get(StoreKeyBrowserAutostart); err == nil && val != "" {
+	if val, err := b.DB.Get(StoreKeyBrowserAutostart); err == nil && val != "" {
 		// Handle legacy values: convert "true"/"false" to "t"/"f"
 		switch val {
 		case "true", "t":
-			b.autoStart = true
+			b.AutoStart = true
 			// Migrate legacy value if needed
 			if val == "true" {
-				b.db.Set(StoreKeyBrowserAutostart, "t")
+				b.DB.Set(StoreKeyBrowserAutostart, "t")
 			}
 		case "false", "f":
-			b.autoStart = false
+			b.AutoStart = false
 			// Migrate legacy value if needed
 			if val == "false" {
-				b.db.Set(StoreKeyBrowserAutostart, "f")
+				b.DB.Set(StoreKeyBrowserAutostart, "f")
 			}
 		default:
-			b.autoStart = true // Default if unknown value
+			b.AutoStart = true // Default if unknown value
 		}
 	} else {
-		b.autoStart = true // Default: auto-start enabled
+		b.AutoStart = true // Default: auto-start enabled
 	}
 
 	// Load position
-	if pos, err := b.db.Get(StoreKeyBrowserPosition); err == nil && pos != "" {
-		b.position = pos
+	if pos, err := b.DB.Get(StoreKeyBrowserPosition); err == nil && pos != "" {
+		b.Position = pos
 	}
 
 	// Load size (width,height)
-	if size, err := b.db.Get(StoreKeyBrowserSize); err == nil && size != "" {
+	if size, err := b.DB.Get(StoreKeyBrowserSize); err == nil && size != "" {
 		var w, h int
 		if _, err := fmt.Sscanf(size, "%d,%d", &w, &h); err == nil {
-			b.width = w
-			b.height = h
-			b.sizeConfigured = true
+			b.Width = w
+			b.Height = h
+			b.SizeConfigured = true
 		}
 	}
 
 	// Load viewport mode
-	if mode, err := b.db.Get(StoreKeyViewportMode); err == nil && mode != "" {
-		b.viewportMode = mode
+	if mode, err := b.DB.Get(StoreKeyViewportMode); err == nil && mode != "" {
+		b.ViewportMode = mode
 	}
 }
 
@@ -62,26 +62,26 @@ func (b *DevBrowser) LoadConfig() {
 func (b *DevBrowser) SaveConfig() error {
 	// Save auto-start
 	val := "f"
-	if b.autoStart {
+	if b.AutoStart {
 		val = "t"
 	}
-	if err := b.db.Set(StoreKeyBrowserAutostart, val); err != nil {
+	if err := b.DB.Set(StoreKeyBrowserAutostart, val); err != nil {
 		return err
 	}
 
 	// Save position
-	if err := b.db.Set(StoreKeyBrowserPosition, b.position); err != nil {
+	if err := b.DB.Set(StoreKeyBrowserPosition, b.Position); err != nil {
 		return err
 	}
 
 	// Save size
-	size := fmt.Sprintf("%d,%d", b.width, b.height)
-	if err := b.db.Set(StoreKeyBrowserSize, size); err != nil {
+	size := fmt.Sprintf("%d,%d", b.Width, b.Height)
+	if err := b.DB.Set(StoreKeyBrowserSize, size); err != nil {
 		return err
 	}
 
 	// Save viewport mode
-	if err := b.db.Set(StoreKeyViewportMode, b.viewportMode); err != nil {
+	if err := b.DB.Set(StoreKeyViewportMode, b.ViewportMode); err != nil {
 		return err
 	}
 

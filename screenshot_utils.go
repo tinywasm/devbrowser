@@ -18,7 +18,7 @@ type ScreenshotResult struct {
 
 // CaptureScreenshot captures a screenshot of the current page.
 func (b *DevBrowser) CaptureScreenshot(fullpage bool) (*ScreenshotResult, error) {
-	if !b.isOpen || b.ctx == nil {
+	if !b.IsOpenFlag || b.Ctx == nil {
 		return nil, fmt.Errorf("browser is not open")
 	}
 
@@ -26,11 +26,11 @@ func (b *DevBrowser) CaptureScreenshot(fullpage bool) (*ScreenshotResult, error)
 	var err error
 
 	if fullpage {
-		err = chromedp.Run(b.ctx,
+		err = chromedp.Run(b.Ctx,
 			chromedp.FullScreenshot(&buf, 90),
 		)
 	} else {
-		err = chromedp.Run(b.ctx,
+		err = chromedp.Run(b.Ctx,
 			chromedp.CaptureScreenshot(&buf),
 		)
 	}
@@ -44,7 +44,7 @@ func (b *DevBrowser) CaptureScreenshot(fullpage bool) (*ScreenshotResult, error)
 	}
 
 	// Capture comprehensive page context
-	err = chromedp.Run(b.ctx,
+	err = chromedp.Run(b.Ctx,
 		chromedp.Title(&res.PageTitle),
 		chromedp.Location(&res.PageURL),
 		chromedp.Evaluate(`window.innerWidth`, &res.Width),
@@ -62,12 +62,12 @@ func (b *DevBrowser) CaptureScreenshot(fullpage bool) (*ScreenshotResult, error)
 
 // CaptureElementScreenshot captures a screenshot of a specific element.
 func (b *DevBrowser) CaptureElementScreenshot(selector string) (*ScreenshotResult, error) {
-	if !b.isOpen || b.ctx == nil {
+	if !b.IsOpenFlag || b.Ctx == nil {
 		return nil, fmt.Errorf("browser is not open")
 	}
 
 	var buf []byte
-	err := chromedp.Run(b.ctx,
+	err := chromedp.Run(b.Ctx,
 		chromedp.Screenshot(selector, &buf),
 	)
 
@@ -80,7 +80,7 @@ func (b *DevBrowser) CaptureElementScreenshot(selector string) (*ScreenshotResul
 	}
 
 	// Capture basic context
-	err = chromedp.Run(b.ctx,
+	err = chromedp.Run(b.Ctx,
 		chromedp.Title(&res.PageTitle),
 		chromedp.Location(&res.PageURL),
 		chromedp.Evaluate(`window.innerWidth`, &res.Width),

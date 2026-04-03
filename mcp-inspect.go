@@ -3,6 +3,7 @@ package devbrowser
 import (
 	"fmt"
 
+	"github.com/tinywasm/context"
 	"github.com/tinywasm/devbrowser/chromedp"
 	"github.com/tinywasm/mcp"
 )
@@ -114,44 +115,38 @@ const InspectElementJS = `
 }
 `
 
-func (b *DevBrowser) getInspectTools() []mcp.Tool {
+func (b *DevBrowser) GetInspectTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_inspect_element",
 			Description: "Inspect a specific element to get detailed CSS properties like Chrome DevTools. Returns box model (width, height, padding, margin, border), position (top, left, offset), layout (display, flex, grid), typography (font, color), and accessibility info.",
-			Parameters: []mcp.Parameter{
-				{
-					Name:        "selector",
-					Description: "CSS selector of the element to inspect (e.g., '#my-id', '.my-class', 'div.container')",
-					Required:    true,
-					Type:        "string",
-				},
-			},
-			Execute: func(args map[string]any) {
-				if !b.isOpen {
-					b.Logger("Browser is not open. Please open it first with browser_open")
-					return
+			InputSchema: EncodeSchema(new(InspectElementArgs)),
+			Resource:    "browser",
+			Action:      'r',
+			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				if !b.IsOpenFlag {
+					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
 				}
 
-				selector, ok := args["selector"].(string)
-				if !ok || selector == "" {
-					b.Logger("selector parameter is required")
-					return
+				var args InspectElementArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
 				}
 
 				var result string
-				js := fmt.Sprintf("(%s)(%q)", InspectElementJS, selector)
+				js := fmt.Sprintf("(%s)(%q)", InspectElementJS, args.Selector)
 
-				err := chromedp.Run(b.ctx,
+				err := chromedp.Run(b.Ctx,
 					chromedp.Evaluate(js, &result),
 				)
 
 				if err != nil {
-					b.Logger(fmt.Sprintf("Failed to inspect element: %v", err))
-					return
+					return nil, fmt.Errorf("Failed to inspect element: %v", err)
 				}
 
-				b.Logger(fmt.Sprintf("Inspect Element: %s\n%s", selector, result))
+				msg := fmt.Sprintf("Inspect Element: %s\n%s", args.Selector, result)
+				b.Logger(msg)
+				return mcp.Text(msg), nil
 			},
 		},
 	}

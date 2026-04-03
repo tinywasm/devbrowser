@@ -16,7 +16,7 @@ import (
 //     Check if it fits. If not, scale down or clamp. To be safe, we clamp to available area.
 //
 // In all cases, we ensure the window is not larger than the available screen area.
-func (b *DevBrowser) calculateConstrainedSize(reqW, reqH, monW, monH int) (int, int) {
+func (b *DevBrowser) CalculateConstrainedSize(reqW, reqH, monW, monH int) (int, int) {
 	if monW <= 0 || monH <= 0 {
 		return reqW, reqH
 	}
@@ -39,17 +39,17 @@ func (b *DevBrowser) calculateConstrainedSize(reqW, reqH, monW, monH int) (int, 
 
 // startWithDetectedSize updates the browser size if it hasn't been configured yet
 // and we have detected a monitor size.
-func (b *DevBrowser) startWithDetectedSize() {
-	b.mu.Lock()
-	defer b.mu.Unlock()
+func (b *DevBrowser) StartWithDetectedSize() {
+	b.Mu.Lock()
+	defer b.Mu.Unlock()
 
 	// If user already has a saved config, respect it (but apply constraints later)
-	if b.sizeConfigured {
+	if b.SizeConfigured {
 		return
 	}
 
 	// If no monitor detected, keep defaults
-	if b.monitorWidth == 0 || b.monitorHeight == 0 {
+	if b.MonitorWidth == 0 || b.MonitorHeight == 0 {
 		return
 	}
 
@@ -79,7 +79,7 @@ func (b *DevBrowser) startWithDetectedSize() {
 	// Usually devs don't want full screen 4k browser on startup.
 	// Let's assume they want the Configured Default (1024x768) BUT guaranteed to fit.
 
-	newW, newH := b.calculateConstrainedSize(b.width, b.height, b.monitorWidth, b.monitorHeight)
+	newW, newH := b.CalculateConstrainedSize(b.Width, b.Height, b.MonitorWidth, b.MonitorHeight)
 
 	// If monitor is really big, maybe we can be bolder than 1024x768?
 	// The prompt says: "las medidas desktop,mobile, tablet no puedes superar ninguna de estas deben ser proporcional o ajaustarce a ellas"
@@ -89,14 +89,14 @@ func (b *DevBrowser) startWithDetectedSize() {
 	// if the screen allows? 1024x768 is a bit old school.
 	// But let's safely just constrain for now.
 
-	b.width = newW
-	b.height = newH
-	b.log(fmt.Sprintf("Browser size auto-adjusted to monitor: %dx%d", newW, newH))
+	b.Width = newW
+	b.Height = newH
+	b.Log(fmt.Sprintf("Browser size auto-adjusted to monitor: %dx%d", newW, newH))
 }
 
 // getPresetSize calculates the optimal dimensions for a requested preset mode.
 // It uses predefined base sizes but ensures they fit within the current monitor constraints.
-func (b *DevBrowser) getPresetSize(mode string) (int, int, error) {
+func (b *DevBrowser) GetPresetSize(mode string) (int, int, error) {
 	var baseW, baseH int
 
 	// Base definitions
@@ -111,19 +111,19 @@ func (b *DevBrowser) getPresetSize(mode string) (int, int, error) {
 		return 0, 0, fmt.Errorf("unknown mode: %s", mode)
 	}
 
-	b.mu.Lock()
-	monW := b.monitorWidth
-	monH := b.monitorHeight
-	b.mu.Unlock()
+	b.Mu.Lock()
+	monW := b.MonitorWidth
+	monH := b.MonitorHeight
+	b.Mu.Unlock()
 
 	// If monitor size not detected yet (lazy load), try to detect it now
 	if monW == 0 || monH == 0 {
-		b.detectMonitorSize()
+		b.DetectMonitorSize()
 		// Re-read
-		b.mu.Lock()
-		monW = b.monitorWidth
-		monH = b.monitorHeight
-		b.mu.Unlock()
+		b.Mu.Lock()
+		monW = b.MonitorWidth
+		monH = b.MonitorHeight
+		b.Mu.Unlock()
 	}
 
 	// If still not detected, return base size
@@ -134,7 +134,7 @@ func (b *DevBrowser) getPresetSize(mode string) (int, int, error) {
 	// Calculate constrained size
 	// We currently use clamping ("adjust to them") which is standard for maximizing space
 	// while ensuring it fits.
-	finalW, finalH := b.calculateConstrainedSize(baseW, baseH, monW, monH)
+	finalW, finalH := b.CalculateConstrainedSize(baseW, baseH, monW, monH)
 
 	return finalW, finalH, nil
 }

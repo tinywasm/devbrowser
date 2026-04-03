@@ -1,6 +1,7 @@
-package devbrowser
+package devbrowser_test
 
 import (
+	"github.com/tinywasm/devbrowser"
 	"testing"
 )
 
@@ -25,7 +26,7 @@ func (m *mockStore) Set(key, value string) error {
 	return nil
 }
 
-// Test that browser config is loaded from store on New()
+// Test that browser config is loaded from store on devbrowser.New()
 func TestLoadBrowserConfigOnNew(t *testing.T) {
 	store := &mockStore{
 		data: map[string]string{
@@ -35,18 +36,18 @@ func TestLoadBrowserConfigOnNew(t *testing.T) {
 	}
 
 	exitChan := make(chan bool)
-	browser := New(nil, store, exitChan)
+	browser := devbrowser.New(nil, store, exitChan)
 
-	if browser.position != "100,200" {
-		t.Errorf("Expected position '100,200', got '%s'", browser.position)
+	if browser.Position != "100,200" {
+		t.Errorf("Expected position '100,200', got '%s'", browser.Position)
 	}
 
-	if browser.width != 1280 {
-		t.Errorf("Expected width 1280, got %d", browser.width)
+	if browser.Width != 1280 {
+		t.Errorf("Expected width 1280, got %d", browser.Width)
 	}
 
-	if browser.height != 720 {
-		t.Errorf("Expected height 720, got %d", browser.height)
+	if browser.Height != 720 {
+		t.Errorf("Expected height 720, got %d", browser.Height)
 	}
 }
 
@@ -57,18 +58,18 @@ func TestLoadBrowserConfigDefaults(t *testing.T) {
 	}
 
 	exitChan := make(chan bool)
-	browser := New(nil, store, exitChan)
+	browser := devbrowser.New(nil, store, exitChan)
 
-	if browser.position != "0,0" {
-		t.Errorf("Expected default position '0,0', got '%s'", browser.position)
+	if browser.Position != "0,0" {
+		t.Errorf("Expected default position '0,0', got '%s'", browser.Position)
 	}
 
-	if browser.width != 1024 {
-		t.Errorf("Expected default width 1024, got %d", browser.width)
+	if browser.Width != 1024 {
+		t.Errorf("Expected default width 1024, got %d", browser.Width)
 	}
 
-	if browser.height != 768 {
-		t.Errorf("Expected default height 768, got %d", browser.height)
+	if browser.Height != 768 {
+		t.Errorf("Expected default height 768, got %d", browser.Height)
 	}
 }
 
@@ -79,12 +80,12 @@ func TestSaveBrowserConfig(t *testing.T) {
 	}
 
 	exitChan := make(chan bool)
-	browser := New(nil, store, exitChan)
+	browser := devbrowser.New(nil, store, exitChan)
 
 	// Change values
-	browser.position = "500,300"
-	browser.width = 1920
-	browser.height = 1080
+	browser.Position = "500,300"
+	browser.Width = 1920
+	browser.Height = 1080
 
 	// Save config
 	err := browser.SaveConfig()
@@ -109,25 +110,25 @@ func TestSetBrowserPositionAndSizeSavesToStore(t *testing.T) {
 	}
 
 	exitChan := make(chan bool)
-	browser := New(nil, store, exitChan)
+	browser := devbrowser.New(nil, store, exitChan)
 
 	// Set new position and size
-	err := browser.setBrowserPositionAndSize("1930,0:800,600")
+	err := browser.SetBrowserPositionAndSize("1930,0:800,600")
 	if err != nil {
 		t.Fatalf("setBrowserPositionAndSize failed: %v", err)
 	}
 
 	// Verify browser values
-	if browser.position != "1930,0" {
-		t.Errorf("Expected position '1930,0', got '%s'", browser.position)
+	if browser.Position != "1930,0" {
+		t.Errorf("Expected position '1930,0', got '%s'", browser.Position)
 	}
 
-	if browser.width != 800 {
-		t.Errorf("Expected width 800, got %d", browser.width)
+	if browser.Width != 800 {
+		t.Errorf("Expected width 800, got %d", browser.Width)
 	}
 
-	if browser.height != 600 {
-		t.Errorf("Expected height 600, got %d", browser.height)
+	if browser.Height != 600 {
+		t.Errorf("Expected height 600, got %d", browser.Height)
 	}
 
 	if store.data["browser_size"] != "800,600" {
@@ -145,20 +146,20 @@ func TestLoadBrowserConfigIgnoresInvalidValues(t *testing.T) {
 	}
 
 	exitChan := make(chan bool)
-	browser := New(nil, store, exitChan)
+	browser := devbrowser.New(nil, store, exitChan)
 
 	// Position should load correctly
-	if browser.position != "100,200" {
-		t.Errorf("Expected position '100,200', got '%s'", browser.position)
+	if browser.Position != "100,200" {
+		t.Errorf("Expected position '100,200', got '%s'", browser.Position)
 	}
 
 	// Width and height should use defaults due to invalid values
-	if browser.width != 1024 {
-		t.Errorf("Expected default width 1024, got %d", browser.width)
+	if browser.Width != 1024 {
+		t.Errorf("Expected default width 1024, got %d", browser.Width)
 	}
 
-	if browser.height != 768 {
-		t.Errorf("Expected default height 768, got %d", browser.height)
+	if browser.Height != 768 {
+		t.Errorf("Expected default height 768, got %d", browser.Height)
 	}
 }
 
@@ -171,26 +172,26 @@ func TestBrowserConfigPersistenceAcrossRestarts(t *testing.T) {
 	exitChan := make(chan bool)
 
 	// First browser instance
-	browser1 := New(nil, store, exitChan)
-	browser1.position = "1920,0"
-	browser1.width = 1600
-	browser1.height = 900
+	browser1 := devbrowser.New(nil, store, exitChan)
+	browser1.Position = "1920,0"
+	browser1.Width = 1600
+	browser1.Height = 900
 	browser1.SaveConfig()
 
 	// Simulate restart - create new browser instance with same store
 	exitChan2 := make(chan bool)
-	browser2 := New(nil, store, exitChan2)
+	browser2 := devbrowser.New(nil, store, exitChan2)
 
 	// Verify values were loaded from store
-	if browser2.position != "1920,0" {
-		t.Errorf("Expected position '1920,0' after restart, got '%s'", browser2.position)
+	if browser2.Position != "1920,0" {
+		t.Errorf("Expected position '1920,0' after restart, got '%s'", browser2.Position)
 	}
 
-	if browser2.width != 1600 {
-		t.Errorf("Expected width 1600 after restart, got %d", browser2.width)
+	if browser2.Width != 1600 {
+		t.Errorf("Expected width 1600 after restart, got %d", browser2.Width)
 	}
 
-	if browser2.height != 900 {
-		t.Errorf("Expected height 900 after restart, got %d", browser2.height)
+	if browser2.Height != 900 {
+		t.Errorf("Expected height 900 after restart, got %d", browser2.Height)
 	}
 }
