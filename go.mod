@@ -6,8 +6,8 @@ require github.com/tinywasm/screenshot v0.0.1
 
 require (
 	github.com/tinywasm/context v0.0.18
-	github.com/tinywasm/fmt v0.22.0
-	github.com/tinywasm/form v0.2.0
+	github.com/tinywasm/fmt v0.22.2
+	github.com/tinywasm/form v0.2.1
 	github.com/tinywasm/json v0.4.0
 	github.com/tinywasm/mcp v0.1.1
 )
