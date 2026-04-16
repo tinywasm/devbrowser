@@ -9,13 +9,12 @@ require (
 	github.com/tinywasm/fmt v0.23.2
 	github.com/tinywasm/form v0.2.1
 	github.com/tinywasm/json v0.5.0
-	github.com/tinywasm/mcp v0.1.1
+	github.com/tinywasm/mcp v0.1.3
 )
 
 require (
 	github.com/tinywasm/dom v0.7.0 // indirect
 	github.com/tinywasm/fetch v0.1.23 // indirect
-	github.com/tinywasm/orm v0.7.2 // indirect
-	github.com/tinywasm/time v0.3.1 // indirect
+	github.com/tinywasm/time v0.4.0 // indirect
 	github.com/tinywasm/unixid v0.2.23 // indirect
 )
