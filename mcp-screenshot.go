@@ -31,9 +31,7 @@ func (b *DevBrowser) GetScreenshotTools() []mcp.Tool {
 				}
 
 				// Write PNG image to clipboard
-				if err := writeToClipboard(res.ImageData); err == nil {
-					b.Logger("Screenshot copied to clipboard")
-				} else {
+				if err := writeToClipboard(res.ImageData); err != nil {
 					b.Logger(fmt.Sprintf("Failed to copy screenshot to clipboard: %v", err))
 				}
 
