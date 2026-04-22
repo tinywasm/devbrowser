@@ -138,7 +138,6 @@ func (b *DevBrowser) GetStructureTools() []mcp.Tool {
 					structure,
 				)
 
-				b.Logger(report)
 				return mcp.Text(report), nil
 			},
 		},

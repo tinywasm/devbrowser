@@ -144,9 +144,7 @@ func (b *DevBrowser) GetInspectTools() []mcp.Tool {
 					return nil, fmt.Errorf("Failed to inspect element: %v", err)
 				}
 
-				msg := fmt.Sprintf("Inspect Element: %s\n%s", args.Selector, result)
-				b.Logger(msg)
-				return mcp.Text(msg), nil
+				return mcp.Text(fmt.Sprintf("Inspect Element: %s\n%s", args.Selector, result)), nil
 			},
 		},
 	}

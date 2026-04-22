@@ -75,7 +75,6 @@ func (b *DevBrowser) GetInteractionTools() []mcp.Tool {
 					chromedp.Run(tctx, chromedp.Sleep(time.Duration(waitAfter)*time.Millisecond))
 				}
 
-				b.Logger(msg)
 				return mcp.Text(msg), nil
 			},
 		},
@@ -118,9 +117,7 @@ func (b *DevBrowser) GetInteractionTools() []mcp.Tool {
 					return nil, fmt.Errorf("Error filling element %s: %v", args.Selector, err)
 				}
 
-				msg := fmt.Sprintf("Filled element %s with '%s'", args.Selector, args.Value)
-				b.Logger(msg)
-				return mcp.Text(msg), nil
+				return mcp.Text(fmt.Sprintf("Filled element %s with '%s'", args.Selector, args.Value)), nil
 			},
 		},
 		{
@@ -205,9 +202,7 @@ func (b *DevBrowser) GetInteractionTools() []mcp.Tool {
 					return nil, fmt.Errorf("Error swiping element %s: %v", args.Selector, err)
 				}
 
-				msg := fmt.Sprintf("Swiped %s on %s by %dpx", args.Direction, args.Selector, args.Distance)
-				b.Logger(msg)
-				return mcp.Text(msg), nil
+				return mcp.Text(fmt.Sprintf("Swiped %s on %s by %dpx", args.Direction, args.Selector, args.Distance)), nil
 			},
 		},
 	}

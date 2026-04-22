@@ -50,8 +50,7 @@ func (b *DevBrowser) GetScreenshotTools() []mcp.Tool {
 					res.HTMLStructure,
 				)
 
-				// Send both text context and binary data
-				b.Logger(contextReport)
+				// Send text context to MCP client (not to TUI)
 				return mcp.Text(contextReport), nil
 			},
 		},

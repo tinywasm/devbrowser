@@ -1,6 +1,7 @@
 package devbrowser_test
 
 import (
+	"fmt"
 	"strings"
 	"testing"
 
@@ -77,5 +78,106 @@ func TestMCPContent_GetNetworkLogs_IsArray(t *testing.T) {
 	}
 	if !contentIsArray(result) {
 		t.Fatalf("Bug C: content is not a JSON array — mcp.Text() fix not applied.\nContent: %s", result.Content)
+	}
+}
+
+// --- Bug TUI pollution: b.Logger duplica el resultado de tools MCP hacia la TUI ---
+// Estos tests fallan antes del fix y pasan una vez eliminados los b.Logger duplicados.
+
+// logCapture retorna un logger que acumula mensajes y una función para leer lo acumulado.
+func logCapture() (func(...any), func() []string) {
+	var logs []string
+	return func(msgs ...any) {
+		for _, m := range msgs {
+			logs = append(logs, fmt.Sprint(m))
+		}
+	}, func() []string { return logs }
+}
+
+// resultText extrae el texto del primer item de content.
+func resultText(r *mcp.Result) string {
+	text, _ := mcp.GetText(r)
+	return text
+}
+
+// TestMCPTool_EmulateDevice_NoTUIPollution verifica que browser_emulate_device
+// no envíe el resultado al Logger (TUI). Solo debe ir al cliente MCP via return.
+// No requiere browser real — funciona con IsOpenFlag=false.
+func TestMCPTool_EmulateDevice_NoTUIPollution(t *testing.T) {
+	logger, getLogs := logCapture()
+	db, _ := DefaultTestBrowser(logger)
+
+	tool := findTool(db.GetManagementTools(), "browser_emulate_device")
+	if tool == nil {
+		t.Fatal("browser_emulate_device tool not found")
+	}
+
+	var ctx context.Context
+	req := mcp.Request{
+		Params: mcp.CallToolParams{Name: "browser_emulate_device", Arguments: `{"mode":"mobile"}`},
+		Action: 'u',
+	}
+	result, err := tool.Execute(&ctx, req)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	text := resultText(result)
+	for _, entry := range getLogs() {
+		if entry == text {
+			t.Fatalf("Bug: tool result leaked to TUI Logger.\nLogger received: %q\nExpected: only in mcp.Text() return", entry)
+		}
+	}
+}
+
+// TestMCPTool_GetErrors_NoTUIPollution verifica que browser_get_errors
+// no envíe su resultado al Logger (TUI).
+func TestMCPTool_GetErrors_NoTUIPollution(t *testing.T) {
+	logger, getLogs := logCapture()
+	db, _ := DefaultTestBrowser(logger)
+	db.IsOpenFlag = true
+
+	tool := findTool(db.GetErrorTools(), "browser_get_errors")
+	if tool == nil {
+		t.Fatal("browser_get_errors tool not found")
+	}
+
+	var ctx context.Context
+	result, err := tool.Execute(&ctx, emptyReq("browser_get_errors"))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	text := resultText(result)
+	for _, entry := range getLogs() {
+		if entry == text {
+			t.Fatalf("Bug: tool result leaked to TUI Logger.\nLogger received: %q", entry)
+		}
+	}
+}
+
+// TestMCPTool_GetNetworkLogs_NoTUIPollution verifica que browser_get_network_logs
+// no envíe su resultado al Logger (TUI).
+func TestMCPTool_GetNetworkLogs_NoTUIPollution(t *testing.T) {
+	logger, getLogs := logCapture()
+	db, _ := DefaultTestBrowser(logger)
+	db.IsOpenFlag = true
+
+	tool := findTool(db.GetNetworkTools(), "browser_get_network_logs")
+	if tool == nil {
+		t.Fatal("browser_get_network_logs tool not found")
+	}
+
+	var ctx context.Context
+	result, err := tool.Execute(&ctx, emptyReq("browser_get_network_logs"))
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	text := resultText(result)
+	for _, entry := range getLogs() {
+		if entry == text {
+			t.Fatalf("Bug: tool result leaked to TUI Logger.\nLogger received: %q", entry)
+		}
 	}
 }

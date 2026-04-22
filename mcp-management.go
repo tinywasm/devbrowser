@@ -63,10 +63,8 @@ func (b *DevBrowser) GetManagementTools() []mcp.Tool {
 						res.HTMLStructure,
 					)
 
-					b.Logger(contextReport)
 					return mcp.Text(contextReport), nil
 				} else {
-					b.Logger(statusMsg)
 					return mcp.Text(statusMsg), nil
 				}
 			},

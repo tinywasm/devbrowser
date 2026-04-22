@@ -30,9 +30,7 @@ func (b *DevBrowser) GetNavigationTools() []mcp.Tool {
 					return nil, fmt.Errorf("Error navigating to %s: %v", args.URL, err)
 				}
 
-				msg := fmt.Sprintf("Navigated to %s", args.URL)
-				b.Logger(msg)
-				return mcp.Text(msg), nil
+				return mcp.Text(fmt.Sprintf("Navigated to %s", args.URL)), nil
 			},
 		},
 	}
