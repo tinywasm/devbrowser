@@ -81,23 +81,34 @@ func (b *DevBrowser) checkAndSaveGeometry() {
 		return
 	}
 
-	// Check if position changed
+	b.SaveGeometry(x, y, width, height)
+}
+
+// SaveGeometry applies CDP-reported window bounds to the browser state and
+// persists any changes to the store. Extracted from checkAndSaveGeometry so
+// tests can exercise the save logic without a real CDP connection.
+func (b *DevBrowser) SaveGeometry(x, y, width, height int64) {
+	newWidth := int(width)
+	newHeight := int(height)
+
+	// Guard x > 0 || y > 0 mirrors the size block's newWidth > 0 guard: it is a
+	// safety net so a transient 0,0 reported right after launch (before
+	// applyConfiguredPosition moves the window) cannot overwrite a configured
+	// non-zero position. CDP reads real coordinates correctly once the window is
+	// placed, so normal user movement is still tracked.
 	newPosition := strconv.FormatInt(x, 10) + "," + strconv.FormatInt(y, 10)
-	if newPosition != b.Position {
+	positionValid := x > 0 || y > 0
+	if newPosition != b.Position && positionValid {
 		b.Position = newPosition
 		b.DB.Set(StoreKeyBrowserPosition, b.Position)
 	}
 
-	// Check if width or height changed
-	newWidth := int(width)
-	newHeight := int(height)
-
 	if (newWidth != b.Width && newWidth > 0) || (newHeight != b.Height && newHeight > 0) {
 		b.Width = newWidth
 		b.Height = newHeight
-		b.SizeConfigured = true // Mark as manually configured
-
-		size := fmt.Sprintf("%d,%d", b.Width, b.Height)
-		b.DB.Set(StoreKeyBrowserSize, size)
+		b.SizeConfigured = true
+		b.DB.Set(StoreKeyBrowserSize, fmt.Sprintf("%d,%d", b.Width, b.Height))
+		// Save position together with size so both keys are always in sync.
+		b.DB.Set(StoreKeyBrowserPosition, b.Position)
 	}
 }
