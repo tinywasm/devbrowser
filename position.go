@@ -1,13 +1,9 @@
 package devbrowser
 
 import (
-	"context"
 	"errors"
 	"strconv"
 	"strings"
-
-	"github.com/tinywasm/devbrowser/cdproto/browser"
-	"github.com/tinywasm/devbrowser/chromedp"
 )
 
 func (h *DevBrowser) BrowserPositionAndSizeChanged(fieldName string, oldValue, newValue string) error {
@@ -50,48 +46,6 @@ func (b *DevBrowser) SetBrowserPositionAndSize(newConfig string) (err error) {
 	}
 
 	return
-}
-
-// applyConfiguredPosition forces the browser window to the configured position
-// via CDP SetWindowBounds. Called after ReadyChan so the context is ready.
-// This overrides the WM placement (--window-position is a hint that WMs may ignore).
-func (b *DevBrowser) applyConfiguredPosition() {
-	b.Mu.Lock()
-	ctx := b.Ctx
-	pos := b.Position
-	b.Mu.Unlock()
-
-	if ctx == nil || pos == "" || pos == "0,0" {
-		return
-	}
-
-	parts := strings.SplitN(pos, ",", 2)
-	if len(parts) != 2 {
-		return
-	}
-	x, err1 := strconv.ParseInt(parts[0], 10, 64)
-	y, err2 := strconv.ParseInt(parts[1], 10, 64)
-	if err1 != nil || err2 != nil {
-		return
-	}
-
-	err := chromedp.Run(ctx,
-		chromedp.ActionFunc(func(ctx context.Context) error {
-			t := chromedp.FromContext(ctx).Target
-			windowID, _, err := browser.GetWindowForTarget().WithTargetID(t.TargetID).Do(ctx)
-			if err != nil {
-				return err
-			}
-			return browser.SetWindowBounds(windowID, &browser.Bounds{
-				Left:        x,
-				Top:         y,
-				WindowState: browser.WindowStateNormal,
-			}).Do(ctx)
-		}),
-	)
-	if err != nil {
-		b.Logger("Warning: could not apply configured position:", err)
-	}
 }
 
 func getBrowserPositionAndSize(config string) (position, width, height string, err error) {

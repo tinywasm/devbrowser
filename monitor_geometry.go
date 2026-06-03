@@ -91,14 +91,8 @@ func (b *DevBrowser) SaveGeometry(x, y, width, height int64) {
 	newWidth := int(width)
 	newHeight := int(height)
 
-	// Guard x > 0 || y > 0 mirrors the size block's newWidth > 0 guard: it is a
-	// safety net so a transient 0,0 reported right after launch (before
-	// applyConfiguredPosition moves the window) cannot overwrite a configured
-	// non-zero position. CDP reads real coordinates correctly once the window is
-	// placed, so normal user movement is still tracked.
 	newPosition := strconv.FormatInt(x, 10) + "," + strconv.FormatInt(y, 10)
-	positionValid := x > 0 || y > 0
-	if newPosition != b.Position && positionValid {
+	if newPosition != b.Position {
 		b.Position = newPosition
 		b.DB.Set(StoreKeyBrowserPosition, b.Position)
 	}

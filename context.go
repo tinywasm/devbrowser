@@ -13,6 +13,13 @@ func (h *DevBrowser) CreateBrowserContext() error {
 		chromedp.Flag("headless", h.Headless),
 		chromedp.Flag("disable-blink-features", "WebFontsInterventionV2"),
 		chromedp.Flag("use-fake-ui-for-media-stream", true),
+		// Force the X11 ozone backend. On Linux/Wayland this routes Chrome
+		// through XWayland, which is the ONLY way the window position is
+		// readable/settable via CDP (native Wayland never exposes absolute
+		// window coordinates, so GetWindowForTarget always reports 0,0).
+		// Ignored as a no-op on Windows and macOS, so it stays cross-platform.
+		chromedp.Flag("ozone-platform", "x11"),
+		chromedp.Flag("window-position", h.Position),
 		chromedp.WindowSize(h.Width, h.Height),
 	)
 

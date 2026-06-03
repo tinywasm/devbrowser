@@ -123,8 +123,6 @@ func (h *DevBrowser) OpenBrowser(port string, https bool) {
 	case <-h.ReadyChan:
 		h.Logger(h.StatusMessage())
 
-		// Apply configured position via CDP (overrides WM placement of --window-position flag).
-		go h.applyConfiguredPosition()
 		// Start monitoring browser geometry changes
 		go h.monitorBrowserGeometry()
 
