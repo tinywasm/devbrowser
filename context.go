@@ -13,7 +13,6 @@ func (h *DevBrowser) CreateBrowserContext() error {
 		chromedp.Flag("headless", h.Headless),
 		chromedp.Flag("disable-blink-features", "WebFontsInterventionV2"),
 		chromedp.Flag("use-fake-ui-for-media-stream", true),
-		chromedp.Flag("window-position", h.Position),
 		chromedp.WindowSize(h.Width, h.Height),
 	)
 
