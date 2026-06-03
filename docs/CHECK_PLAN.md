@@ -1,6 +1,6 @@
 # PLAN: browser_position no se aplica ni se guarda
 
-## Estado: PENDIENTE DE REVISIÓN
+## Estado: COMPLETADO
 
 ## Síntoma reportado
 
