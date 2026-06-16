@@ -337,7 +337,7 @@ func ReadAllSwipeElementArgs(qb *orm.QB) (*SwipeElementArgsList, error) {
 }
 
 func (m *EvaluateJSArgs) ModelName() string {
-	return "evaluate_js_args"
+	return "evaluate_jsargs"
 }
 
 var _schemaEvaluateJSArgs = []fmt.Field{

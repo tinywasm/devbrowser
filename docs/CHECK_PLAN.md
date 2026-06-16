@@ -38,13 +38,13 @@ inyección de app necesaria.
 
 En `browser_navigate.Execute` (`devbrowser/mcp-navigation.go`):
 
-- Si `args.URL` tiene un esquema (`http://`, `https://`) → úsalo tal cual.
-- En otro caso (comienza con `/` o es relativo) → construye la base desde estado:
+- If `args.URL` has a scheme (`http://`, `https://`) → use as-is.
+- Else (starts with `/` or is relative) → build base from state:
   `scheme := "http"; if b.LastHttps { scheme = "https" }`,
-  `base := scheme + "://localhost:" + b.LastPort`, luego resuelve `args.URL` contra `base`
-  (usa `net/url` `ResolveReference` para corrección con `/` y formas relativas).
-- Si `b.LastPort == ""` (navegador no abierto aún) → devuelve un error claro:
-  `"browser no tiene puerto de app activo; abre la app primero"`.
+  `base := scheme + "://localhost:" + b.LastPort`, then resolve `args.URL` against `base`
+  (use `net/url` `ResolveReference` for correctness with `/` and relative forms).
+- If `b.LastPort == ""` (browser not opened yet) → return a clear error:
+  `"browser has no active app port; open the app first"`.
 
 Mantén la guardia `IsOpenFlag` existente (`devbrowser/mcp-navigation.go:19`).
 
@@ -52,14 +52,14 @@ Mantén la guardia `IsOpenFlag` existente (`devbrowser/mcp-navigation.go:19`).
 
 Después de una navegación exitosa, lee la ubicación actual e inclúyela:
 
-- Añade un helper `func (b *DevBrowser) CurrentURL() (string, error)` ejecutando
-  `chromedp.Location(&u)` contra `b.Ctx` (refleja `screenshot_utils.go:49`).
-- Texto de resultado: `"Navegado a <resuelto> (actual: <CurrentURL>)"`.
+- Add a helper `func (b *DevBrowser) CurrentURL() (string, error)` running
+  `chromedp.Location(&u)` against `b.Ctx` (mirrors `screenshot_utils.go:49`).
+- Result text: `"Navigated to <resolved> (current: <CurrentURL>)"`.
 
-Descripción del esquema actualizada (forma sin cambios):
+Schema description updated (shape unchanged):
 
 ```json
-{ "url": "string — URL absoluta, o un path relativo a la app en ejecución, ej. /login" }
+{ "url": "string — absolute URL or path relative to the running app, e.g. /login" }
 ```
 
 ### 3.3 Actualiza la descripción equivalente anunciada por el daemon
