@@ -4,8 +4,12 @@ package devbrowser
 
 import (
 	"github.com/tinywasm/fmt"
-	"github.com/tinywasm/form/input"
+	"github.com/tinywasm/orm"
 )
+
+func (m *EmulateDeviceArgs) ModelName() string {
+	return "emulate_device_args"
+}
 
 var _schemaEmulateDeviceArgs = []fmt.Field{
 		{Name: "mode", Type: fmt.FieldText, NotNull: true},
@@ -15,32 +19,76 @@ var _schemaEmulateDeviceArgs = []fmt.Field{
 
 func (m *EmulateDeviceArgs) Schema() []fmt.Field { return _schemaEmulateDeviceArgs }
 
-func (m *EmulateDeviceArgs) Pointers() []any {
-	return []any{
-		&m.Mode,
-		&m.Capture,
-		&m.Selector,
-	}
-}
+func (m *EmulateDeviceArgs) Pointers() []any { return []any{&m.Mode, &m.Capture, &m.Selector} }
+
+type EmulateDeviceArgsList []*EmulateDeviceArgs
+
+func (s *EmulateDeviceArgsList) Schema() []fmt.Field { return nil }
+func (s *EmulateDeviceArgsList) Pointers() []any     { return nil }
+func (s *EmulateDeviceArgsList) Len() int             { return len(*s) }
+func (s *EmulateDeviceArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *EmulateDeviceArgsList) Append() fmt.Fielder  { v := &EmulateDeviceArgs{}; *s = append(*s, v); return v }
 
 func (m *EmulateDeviceArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
 }
 
+func ReadOneEmulateDeviceArgs(qb *orm.QB, model *EmulateDeviceArgs) (*EmulateDeviceArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
+	}
+	return model, nil
+}
+
+func ReadAllEmulateDeviceArgs(qb *orm.QB) (*EmulateDeviceArgsList, error) {
+	var results EmulateDeviceArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &EmulateDeviceArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*EmulateDeviceArgs)) },
+	)
+	return &results, err
+}
+
+func (m *GetConsoleArgs) ModelName() string {
+	return "get_console_args"
+}
+
 var _schemaGetConsoleArgs = []fmt.Field{
-		{Name: "lines", Type: fmt.FieldInt, Widget: input.Number()},
+		{Name: "lines", Type: fmt.FieldInt},
 	}
 
 func (m *GetConsoleArgs) Schema() []fmt.Field { return _schemaGetConsoleArgs }
 
-func (m *GetConsoleArgs) Pointers() []any {
-	return []any{
-		&m.Lines,
+func (m *GetConsoleArgs) Pointers() []any { return []any{&m.Lines} }
+
+type GetConsoleArgsList []*GetConsoleArgs
+
+func (s *GetConsoleArgsList) Schema() []fmt.Field { return nil }
+func (s *GetConsoleArgsList) Pointers() []any     { return nil }
+func (s *GetConsoleArgsList) Len() int             { return len(*s) }
+func (s *GetConsoleArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *GetConsoleArgsList) Append() fmt.Fielder  { v := &GetConsoleArgs{}; *s = append(*s, v); return v }
+
+func ReadOneGetConsoleArgs(qb *orm.QB, model *GetConsoleArgs) (*GetConsoleArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
 	}
+	return model, nil
 }
 
-func (m *GetConsoleArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+func ReadAllGetConsoleArgs(qb *orm.QB) (*GetConsoleArgsList, error) {
+	var results GetConsoleArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &GetConsoleArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*GetConsoleArgs)) },
+	)
+	return &results, err
+}
+
+func (m *NavigateArgs) ModelName() string {
+	return "navigate_args"
 }
 
 var _schemaNavigateArgs = []fmt.Field{
@@ -49,14 +97,39 @@ var _schemaNavigateArgs = []fmt.Field{
 
 func (m *NavigateArgs) Schema() []fmt.Field { return _schemaNavigateArgs }
 
-func (m *NavigateArgs) Pointers() []any {
-	return []any{
-		&m.URL,
-	}
-}
+func (m *NavigateArgs) Pointers() []any { return []any{&m.URL} }
+
+type NavigateArgsList []*NavigateArgs
+
+func (s *NavigateArgsList) Schema() []fmt.Field { return nil }
+func (s *NavigateArgsList) Pointers() []any     { return nil }
+func (s *NavigateArgsList) Len() int             { return len(*s) }
+func (s *NavigateArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *NavigateArgsList) Append() fmt.Fielder  { v := &NavigateArgs{}; *s = append(*s, v); return v }
 
 func (m *NavigateArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
+}
+
+func ReadOneNavigateArgs(qb *orm.QB, model *NavigateArgs) (*NavigateArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
+	}
+	return model, nil
+}
+
+func ReadAllNavigateArgs(qb *orm.QB) (*NavigateArgsList, error) {
+	var results NavigateArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &NavigateArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*NavigateArgs)) },
+	)
+	return &results, err
+}
+
+func (m *ScreenshotArgs) ModelName() string {
+	return "screenshot_args"
 }
 
 var _schemaScreenshotArgs = []fmt.Field{
@@ -65,14 +138,35 @@ var _schemaScreenshotArgs = []fmt.Field{
 
 func (m *ScreenshotArgs) Schema() []fmt.Field { return _schemaScreenshotArgs }
 
-func (m *ScreenshotArgs) Pointers() []any {
-	return []any{
-		&m.Fullpage,
+func (m *ScreenshotArgs) Pointers() []any { return []any{&m.Fullpage} }
+
+type ScreenshotArgsList []*ScreenshotArgs
+
+func (s *ScreenshotArgsList) Schema() []fmt.Field { return nil }
+func (s *ScreenshotArgsList) Pointers() []any     { return nil }
+func (s *ScreenshotArgsList) Len() int             { return len(*s) }
+func (s *ScreenshotArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *ScreenshotArgsList) Append() fmt.Fielder  { v := &ScreenshotArgs{}; *s = append(*s, v); return v }
+
+func ReadOneScreenshotArgs(qb *orm.QB, model *ScreenshotArgs) (*ScreenshotArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
 	}
+	return model, nil
 }
 
-func (m *ScreenshotArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+func ReadAllScreenshotArgs(qb *orm.QB) (*ScreenshotArgsList, error) {
+	var results ScreenshotArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &ScreenshotArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*ScreenshotArgs)) },
+	)
+	return &results, err
+}
+
+func (m *InspectElementArgs) ModelName() string {
+	return "inspect_element_args"
 }
 
 var _schemaInspectElementArgs = []fmt.Field{
@@ -81,76 +175,169 @@ var _schemaInspectElementArgs = []fmt.Field{
 
 func (m *InspectElementArgs) Schema() []fmt.Field { return _schemaInspectElementArgs }
 
-func (m *InspectElementArgs) Pointers() []any {
-	return []any{
-		&m.Selector,
-	}
-}
+func (m *InspectElementArgs) Pointers() []any { return []any{&m.Selector} }
+
+type InspectElementArgsList []*InspectElementArgs
+
+func (s *InspectElementArgsList) Schema() []fmt.Field { return nil }
+func (s *InspectElementArgsList) Pointers() []any     { return nil }
+func (s *InspectElementArgsList) Len() int             { return len(*s) }
+func (s *InspectElementArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *InspectElementArgsList) Append() fmt.Fielder  { v := &InspectElementArgs{}; *s = append(*s, v); return v }
 
 func (m *InspectElementArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
 }
 
+func ReadOneInspectElementArgs(qb *orm.QB, model *InspectElementArgs) (*InspectElementArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
+	}
+	return model, nil
+}
+
+func ReadAllInspectElementArgs(qb *orm.QB) (*InspectElementArgsList, error) {
+	var results InspectElementArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &InspectElementArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*InspectElementArgs)) },
+	)
+	return &results, err
+}
+
+func (m *ClickElementArgs) ModelName() string {
+	return "click_element_args"
+}
+
 var _schemaClickElementArgs = []fmt.Field{
 		{Name: "selector", Type: fmt.FieldText, NotNull: true},
-		{Name: "wait_after", Type: fmt.FieldInt, Widget: input.Number()},
-		{Name: "timeout", Type: fmt.FieldInt, Widget: input.Number()},
+		{Name: "wait_after", Type: fmt.FieldInt},
+		{Name: "timeout", Type: fmt.FieldInt},
 	}
 
 func (m *ClickElementArgs) Schema() []fmt.Field { return _schemaClickElementArgs }
 
-func (m *ClickElementArgs) Pointers() []any {
-	return []any{
-		&m.Selector,
-		&m.WaitAfter,
-		&m.Timeout,
-	}
-}
+func (m *ClickElementArgs) Pointers() []any { return []any{&m.Selector, &m.WaitAfter, &m.Timeout} }
+
+type ClickElementArgsList []*ClickElementArgs
+
+func (s *ClickElementArgsList) Schema() []fmt.Field { return nil }
+func (s *ClickElementArgsList) Pointers() []any     { return nil }
+func (s *ClickElementArgsList) Len() int             { return len(*s) }
+func (s *ClickElementArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *ClickElementArgsList) Append() fmt.Fielder  { v := &ClickElementArgs{}; *s = append(*s, v); return v }
 
 func (m *ClickElementArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
 }
 
+func ReadOneClickElementArgs(qb *orm.QB, model *ClickElementArgs) (*ClickElementArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
+	}
+	return model, nil
+}
+
+func ReadAllClickElementArgs(qb *orm.QB) (*ClickElementArgsList, error) {
+	var results ClickElementArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &ClickElementArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*ClickElementArgs)) },
+	)
+	return &results, err
+}
+
+func (m *FillElementArgs) ModelName() string {
+	return "fill_element_args"
+}
+
 var _schemaFillElementArgs = []fmt.Field{
 		{Name: "selector", Type: fmt.FieldText, NotNull: true},
 		{Name: "value", Type: fmt.FieldText, NotNull: true},
-		{Name: "wait_after", Type: fmt.FieldInt, Widget: input.Number()},
-		{Name: "timeout", Type: fmt.FieldInt, Widget: input.Number()},
+		{Name: "wait_after", Type: fmt.FieldInt},
+		{Name: "timeout", Type: fmt.FieldInt},
 	}
 
 func (m *FillElementArgs) Schema() []fmt.Field { return _schemaFillElementArgs }
 
-func (m *FillElementArgs) Pointers() []any {
-	return []any{
-		&m.Selector,
-		&m.Value,
-		&m.WaitAfter,
-		&m.Timeout,
-	}
-}
+func (m *FillElementArgs) Pointers() []any { return []any{&m.Selector, &m.Value, &m.WaitAfter, &m.Timeout} }
+
+type FillElementArgsList []*FillElementArgs
+
+func (s *FillElementArgsList) Schema() []fmt.Field { return nil }
+func (s *FillElementArgsList) Pointers() []any     { return nil }
+func (s *FillElementArgsList) Len() int             { return len(*s) }
+func (s *FillElementArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *FillElementArgsList) Append() fmt.Fielder  { v := &FillElementArgs{}; *s = append(*s, v); return v }
 
 func (m *FillElementArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
 }
 
+func ReadOneFillElementArgs(qb *orm.QB, model *FillElementArgs) (*FillElementArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
+	}
+	return model, nil
+}
+
+func ReadAllFillElementArgs(qb *orm.QB) (*FillElementArgsList, error) {
+	var results FillElementArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &FillElementArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*FillElementArgs)) },
+	)
+	return &results, err
+}
+
+func (m *SwipeElementArgs) ModelName() string {
+	return "swipe_element_args"
+}
+
 var _schemaSwipeElementArgs = []fmt.Field{
 		{Name: "selector", Type: fmt.FieldText, NotNull: true},
 		{Name: "direction", Type: fmt.FieldText, NotNull: true},
-		{Name: "distance", Type: fmt.FieldInt, NotNull: true, Widget: input.Number()},
+		{Name: "distance", Type: fmt.FieldInt, NotNull: true},
 	}
 
 func (m *SwipeElementArgs) Schema() []fmt.Field { return _schemaSwipeElementArgs }
 
-func (m *SwipeElementArgs) Pointers() []any {
-	return []any{
-		&m.Selector,
-		&m.Direction,
-		&m.Distance,
-	}
-}
+func (m *SwipeElementArgs) Pointers() []any { return []any{&m.Selector, &m.Direction, &m.Distance} }
+
+type SwipeElementArgsList []*SwipeElementArgs
+
+func (s *SwipeElementArgsList) Schema() []fmt.Field { return nil }
+func (s *SwipeElementArgsList) Pointers() []any     { return nil }
+func (s *SwipeElementArgsList) Len() int             { return len(*s) }
+func (s *SwipeElementArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *SwipeElementArgsList) Append() fmt.Fielder  { v := &SwipeElementArgs{}; *s = append(*s, v); return v }
 
 func (m *SwipeElementArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
+}
+
+func ReadOneSwipeElementArgs(qb *orm.QB, model *SwipeElementArgs) (*SwipeElementArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
+	}
+	return model, nil
+}
+
+func ReadAllSwipeElementArgs(qb *orm.QB) (*SwipeElementArgsList, error) {
+	var results SwipeElementArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &SwipeElementArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*SwipeElementArgs)) },
+	)
+	return &results, err
+}
+
+func (m *EvaluateJSArgs) ModelName() string {
+	return "evaluate_js_args"
 }
 
 var _schemaEvaluateJSArgs = []fmt.Field{
@@ -160,49 +347,114 @@ var _schemaEvaluateJSArgs = []fmt.Field{
 
 func (m *EvaluateJSArgs) Schema() []fmt.Field { return _schemaEvaluateJSArgs }
 
-func (m *EvaluateJSArgs) Pointers() []any {
-	return []any{
-		&m.Script,
-		&m.AwaitPromise,
-	}
-}
+func (m *EvaluateJSArgs) Pointers() []any { return []any{&m.Script, &m.AwaitPromise} }
+
+type EvaluateJSArgsList []*EvaluateJSArgs
+
+func (s *EvaluateJSArgsList) Schema() []fmt.Field { return nil }
+func (s *EvaluateJSArgsList) Pointers() []any     { return nil }
+func (s *EvaluateJSArgsList) Len() int             { return len(*s) }
+func (s *EvaluateJSArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *EvaluateJSArgsList) Append() fmt.Fielder  { v := &EvaluateJSArgs{}; *s = append(*s, v); return v }
 
 func (m *EvaluateJSArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
 }
 
+func ReadOneEvaluateJSArgs(qb *orm.QB, model *EvaluateJSArgs) (*EvaluateJSArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
+	}
+	return model, nil
+}
+
+func ReadAllEvaluateJSArgs(qb *orm.QB) (*EvaluateJSArgsList, error) {
+	var results EvaluateJSArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &EvaluateJSArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*EvaluateJSArgs)) },
+	)
+	return &results, err
+}
+
+func (m *GetNetworkLogsArgs) ModelName() string {
+	return "get_network_logs_args"
+}
+
 var _schemaGetNetworkLogsArgs = []fmt.Field{
 		{Name: "filter", Type: fmt.FieldText},
-		{Name: "limit", Type: fmt.FieldInt, Widget: input.Number()},
+		{Name: "limit", Type: fmt.FieldInt},
 	}
 
 func (m *GetNetworkLogsArgs) Schema() []fmt.Field { return _schemaGetNetworkLogsArgs }
 
-func (m *GetNetworkLogsArgs) Pointers() []any {
-	return []any{
-		&m.Filter,
-		&m.Limit,
+func (m *GetNetworkLogsArgs) Pointers() []any { return []any{&m.Filter, &m.Limit} }
+
+type GetNetworkLogsArgsList []*GetNetworkLogsArgs
+
+func (s *GetNetworkLogsArgsList) Schema() []fmt.Field { return nil }
+func (s *GetNetworkLogsArgsList) Pointers() []any     { return nil }
+func (s *GetNetworkLogsArgsList) Len() int             { return len(*s) }
+func (s *GetNetworkLogsArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *GetNetworkLogsArgsList) Append() fmt.Fielder  { v := &GetNetworkLogsArgs{}; *s = append(*s, v); return v }
+
+func ReadOneGetNetworkLogsArgs(qb *orm.QB, model *GetNetworkLogsArgs) (*GetNetworkLogsArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
 	}
+	return model, nil
 }
 
-func (m *GetNetworkLogsArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+func ReadAllGetNetworkLogsArgs(qb *orm.QB) (*GetNetworkLogsArgsList, error) {
+	var results GetNetworkLogsArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &GetNetworkLogsArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*GetNetworkLogsArgs)) },
+	)
+	return &results, err
+}
+
+func (m *GetErrorsArgs) ModelName() string {
+	return "get_errors_args"
 }
 
 var _schemaGetErrorsArgs = []fmt.Field{
-		{Name: "limit", Type: fmt.FieldInt, Widget: input.Number()},
+		{Name: "limit", Type: fmt.FieldInt},
 	}
 
 func (m *GetErrorsArgs) Schema() []fmt.Field { return _schemaGetErrorsArgs }
 
-func (m *GetErrorsArgs) Pointers() []any {
-	return []any{
-		&m.Limit,
+func (m *GetErrorsArgs) Pointers() []any { return []any{&m.Limit} }
+
+type GetErrorsArgsList []*GetErrorsArgs
+
+func (s *GetErrorsArgsList) Schema() []fmt.Field { return nil }
+func (s *GetErrorsArgsList) Pointers() []any     { return nil }
+func (s *GetErrorsArgsList) Len() int             { return len(*s) }
+func (s *GetErrorsArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *GetErrorsArgsList) Append() fmt.Fielder  { v := &GetErrorsArgs{}; *s = append(*s, v); return v }
+
+func ReadOneGetErrorsArgs(qb *orm.QB, model *GetErrorsArgs) (*GetErrorsArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
 	}
+	return model, nil
 }
 
-func (m *GetErrorsArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+func ReadAllGetErrorsArgs(qb *orm.QB) (*GetErrorsArgsList, error) {
+	var results GetErrorsArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &GetErrorsArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*GetErrorsArgs)) },
+	)
+	return &results, err
+}
+
+func (m *GetPerformanceArgs) ModelName() string {
+	return "get_performance_args"
 }
 
 var _schemaGetPerformanceArgs = []fmt.Field{
@@ -211,14 +463,35 @@ var _schemaGetPerformanceArgs = []fmt.Field{
 
 func (m *GetPerformanceArgs) Schema() []fmt.Field { return _schemaGetPerformanceArgs }
 
-func (m *GetPerformanceArgs) Pointers() []any {
-	return []any{
-		&m.Reserved,
+func (m *GetPerformanceArgs) Pointers() []any { return []any{&m.Reserved} }
+
+type GetPerformanceArgsList []*GetPerformanceArgs
+
+func (s *GetPerformanceArgsList) Schema() []fmt.Field { return nil }
+func (s *GetPerformanceArgsList) Pointers() []any     { return nil }
+func (s *GetPerformanceArgsList) Len() int             { return len(*s) }
+func (s *GetPerformanceArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *GetPerformanceArgsList) Append() fmt.Fielder  { v := &GetPerformanceArgs{}; *s = append(*s, v); return v }
+
+func ReadOneGetPerformanceArgs(qb *orm.QB, model *GetPerformanceArgs) (*GetPerformanceArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
 	}
+	return model, nil
 }
 
-func (m *GetPerformanceArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+func ReadAllGetPerformanceArgs(qb *orm.QB) (*GetPerformanceArgsList, error) {
+	var results GetPerformanceArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &GetPerformanceArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*GetPerformanceArgs)) },
+	)
+	return &results, err
+}
+
+func (m *GetContentArgs) ModelName() string {
+	return "get_content_args"
 }
 
 var _schemaGetContentArgs = []fmt.Field{
@@ -227,14 +500,35 @@ var _schemaGetContentArgs = []fmt.Field{
 
 func (m *GetContentArgs) Schema() []fmt.Field { return _schemaGetContentArgs }
 
-func (m *GetContentArgs) Pointers() []any {
-	return []any{
-		&m.Reserved,
+func (m *GetContentArgs) Pointers() []any { return []any{&m.Reserved} }
+
+type GetContentArgsList []*GetContentArgs
+
+func (s *GetContentArgsList) Schema() []fmt.Field { return nil }
+func (s *GetContentArgsList) Pointers() []any     { return nil }
+func (s *GetContentArgsList) Len() int             { return len(*s) }
+func (s *GetContentArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *GetContentArgsList) Append() fmt.Fielder  { v := &GetContentArgs{}; *s = append(*s, v); return v }
+
+func ReadOneGetContentArgs(qb *orm.QB, model *GetContentArgs) (*GetContentArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
 	}
+	return model, nil
 }
 
-func (m *GetContentArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+func ReadAllGetContentArgs(qb *orm.QB) (*GetContentArgsList, error) {
+	var results GetContentArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &GetContentArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*GetContentArgs)) },
+	)
+	return &results, err
+}
+
+func (m *EmptyArgs) ModelName() string {
+	return "empty_args"
 }
 
 var _schemaEmptyArgs = []fmt.Field{
@@ -243,14 +537,35 @@ var _schemaEmptyArgs = []fmt.Field{
 
 func (m *EmptyArgs) Schema() []fmt.Field { return _schemaEmptyArgs }
 
-func (m *EmptyArgs) Pointers() []any {
-	return []any{
-		&m.Reserved,
+func (m *EmptyArgs) Pointers() []any { return []any{&m.Reserved} }
+
+type EmptyArgsList []*EmptyArgs
+
+func (s *EmptyArgsList) Schema() []fmt.Field { return nil }
+func (s *EmptyArgsList) Pointers() []any     { return nil }
+func (s *EmptyArgsList) Len() int             { return len(*s) }
+func (s *EmptyArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *EmptyArgsList) Append() fmt.Fielder  { v := &EmptyArgs{}; *s = append(*s, v); return v }
+
+func ReadOneEmptyArgs(qb *orm.QB, model *EmptyArgs) (*EmptyArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
 	}
+	return model, nil
 }
 
-func (m *EmptyArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+func ReadAllEmptyArgs(qb *orm.QB) (*EmptyArgsList, error) {
+	var results EmptyArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &EmptyArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*EmptyArgs)) },
+	)
+	return &results, err
+}
+
+func (m *OpenBrowserArgs) ModelName() string {
+	return "open_browser_args"
 }
 
 var _schemaOpenBrowserArgs = []fmt.Field{
@@ -260,15 +575,35 @@ var _schemaOpenBrowserArgs = []fmt.Field{
 
 func (m *OpenBrowserArgs) Schema() []fmt.Field { return _schemaOpenBrowserArgs }
 
-func (m *OpenBrowserArgs) Pointers() []any {
-	return []any{
-		&m.Port,
-		&m.Https,
+func (m *OpenBrowserArgs) Pointers() []any { return []any{&m.Port, &m.Https} }
+
+type OpenBrowserArgsList []*OpenBrowserArgs
+
+func (s *OpenBrowserArgsList) Schema() []fmt.Field { return nil }
+func (s *OpenBrowserArgsList) Pointers() []any     { return nil }
+func (s *OpenBrowserArgsList) Len() int             { return len(*s) }
+func (s *OpenBrowserArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *OpenBrowserArgsList) Append() fmt.Fielder  { v := &OpenBrowserArgs{}; *s = append(*s, v); return v }
+
+func ReadOneOpenBrowserArgs(qb *orm.QB, model *OpenBrowserArgs) (*OpenBrowserArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
 	}
+	return model, nil
 }
 
-func (m *OpenBrowserArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+func ReadAllOpenBrowserArgs(qb *orm.QB) (*OpenBrowserArgsList, error) {
+	var results OpenBrowserArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &OpenBrowserArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*OpenBrowserArgs)) },
+	)
+	return &results, err
+}
+
+func (m *CloseBrowserArgs) ModelName() string {
+	return "close_browser_args"
 }
 
 var _schemaCloseBrowserArgs = []fmt.Field{
@@ -277,13 +612,30 @@ var _schemaCloseBrowserArgs = []fmt.Field{
 
 func (m *CloseBrowserArgs) Schema() []fmt.Field { return _schemaCloseBrowserArgs }
 
-func (m *CloseBrowserArgs) Pointers() []any {
-	return []any{
-		&m.Reserved,
+func (m *CloseBrowserArgs) Pointers() []any { return []any{&m.Reserved} }
+
+type CloseBrowserArgsList []*CloseBrowserArgs
+
+func (s *CloseBrowserArgsList) Schema() []fmt.Field { return nil }
+func (s *CloseBrowserArgsList) Pointers() []any     { return nil }
+func (s *CloseBrowserArgsList) Len() int             { return len(*s) }
+func (s *CloseBrowserArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *CloseBrowserArgsList) Append() fmt.Fielder  { v := &CloseBrowserArgs{}; *s = append(*s, v); return v }
+
+func ReadOneCloseBrowserArgs(qb *orm.QB, model *CloseBrowserArgs) (*CloseBrowserArgs, error) {
+	err := qb.ReadOne()
+	if err != nil {
+		return nil, err
 	}
+	return model, nil
 }
 
-func (m *CloseBrowserArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+func ReadAllCloseBrowserArgs(qb *orm.QB) (*CloseBrowserArgsList, error) {
+	var results CloseBrowserArgsList
+	err := qb.ReadAll(
+		func() fmt.Model { return &CloseBrowserArgs{} },
+		func(m fmt.Model) { results = append(results, m.(*CloseBrowserArgs)) },
+	)
+	return &results, err
 }
 

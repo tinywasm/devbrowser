@@ -192,6 +192,18 @@ func (b *DevBrowser) NavigateToURL(url string) error {
 	return nil
 }
 
+func (b *DevBrowser) CurrentURL() (string, error) {
+	if b.Ctx == nil {
+		return "", errors.New("context not initialized")
+	}
+
+	var url string
+	if err := chromedp.Run(b.Ctx, chromedp.Location(&url)); err != nil {
+		return "", err
+	}
+	return url, nil
+}
+
 func (b *DevBrowser) Reload() error {
 	if b.Ctx != nil && b.IsOpenFlag {
 		b.Logger("Reload")

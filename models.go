@@ -12,15 +12,19 @@ type GetConsoleArgs struct {
 	Lines int `input:"number"`
 }
 
+func (m *GetConsoleArgs) Validate(action byte) error { return nil }
+
 // ormc:formonly
 type NavigateArgs struct {
-	URL string `db:"not_null" input:"-"`
+	URL string `db:"not_null" input:"-" help:"Absolute URL, or a relative path to the running app, e.g. /login"`
 }
 
 // ormc:formonly
 type ScreenshotArgs struct {
 	Fullpage bool `input:"-"`
 }
+
+func (m *ScreenshotArgs) Validate(action byte) error { return nil }
 
 // ormc:formonly
 type InspectElementArgs struct {
@@ -61,25 +65,35 @@ type GetNetworkLogsArgs struct {
 	Limit  int    `input:"number"`
 }
 
+func (m *GetNetworkLogsArgs) Validate(action byte) error { return nil }
+
 // ormc:formonly
 type GetErrorsArgs struct {
 	Limit int `input:"number"`
 }
+
+func (m *GetErrorsArgs) Validate(action byte) error { return nil }
 
 // ormc:formonly
 type GetPerformanceArgs struct {
 	Reserved int `input:"-"`
 }
 
+func (m *GetPerformanceArgs) Validate(action byte) error { return nil }
+
 // ormc:formonly
 type GetContentArgs struct {
 	Reserved int `input:"-"`
 }
 
+func (m *GetContentArgs) Validate(action byte) error { return nil }
+
 // ormc:formonly
 type EmptyArgs struct {
 	Reserved int `input:"-"`
 }
+
+func (m *EmptyArgs) Validate(action byte) error { return nil }
 
 // ormc:formonly
 type OpenBrowserArgs struct {
@@ -87,7 +101,11 @@ type OpenBrowserArgs struct {
 	Https bool   `input:"-"`
 }
 
+func (m *OpenBrowserArgs) Validate(action byte) error { return nil }
+
 // ormc:formonly
 type CloseBrowserArgs struct {
 	Reserved int `input:"-"`
 }
+
+func (m *CloseBrowserArgs) Validate(action byte) error { return nil }
