@@ -9,7 +9,7 @@ require (
 	github.com/tinywasm/fmt v0.24.3
 	github.com/tinywasm/json v0.5.2
 	github.com/tinywasm/mcp v0.1.9
-	github.com/tinywasm/orm v0.9.6
+	github.com/tinywasm/orm v0.9.7
 )
 
 require (
