@@ -66,10 +66,7 @@ func TestRobustInteraction(t *testing.T) {
 	// Use WaitAfter to allow for removal of cover and transition
 	args := devbrowser.ClickElementArgs{Selector: "#btn", Timeout: 2000, WaitAfter: 500}
 	req := mcp.Request{
-		Params: struct {
-			Name      string
-			Arguments string `json:",omitempty"`
-		}{
+		Params: mcp.CallToolParams{
 			Name:      "browser_click_element",
 			Arguments: devbrowser.EncodeSchema(&args),
 		},

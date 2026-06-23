@@ -45,10 +45,7 @@ func TestBrowserNavigation(t *testing.T) {
 	// Test navigation
 	args := devbrowser.NavigateArgs{URL: ts.URL + "/page2"}
 	req := mcp.Request{
-		Params: struct {
-			Name      string
-			Arguments string `json:",omitempty"`
-		}{
+		Params: mcp.CallToolParams{
 			Name:      "browser_navigate",
 			Arguments: devbrowser.EncodeSchema(&args),
 		},

@@ -112,10 +112,7 @@ func TestBrowserSwipe(t *testing.T) {
 	// 5. Execute swipe: Swipe right by 100px on the handle
 	args := devbrowser.SwipeElementArgs{Selector: "#handle", Direction: "right", Distance: 100}
 	req := mcp.Request{
-		Params: struct {
-			Name      string
-			Arguments string `json:",omitempty"`
-		}{
+		Params: mcp.CallToolParams{
 			Name:      "browser_swipe_element",
 			Arguments: devbrowser.EncodeSchema(&args),
 		},

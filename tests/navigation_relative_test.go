@@ -70,10 +70,7 @@ func TestRelativeNavigation(t *testing.T) {
 
 			args := devbrowser.NavigateArgs{URL: tt.url}
 			req := mcp.Request{
-				Params: struct {
-					Name      string
-					Arguments string `json:",omitempty"`
-				}{
+				Params: mcp.CallToolParams{
 					Name:      "browser_navigate",
 					Arguments: devbrowser.EncodeSchema(&args),
 				},
