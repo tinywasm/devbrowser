@@ -25,7 +25,6 @@ func (h *DevBrowser) OpenBrowser(port string, https bool) {
 	}
 
 	if h.IsOpenFlag {
-		//h.Logger("DEBUG: OpenBrowser returning early, already open")
 		h.Mu.Unlock()
 		return
 	}
@@ -106,6 +105,14 @@ func (h *DevBrowser) OpenBrowser(port string, https bool) {
 				h.Logger(fmt.Sprintf("Failed to restore emulation: %v", err))
 			}
 		}
+
+		// Mark the browser as fully ready: the context now has an allocated
+		// browser (the Navigate above forced allocation). Only now is it safe
+		// for other goroutines (e.g. the file watcher's Reload) to issue
+		// chromedp actions without triggering a second allocation.
+		h.Mu.Lock()
+		h.ready = true
+		h.Mu.Unlock()
 
 		h.ReadyChan <- true
 

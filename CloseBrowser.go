@@ -13,14 +13,23 @@ func (h *DevBrowser) CloseBrowser() error {
 	}
 
 	h.IsOpenFlag = false
+	h.ready = false
 
 	if h.Cancel != nil {
 		h.Cancel()
 	}
 
+	// Cancel the exec allocator too, otherwise the Chrome OS process/window
+	// survives (only the tab/target is closed) and a restart spawns a second
+	// window -> the about:blank "double window" bug.
+	if h.AllocCancel != nil {
+		h.AllocCancel()
+	}
+
 	// Limpiar recursos
 	h.Ctx = nil
 	h.Cancel = nil
+	h.AllocCancel = nil
 
 	h.Logger(h.StatusMessage())
 	h.UI.RefreshUI()

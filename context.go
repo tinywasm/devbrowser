@@ -38,7 +38,7 @@ func (h *DevBrowser) CreateBrowserContext() error {
 		)
 	}
 
-	allocCtx, _ := chromedp.NewExecAllocator(context.Background(), opts...)
+	allocCtx, allocCancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	ctx, cancel := chromedp.NewContext(allocCtx,
 		chromedp.WithErrorf(func(format string, args ...any) {
 			// Chrome sends new CDP enum values before cdproto is updated.
@@ -54,6 +54,7 @@ func (h *DevBrowser) CreateBrowserContext() error {
 	)
 	h.Ctx = ctx
 	h.Cancel = cancel
+	h.AllocCancel = allocCancel
 
 	return nil
 }

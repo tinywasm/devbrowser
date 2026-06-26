@@ -38,11 +38,22 @@ type DevBrowser struct {
 
 	IsOpenFlag bool // Indica si el navegador está abierto
 
+	// ready is true only AFTER the initial open fully completed (browser
+	// allocated + navigated). IsOpenFlag is set optimistically before the async
+	// open finishes, so it is NOT a safe signal for issuing chromedp actions:
+	// running an action (e.g. Reload) on the context before the first allocation
+	// returns makes chromedp allocate a SECOND browser -> double window.
+	ready bool
+
 	DB Store // Key-value store para configuración y estado
 
 	// chromedp fields
 	Ctx    context.Context
 	Cancel context.CancelFunc
+	// AllocCancel cancels the exec allocator (the Chrome OS process). Must be
+	// called on close, otherwise cancelling only Ctx closes the tab/target but
+	// leaves the Chrome window alive -> orphan windows on restart (double window).
+	AllocCancel context.CancelFunc
 
 	ReadyChan chan bool
 	ErrChan   chan error
@@ -205,11 +216,23 @@ func (b *DevBrowser) CurrentURL() (string, error) {
 }
 
 func (b *DevBrowser) Reload() error {
-	if b.Ctx != nil && b.IsOpenFlag {
-		b.Logger("Reload")
-		if err := chromedp.Run(b.Ctx, chromedp.Reload()); err != nil {
-			return errors.New("Reload " + err.Error())
-		}
+	// Gate on `ready`, not IsOpenFlag: during startup the file watcher can fire
+	// a reload while the initial open is still allocating the browser. Running
+	// chromedp.Run on the not-yet-allocated context would spawn a SECOND Chrome
+	// (the about:blank "double window"). The initial Navigate already shows the
+	// current content, so a reload before ready is redundant — skip it.
+	b.Mu.Lock()
+	ready := b.ready && b.Ctx != nil && b.IsOpenFlag
+	b.Mu.Unlock()
+
+	if !ready {
+		b.Logger("Reload skipped: browser still opening")
+		return nil
+	}
+
+	b.Logger("Reload")
+	if err := chromedp.Run(b.Ctx, chromedp.Reload()); err != nil {
+		return errors.New("Reload " + err.Error())
 	}
 	return nil
 }
