@@ -4,6 +4,7 @@ package devbrowser
 
 import (
 	"github.com/tinywasm/fmt"
+	"github.com/tinywasm/form/input"
 )
 
 func (m *EmulateDeviceArgs) ModelName() string {
@@ -11,7 +12,7 @@ func (m *EmulateDeviceArgs) ModelName() string {
 }
 
 var _schemaEmulateDeviceArgs = []fmt.Field{
-		{Name: "mode", Type: fmt.FieldText, NotNull: true},
+		{Name: "mode", Type: fmt.FieldText},
 		{Name: "capture", Type: fmt.FieldBool},
 		{Name: "selector", Type: fmt.FieldText},
 	}
@@ -28,11 +29,10 @@ func (m *EmulateDeviceArgs) EncodeFields(w fmt.FieldWriter) {
 	w.String("selector", m.Selector)
 }
 
-func (m *EmulateDeviceArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *EmulateDeviceArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.String("mode"); ok { m.Mode = v }
 	if v, ok := r.Bool("capture"); ok { m.Capture = v }
 	if v, ok := r.String("selector"); ok { m.Selector = v }
-	return nil
 }
 
 type EmulateDeviceArgsList []*EmulateDeviceArgs
@@ -44,7 +44,7 @@ func (s *EmulateDeviceArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *EmulateDeviceArgsList) Append() fmt.Fielder  { v := &EmulateDeviceArgs{}; *s = append(*s, v); return v }
 func (s *EmulateDeviceArgsList) IsNil() bool          { return s == nil }
 func (s *EmulateDeviceArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *EmulateDeviceArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *EmulateDeviceArgsList) DecodeFields(_ fmt.FieldReader) {}
 
 func (m *EmulateDeviceArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
@@ -55,7 +55,7 @@ func (m *GetConsoleArgs) ModelName() string {
 }
 
 var _schemaGetConsoleArgs = []fmt.Field{
-		{Name: "lines", Type: fmt.FieldInt},
+		{Name: "lines", Type: fmt.FieldInt, Widget: input.Number()},
 	}
 
 func (m *GetConsoleArgs) Schema() []fmt.Field { return _schemaGetConsoleArgs }
@@ -68,9 +68,8 @@ func (m *GetConsoleArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Int("lines", int64(m.Lines))
 }
 
-func (m *GetConsoleArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *GetConsoleArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.Int("lines"); ok { m.Lines = int(v) }
-	return nil
 }
 
 type GetConsoleArgsList []*GetConsoleArgs
@@ -82,14 +81,18 @@ func (s *GetConsoleArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *GetConsoleArgsList) Append() fmt.Fielder  { v := &GetConsoleArgs{}; *s = append(*s, v); return v }
 func (s *GetConsoleArgsList) IsNil() bool          { return s == nil }
 func (s *GetConsoleArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetConsoleArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *GetConsoleArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *GetConsoleArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
 
 func (m *NavigateArgs) ModelName() string {
 	return "navigate_args"
 }
 
 var _schemaNavigateArgs = []fmt.Field{
-		{Name: "url", Type: fmt.FieldText, NotNull: true},
+		{Name: "url", Type: fmt.FieldText},
 	}
 
 func (m *NavigateArgs) Schema() []fmt.Field { return _schemaNavigateArgs }
@@ -102,9 +105,8 @@ func (m *NavigateArgs) EncodeFields(w fmt.FieldWriter) {
 	w.String("url", m.URL)
 }
 
-func (m *NavigateArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *NavigateArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.String("url"); ok { m.URL = v }
-	return nil
 }
 
 type NavigateArgsList []*NavigateArgs
@@ -116,7 +118,7 @@ func (s *NavigateArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *NavigateArgsList) Append() fmt.Fielder  { v := &NavigateArgs{}; *s = append(*s, v); return v }
 func (s *NavigateArgsList) IsNil() bool          { return s == nil }
 func (s *NavigateArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *NavigateArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *NavigateArgsList) DecodeFields(_ fmt.FieldReader) {}
 
 func (m *NavigateArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
@@ -140,9 +142,8 @@ func (m *ScreenshotArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Bool("fullpage", m.Fullpage)
 }
 
-func (m *ScreenshotArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *ScreenshotArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.Bool("fullpage"); ok { m.Fullpage = v }
-	return nil
 }
 
 type ScreenshotArgsList []*ScreenshotArgs
@@ -154,14 +155,18 @@ func (s *ScreenshotArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *ScreenshotArgsList) Append() fmt.Fielder  { v := &ScreenshotArgs{}; *s = append(*s, v); return v }
 func (s *ScreenshotArgsList) IsNil() bool          { return s == nil }
 func (s *ScreenshotArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *ScreenshotArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *ScreenshotArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *ScreenshotArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
 
 func (m *InspectElementArgs) ModelName() string {
 	return "inspect_element_args"
 }
 
 var _schemaInspectElementArgs = []fmt.Field{
-		{Name: "selector", Type: fmt.FieldText, NotNull: true},
+		{Name: "selector", Type: fmt.FieldText},
 	}
 
 func (m *InspectElementArgs) Schema() []fmt.Field { return _schemaInspectElementArgs }
@@ -174,9 +179,8 @@ func (m *InspectElementArgs) EncodeFields(w fmt.FieldWriter) {
 	w.String("selector", m.Selector)
 }
 
-func (m *InspectElementArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *InspectElementArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.String("selector"); ok { m.Selector = v }
-	return nil
 }
 
 type InspectElementArgsList []*InspectElementArgs
@@ -188,7 +192,7 @@ func (s *InspectElementArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *InspectElementArgsList) Append() fmt.Fielder  { v := &InspectElementArgs{}; *s = append(*s, v); return v }
 func (s *InspectElementArgsList) IsNil() bool          { return s == nil }
 func (s *InspectElementArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *InspectElementArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *InspectElementArgsList) DecodeFields(_ fmt.FieldReader) {}
 
 func (m *InspectElementArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
@@ -199,9 +203,9 @@ func (m *ClickElementArgs) ModelName() string {
 }
 
 var _schemaClickElementArgs = []fmt.Field{
-		{Name: "selector", Type: fmt.FieldText, NotNull: true},
-		{Name: "wait_after", Type: fmt.FieldInt},
-		{Name: "timeout", Type: fmt.FieldInt},
+		{Name: "selector", Type: fmt.FieldText},
+		{Name: "wait_after", Type: fmt.FieldInt, Widget: input.Number()},
+		{Name: "timeout", Type: fmt.FieldInt, Widget: input.Number()},
 	}
 
 func (m *ClickElementArgs) Schema() []fmt.Field { return _schemaClickElementArgs }
@@ -216,11 +220,10 @@ func (m *ClickElementArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Int("timeout", int64(m.Timeout))
 }
 
-func (m *ClickElementArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *ClickElementArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.String("selector"); ok { m.Selector = v }
 	if v, ok := r.Int("wait_after"); ok { m.WaitAfter = int(v) }
 	if v, ok := r.Int("timeout"); ok { m.Timeout = int(v) }
-	return nil
 }
 
 type ClickElementArgsList []*ClickElementArgs
@@ -232,7 +235,7 @@ func (s *ClickElementArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *ClickElementArgsList) Append() fmt.Fielder  { v := &ClickElementArgs{}; *s = append(*s, v); return v }
 func (s *ClickElementArgsList) IsNil() bool          { return s == nil }
 func (s *ClickElementArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *ClickElementArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *ClickElementArgsList) DecodeFields(_ fmt.FieldReader) {}
 
 func (m *ClickElementArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
@@ -243,10 +246,10 @@ func (m *FillElementArgs) ModelName() string {
 }
 
 var _schemaFillElementArgs = []fmt.Field{
-		{Name: "selector", Type: fmt.FieldText, NotNull: true},
-		{Name: "value", Type: fmt.FieldText, NotNull: true},
-		{Name: "wait_after", Type: fmt.FieldInt},
-		{Name: "timeout", Type: fmt.FieldInt},
+		{Name: "selector", Type: fmt.FieldText},
+		{Name: "value", Type: fmt.FieldText},
+		{Name: "wait_after", Type: fmt.FieldInt, Widget: input.Number()},
+		{Name: "timeout", Type: fmt.FieldInt, Widget: input.Number()},
 	}
 
 func (m *FillElementArgs) Schema() []fmt.Field { return _schemaFillElementArgs }
@@ -262,12 +265,11 @@ func (m *FillElementArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Int("timeout", int64(m.Timeout))
 }
 
-func (m *FillElementArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *FillElementArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.String("selector"); ok { m.Selector = v }
 	if v, ok := r.String("value"); ok { m.Value = v }
 	if v, ok := r.Int("wait_after"); ok { m.WaitAfter = int(v) }
 	if v, ok := r.Int("timeout"); ok { m.Timeout = int(v) }
-	return nil
 }
 
 type FillElementArgsList []*FillElementArgs
@@ -279,7 +281,7 @@ func (s *FillElementArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *FillElementArgsList) Append() fmt.Fielder  { v := &FillElementArgs{}; *s = append(*s, v); return v }
 func (s *FillElementArgsList) IsNil() bool          { return s == nil }
 func (s *FillElementArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *FillElementArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *FillElementArgsList) DecodeFields(_ fmt.FieldReader) {}
 
 func (m *FillElementArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
@@ -290,9 +292,9 @@ func (m *SwipeElementArgs) ModelName() string {
 }
 
 var _schemaSwipeElementArgs = []fmt.Field{
-		{Name: "selector", Type: fmt.FieldText, NotNull: true},
-		{Name: "direction", Type: fmt.FieldText, NotNull: true},
-		{Name: "distance", Type: fmt.FieldInt, NotNull: true},
+		{Name: "selector", Type: fmt.FieldText},
+		{Name: "direction", Type: fmt.FieldText},
+		{Name: "distance", Type: fmt.FieldInt, Widget: input.Number()},
 	}
 
 func (m *SwipeElementArgs) Schema() []fmt.Field { return _schemaSwipeElementArgs }
@@ -307,11 +309,10 @@ func (m *SwipeElementArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Int("distance", int64(m.Distance))
 }
 
-func (m *SwipeElementArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *SwipeElementArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.String("selector"); ok { m.Selector = v }
 	if v, ok := r.String("direction"); ok { m.Direction = v }
 	if v, ok := r.Int("distance"); ok { m.Distance = int(v) }
-	return nil
 }
 
 type SwipeElementArgsList []*SwipeElementArgs
@@ -323,7 +324,7 @@ func (s *SwipeElementArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *SwipeElementArgsList) Append() fmt.Fielder  { v := &SwipeElementArgs{}; *s = append(*s, v); return v }
 func (s *SwipeElementArgsList) IsNil() bool          { return s == nil }
 func (s *SwipeElementArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *SwipeElementArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *SwipeElementArgsList) DecodeFields(_ fmt.FieldReader) {}
 
 func (m *SwipeElementArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
@@ -334,7 +335,7 @@ func (m *EvaluateJSArgs) ModelName() string {
 }
 
 var _schemaEvaluateJSArgs = []fmt.Field{
-		{Name: "script", Type: fmt.FieldText, NotNull: true},
+		{Name: "script", Type: fmt.FieldText},
 		{Name: "await_promise", Type: fmt.FieldBool},
 	}
 
@@ -349,10 +350,9 @@ func (m *EvaluateJSArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Bool("await_promise", m.AwaitPromise)
 }
 
-func (m *EvaluateJSArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *EvaluateJSArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.String("script"); ok { m.Script = v }
 	if v, ok := r.Bool("await_promise"); ok { m.AwaitPromise = v }
-	return nil
 }
 
 type EvaluateJSArgsList []*EvaluateJSArgs
@@ -364,7 +364,7 @@ func (s *EvaluateJSArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *EvaluateJSArgsList) Append() fmt.Fielder  { v := &EvaluateJSArgs{}; *s = append(*s, v); return v }
 func (s *EvaluateJSArgsList) IsNil() bool          { return s == nil }
 func (s *EvaluateJSArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *EvaluateJSArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *EvaluateJSArgsList) DecodeFields(_ fmt.FieldReader) {}
 
 func (m *EvaluateJSArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
@@ -376,7 +376,7 @@ func (m *GetNetworkLogsArgs) ModelName() string {
 
 var _schemaGetNetworkLogsArgs = []fmt.Field{
 		{Name: "filter", Type: fmt.FieldText},
-		{Name: "limit", Type: fmt.FieldInt},
+		{Name: "limit", Type: fmt.FieldInt, Widget: input.Number()},
 	}
 
 func (m *GetNetworkLogsArgs) Schema() []fmt.Field { return _schemaGetNetworkLogsArgs }
@@ -390,10 +390,9 @@ func (m *GetNetworkLogsArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Int("limit", int64(m.Limit))
 }
 
-func (m *GetNetworkLogsArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *GetNetworkLogsArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.String("filter"); ok { m.Filter = v }
 	if v, ok := r.Int("limit"); ok { m.Limit = int(v) }
-	return nil
 }
 
 type GetNetworkLogsArgsList []*GetNetworkLogsArgs
@@ -405,14 +404,18 @@ func (s *GetNetworkLogsArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *GetNetworkLogsArgsList) Append() fmt.Fielder  { v := &GetNetworkLogsArgs{}; *s = append(*s, v); return v }
 func (s *GetNetworkLogsArgsList) IsNil() bool          { return s == nil }
 func (s *GetNetworkLogsArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetNetworkLogsArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *GetNetworkLogsArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *GetNetworkLogsArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
 
 func (m *GetErrorsArgs) ModelName() string {
 	return "get_errors_args"
 }
 
 var _schemaGetErrorsArgs = []fmt.Field{
-		{Name: "limit", Type: fmt.FieldInt},
+		{Name: "limit", Type: fmt.FieldInt, Widget: input.Number()},
 	}
 
 func (m *GetErrorsArgs) Schema() []fmt.Field { return _schemaGetErrorsArgs }
@@ -425,9 +428,8 @@ func (m *GetErrorsArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Int("limit", int64(m.Limit))
 }
 
-func (m *GetErrorsArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *GetErrorsArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.Int("limit"); ok { m.Limit = int(v) }
-	return nil
 }
 
 type GetErrorsArgsList []*GetErrorsArgs
@@ -439,7 +441,11 @@ func (s *GetErrorsArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *GetErrorsArgsList) Append() fmt.Fielder  { v := &GetErrorsArgs{}; *s = append(*s, v); return v }
 func (s *GetErrorsArgsList) IsNil() bool          { return s == nil }
 func (s *GetErrorsArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetErrorsArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *GetErrorsArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *GetErrorsArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
 
 func (m *GetPerformanceArgs) ModelName() string {
 	return "get_performance_args"
@@ -459,9 +465,8 @@ func (m *GetPerformanceArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Int("reserved", int64(m.Reserved))
 }
 
-func (m *GetPerformanceArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *GetPerformanceArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.Int("reserved"); ok { m.Reserved = int(v) }
-	return nil
 }
 
 type GetPerformanceArgsList []*GetPerformanceArgs
@@ -473,7 +478,11 @@ func (s *GetPerformanceArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *GetPerformanceArgsList) Append() fmt.Fielder  { v := &GetPerformanceArgs{}; *s = append(*s, v); return v }
 func (s *GetPerformanceArgsList) IsNil() bool          { return s == nil }
 func (s *GetPerformanceArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetPerformanceArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *GetPerformanceArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *GetPerformanceArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
 
 func (m *GetContentArgs) ModelName() string {
 	return "get_content_args"
@@ -493,9 +502,8 @@ func (m *GetContentArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Int("reserved", int64(m.Reserved))
 }
 
-func (m *GetContentArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *GetContentArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.Int("reserved"); ok { m.Reserved = int(v) }
-	return nil
 }
 
 type GetContentArgsList []*GetContentArgs
@@ -507,7 +515,11 @@ func (s *GetContentArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *GetContentArgsList) Append() fmt.Fielder  { v := &GetContentArgs{}; *s = append(*s, v); return v }
 func (s *GetContentArgsList) IsNil() bool          { return s == nil }
 func (s *GetContentArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetContentArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *GetContentArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *GetContentArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
 
 func (m *EmptyArgs) ModelName() string {
 	return "empty_args"
@@ -527,9 +539,8 @@ func (m *EmptyArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Int("reserved", int64(m.Reserved))
 }
 
-func (m *EmptyArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *EmptyArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.Int("reserved"); ok { m.Reserved = int(v) }
-	return nil
 }
 
 type EmptyArgsList []*EmptyArgs
@@ -541,7 +552,11 @@ func (s *EmptyArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *EmptyArgsList) Append() fmt.Fielder  { v := &EmptyArgs{}; *s = append(*s, v); return v }
 func (s *EmptyArgsList) IsNil() bool          { return s == nil }
 func (s *EmptyArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *EmptyArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *EmptyArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *EmptyArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
 
 func (m *OpenBrowserArgs) ModelName() string {
 	return "open_browser_args"
@@ -563,10 +578,9 @@ func (m *OpenBrowserArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Bool("https", m.Https)
 }
 
-func (m *OpenBrowserArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *OpenBrowserArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.String("port"); ok { m.Port = v }
 	if v, ok := r.Bool("https"); ok { m.Https = v }
-	return nil
 }
 
 type OpenBrowserArgsList []*OpenBrowserArgs
@@ -578,7 +592,11 @@ func (s *OpenBrowserArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *OpenBrowserArgsList) Append() fmt.Fielder  { v := &OpenBrowserArgs{}; *s = append(*s, v); return v }
 func (s *OpenBrowserArgsList) IsNil() bool          { return s == nil }
 func (s *OpenBrowserArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *OpenBrowserArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *OpenBrowserArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *OpenBrowserArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
 
 func (m *CloseBrowserArgs) ModelName() string {
 	return "close_browser_args"
@@ -598,9 +616,8 @@ func (m *CloseBrowserArgs) EncodeFields(w fmt.FieldWriter) {
 	w.Int("reserved", int64(m.Reserved))
 }
 
-func (m *CloseBrowserArgs) DecodeFields(r fmt.FieldReader) error {
+func (m *CloseBrowserArgs) DecodeFields(r fmt.FieldReader) {
 	if v, ok := r.Int("reserved"); ok { m.Reserved = int(v) }
-	return nil
 }
 
 type CloseBrowserArgsList []*CloseBrowserArgs
@@ -612,5 +629,9 @@ func (s *CloseBrowserArgsList) At(i int) fmt.Fielder { return (*s)[i] }
 func (s *CloseBrowserArgsList) Append() fmt.Fielder  { v := &CloseBrowserArgs{}; *s = append(*s, v); return v }
 func (s *CloseBrowserArgsList) IsNil() bool          { return s == nil }
 func (s *CloseBrowserArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *CloseBrowserArgsList) DecodeFields(_ fmt.FieldReader) error { return nil }
+func (s *CloseBrowserArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *CloseBrowserArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
 
