@@ -58,6 +58,31 @@ if err != nil {
 }
 ```
 
+## MCP Tools
+
+The following Model Context Protocol (MCP) tools are available for browser automation:
+
+| Tool | Description |
+|---|---|
+| `browser_get_console` | Capture console messages from the loaded page |
+| `browser_emulate_device` | Emulate a mobile or tablet device |
+| `browser_screenshot` | Take a screenshot of the current page |
+| `browser_get_content` | Get simplified semantic HTML of the page |
+| `browser_click_element` | Click on an element specified by a selector |
+| `browser_fill_element` | Fill an input field with a value |
+| `browser_navigate` | Navigate to a specific URL or relative path |
+| `browser_swipe_element` | Perform a swipe gesture on an element |
+| `browser_inspect_element` | Get detailed information about a DOM element |
+| `browser_get_performance` | Get page performance metrics |
+| `browser_get_network_logs` | Get network requests and responses metadata |
+| `browser_evaluate_js` | Execute JavaScript in the browser context |
+| `browser_get_errors` | Get captured JavaScript errors |
+| `browser_get_source` | Get the raw HTML (outerHTML) of the entire page or a specific element by selector |
+| `browser_get_styles` | Extract CSS rules from loaded stylesheets, with an optional selector filter |
+| `browser_get_storage` | Read localStorage, sessionStorage, or cookies from the current domain |
+| `browser_get_asset` | Download the content of a JS or CSS file by URL using the active session |
+| `browser_intercept_request` | Capture bodies of requests and responses XHR/fetch calls (CDP Fetch domain) |
+
 - `(*DevBrowser) GetConsoleLogs() ([]string, error)`: Capture console messages from the loaded page.
 	- Signature: `func (b *DevBrowser) GetConsoleLogs() ([]string, error)`
 	- Behavior: injects a small script into the page that maintains `window.__consoleLogs` and returns its contents as a slice of strings. Captures `console.log`, `console.error`, `console.warn`, and `console.info` messages.

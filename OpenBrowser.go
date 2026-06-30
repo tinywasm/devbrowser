@@ -84,6 +84,7 @@ func (h *DevBrowser) OpenBrowser(port string, https bool) {
 		}
 		h.initializeNetworkCapture()
 		h.initializeErrorCapture()
+		h.initializeInterceptCapture()
 
 		if err := chromedp.Run(h.Ctx,
 			chromedp.Navigate(url),
