@@ -157,7 +157,10 @@ func TestInterceptRequest_LimitsMemory(t *testing.T) {
 	time.Sleep(1 * time.Second)
 
 	// Verify limit
-	if len(db.InterceptedReqs) > 100 {
-		t.Errorf("InterceptedReqs exceeded limit: %d", len(db.InterceptedReqs))
+	db.InterceptMutex.Lock()
+	count := len(db.InterceptedReqs)
+	db.InterceptMutex.Unlock()
+	if count > 100 {
+		t.Errorf("InterceptedReqs exceeded limit: %d", count)
 	}
 }
