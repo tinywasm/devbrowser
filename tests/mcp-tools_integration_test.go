@@ -24,6 +24,11 @@ func TestGetMCPToolsMetadata_AllToolsRegistered(t *testing.T) {
 		"browser_get_network_logs",
 		"browser_evaluate_js",
 		"browser_get_errors",
+		"browser_get_source",
+		"browser_get_styles",
+		"browser_get_storage",
+		"browser_get_asset",
+		"browser_intercept_request",
 	}
 
 	if len(tools) != len(expectedToolNames) {

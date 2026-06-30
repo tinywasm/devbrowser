@@ -1,0 +1,48 @@
+package devbrowser
+
+import (
+	"fmt"
+
+	"github.com/tinywasm/context"
+	"github.com/tinywasm/devbrowser/chromedp"
+	"github.com/tinywasm/mcp"
+)
+
+func (b *DevBrowser) GetStorageTools() []mcp.Tool {
+	return []mcp.Tool{
+		{
+			Name:        "browser_get_storage",
+			Description: "Read localStorage, sessionStorage, or cookies from the current domain. Useful for debugging session state and user preferences.",
+			InputSchema: EncodeSchema(new(GetStorageArgs)),
+			Resource:    "browser",
+			Action:      'r',
+			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
+				if !b.IsOpenFlag {
+					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
+				}
+				var args GetStorageArgs
+				if err := req.Bind(&args); err != nil {
+					return nil, err
+				}
+
+				var js string
+				switch args.Type {
+				case "session":
+					js = `JSON.stringify(Object.fromEntries(Object.entries(sessionStorage)))`
+				case "cookies":
+					js = `document.cookie`
+				default: // "local"
+					js = `JSON.stringify(Object.fromEntries(Object.entries(localStorage)))`
+				}
+
+				var result string
+				err := chromedp.Run(b.Ctx, chromedp.Evaluate(js, &result))
+				if err != nil {
+					return nil, err
+				}
+
+				return mcp.Text(result), nil
+			},
+		},
+	}
+}

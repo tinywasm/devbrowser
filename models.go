@@ -75,3 +75,34 @@ type OpenBrowserArgs struct {
 type CloseBrowserArgs struct {
 	Reserved int `input:"-"`
 }
+
+type GetSourceArgs struct {
+	Selector string `input:"-"` // vacío = página completa
+}
+
+type GetStylesArgs struct {
+	Selector string `input:"-"`      // vacío = todas las reglas de todos los stylesheets
+	Sheet    int    `input:"number"` // índice de stylesheet (-1 = todos)
+}
+
+type GetStorageArgs struct {
+	Type string `input:"-"` // "local" | "session" | "cookies" (default: "local")
+}
+
+type GetAssetArgs struct {
+	URL string `input:"-"` // URL absoluta del archivo JS o CSS a descargar
+}
+
+type InterceptRequestArgs struct {
+	Action string `input:"-"` // "start" | "stop" | "get"
+	Filter string `input:"-"` // filtro de URL (substring), vacío = todo
+	Limit  int    `input:"number"`
+}
+
+type InterceptedRequest struct {
+	URL          string
+	Method       string
+	RequestBody  string
+	ResponseBody string
+	Status       int
+}

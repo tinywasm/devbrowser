@@ -635,3 +635,241 @@ func (m *CloseBrowserArgs) Validate(action byte) error {
 	return fmt.ValidateFields(action, m)
 }
 
+func (m *GetSourceArgs) ModelName() string {
+	return "get_source_args"
+}
+
+var _schemaGetSourceArgs = []fmt.Field{
+		{Name: "selector", Type: fmt.FieldText},
+	}
+
+func (m *GetSourceArgs) Schema() []fmt.Field { return _schemaGetSourceArgs }
+
+func (m *GetSourceArgs) Pointers() []any { return []any{&m.Selector} }
+
+func (m *GetSourceArgs) IsNil() bool { return m == nil }
+
+func (m *GetSourceArgs) EncodeFields(w fmt.FieldWriter) {
+	w.String("selector", m.Selector)
+}
+
+func (m *GetSourceArgs) DecodeFields(r fmt.FieldReader) {
+	if v, ok := r.String("selector"); ok { m.Selector = v }
+}
+
+type GetSourceArgsList []*GetSourceArgs
+
+func (s *GetSourceArgsList) Schema() []fmt.Field { return nil }
+func (s *GetSourceArgsList) Pointers() []any     { return nil }
+func (s *GetSourceArgsList) Len() int             { return len(*s) }
+func (s *GetSourceArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *GetSourceArgsList) Append() fmt.Fielder  { v := &GetSourceArgs{}; *s = append(*s, v); return v }
+func (s *GetSourceArgsList) IsNil() bool          { return s == nil }
+func (s *GetSourceArgsList) EncodeFields(_ fmt.FieldWriter) {}
+func (s *GetSourceArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *GetSourceArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
+
+func (m *GetStylesArgs) ModelName() string {
+	return "get_styles_args"
+}
+
+var _schemaGetStylesArgs = []fmt.Field{
+		{Name: "selector", Type: fmt.FieldText},
+		{Name: "sheet", Type: fmt.FieldInt, Widget: input.Number()},
+	}
+
+func (m *GetStylesArgs) Schema() []fmt.Field { return _schemaGetStylesArgs }
+
+func (m *GetStylesArgs) Pointers() []any { return []any{&m.Selector, &m.Sheet} }
+
+func (m *GetStylesArgs) IsNil() bool { return m == nil }
+
+func (m *GetStylesArgs) EncodeFields(w fmt.FieldWriter) {
+	w.String("selector", m.Selector)
+	w.Int("sheet", int64(m.Sheet))
+}
+
+func (m *GetStylesArgs) DecodeFields(r fmt.FieldReader) {
+	if v, ok := r.String("selector"); ok { m.Selector = v }
+	if v, ok := r.Int("sheet"); ok { m.Sheet = int(v) }
+}
+
+type GetStylesArgsList []*GetStylesArgs
+
+func (s *GetStylesArgsList) Schema() []fmt.Field { return nil }
+func (s *GetStylesArgsList) Pointers() []any     { return nil }
+func (s *GetStylesArgsList) Len() int             { return len(*s) }
+func (s *GetStylesArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *GetStylesArgsList) Append() fmt.Fielder  { v := &GetStylesArgs{}; *s = append(*s, v); return v }
+func (s *GetStylesArgsList) IsNil() bool          { return s == nil }
+func (s *GetStylesArgsList) EncodeFields(_ fmt.FieldWriter) {}
+func (s *GetStylesArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *GetStylesArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
+
+func (m *GetStorageArgs) ModelName() string {
+	return "get_storage_args"
+}
+
+var _schemaGetStorageArgs = []fmt.Field{
+		{Name: "type", Type: fmt.FieldText},
+	}
+
+func (m *GetStorageArgs) Schema() []fmt.Field { return _schemaGetStorageArgs }
+
+func (m *GetStorageArgs) Pointers() []any { return []any{&m.Type} }
+
+func (m *GetStorageArgs) IsNil() bool { return m == nil }
+
+func (m *GetStorageArgs) EncodeFields(w fmt.FieldWriter) {
+	w.String("type", m.Type)
+}
+
+func (m *GetStorageArgs) DecodeFields(r fmt.FieldReader) {
+	if v, ok := r.String("type"); ok { m.Type = v }
+}
+
+type GetStorageArgsList []*GetStorageArgs
+
+func (s *GetStorageArgsList) Schema() []fmt.Field { return nil }
+func (s *GetStorageArgsList) Pointers() []any     { return nil }
+func (s *GetStorageArgsList) Len() int             { return len(*s) }
+func (s *GetStorageArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *GetStorageArgsList) Append() fmt.Fielder  { v := &GetStorageArgs{}; *s = append(*s, v); return v }
+func (s *GetStorageArgsList) IsNil() bool          { return s == nil }
+func (s *GetStorageArgsList) EncodeFields(_ fmt.FieldWriter) {}
+func (s *GetStorageArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *GetStorageArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
+
+func (m *GetAssetArgs) ModelName() string {
+	return "get_asset_args"
+}
+
+var _schemaGetAssetArgs = []fmt.Field{
+		{Name: "url", Type: fmt.FieldText},
+	}
+
+func (m *GetAssetArgs) Schema() []fmt.Field { return _schemaGetAssetArgs }
+
+func (m *GetAssetArgs) Pointers() []any { return []any{&m.URL} }
+
+func (m *GetAssetArgs) IsNil() bool { return m == nil }
+
+func (m *GetAssetArgs) EncodeFields(w fmt.FieldWriter) {
+	w.String("url", m.URL)
+}
+
+func (m *GetAssetArgs) DecodeFields(r fmt.FieldReader) {
+	if v, ok := r.String("url"); ok { m.URL = v }
+}
+
+type GetAssetArgsList []*GetAssetArgs
+
+func (s *GetAssetArgsList) Schema() []fmt.Field { return nil }
+func (s *GetAssetArgsList) Pointers() []any     { return nil }
+func (s *GetAssetArgsList) Len() int             { return len(*s) }
+func (s *GetAssetArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *GetAssetArgsList) Append() fmt.Fielder  { v := &GetAssetArgs{}; *s = append(*s, v); return v }
+func (s *GetAssetArgsList) IsNil() bool          { return s == nil }
+func (s *GetAssetArgsList) EncodeFields(_ fmt.FieldWriter) {}
+func (s *GetAssetArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *GetAssetArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
+
+func (m *InterceptRequestArgs) ModelName() string {
+	return "intercept_request_args"
+}
+
+var _schemaInterceptRequestArgs = []fmt.Field{
+		{Name: "action", Type: fmt.FieldText},
+		{Name: "filter", Type: fmt.FieldText},
+		{Name: "limit", Type: fmt.FieldInt, Widget: input.Number()},
+	}
+
+func (m *InterceptRequestArgs) Schema() []fmt.Field { return _schemaInterceptRequestArgs }
+
+func (m *InterceptRequestArgs) Pointers() []any { return []any{&m.Action, &m.Filter, &m.Limit} }
+
+func (m *InterceptRequestArgs) IsNil() bool { return m == nil }
+
+func (m *InterceptRequestArgs) EncodeFields(w fmt.FieldWriter) {
+	w.String("action", m.Action)
+	w.String("filter", m.Filter)
+	w.Int("limit", int64(m.Limit))
+}
+
+func (m *InterceptRequestArgs) DecodeFields(r fmt.FieldReader) {
+	if v, ok := r.String("action"); ok { m.Action = v }
+	if v, ok := r.String("filter"); ok { m.Filter = v }
+	if v, ok := r.Int("limit"); ok { m.Limit = int(v) }
+}
+
+type InterceptRequestArgsList []*InterceptRequestArgs
+
+func (s *InterceptRequestArgsList) Schema() []fmt.Field { return nil }
+func (s *InterceptRequestArgsList) Pointers() []any     { return nil }
+func (s *InterceptRequestArgsList) Len() int             { return len(*s) }
+func (s *InterceptRequestArgsList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *InterceptRequestArgsList) Append() fmt.Fielder  { v := &InterceptRequestArgs{}; *s = append(*s, v); return v }
+func (s *InterceptRequestArgsList) IsNil() bool          { return s == nil }
+func (s *InterceptRequestArgsList) EncodeFields(_ fmt.FieldWriter) {}
+func (s *InterceptRequestArgsList) DecodeFields(_ fmt.FieldReader) {}
+
+func (m *InterceptRequestArgs) Validate(action byte) error {
+	return fmt.ValidateFields(action, m)
+}
+
+func (m *InterceptedRequest) ModelName() string {
+	return "intercepted_request"
+}
+
+var _schemaInterceptedRequest = []fmt.Field{
+		{Name: "url", Type: fmt.FieldText},
+		{Name: "method", Type: fmt.FieldText},
+		{Name: "request_body", Type: fmt.FieldText},
+		{Name: "response_body", Type: fmt.FieldText},
+		{Name: "status", Type: fmt.FieldInt},
+	}
+
+func (m *InterceptedRequest) Schema() []fmt.Field { return _schemaInterceptedRequest }
+
+func (m *InterceptedRequest) Pointers() []any { return []any{&m.URL, &m.Method, &m.RequestBody, &m.ResponseBody, &m.Status} }
+
+func (m *InterceptedRequest) IsNil() bool { return m == nil }
+
+func (m *InterceptedRequest) EncodeFields(w fmt.FieldWriter) {
+	w.String("url", m.URL)
+	w.String("method", m.Method)
+	w.String("request_body", m.RequestBody)
+	w.String("response_body", m.ResponseBody)
+	w.Int("status", int64(m.Status))
+}
+
+func (m *InterceptedRequest) DecodeFields(r fmt.FieldReader) {
+	if v, ok := r.String("url"); ok { m.URL = v }
+	if v, ok := r.String("method"); ok { m.Method = v }
+	if v, ok := r.String("request_body"); ok { m.RequestBody = v }
+	if v, ok := r.String("response_body"); ok { m.ResponseBody = v }
+	if v, ok := r.Int("status"); ok { m.Status = int(v) }
+}
+
+type InterceptedRequestList []*InterceptedRequest
+
+func (s *InterceptedRequestList) Schema() []fmt.Field { return nil }
+func (s *InterceptedRequestList) Pointers() []any     { return nil }
+func (s *InterceptedRequestList) Len() int             { return len(*s) }
+func (s *InterceptedRequestList) At(i int) fmt.Fielder { return (*s)[i] }
+func (s *InterceptedRequestList) Append() fmt.Fielder  { v := &InterceptedRequest{}; *s = append(*s, v); return v }
+func (s *InterceptedRequestList) IsNil() bool          { return s == nil }
+func (s *InterceptedRequestList) EncodeFields(_ fmt.FieldWriter) {}
+func (s *InterceptedRequestList) DecodeFields(_ fmt.FieldReader) {}

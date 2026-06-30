@@ -73,6 +73,11 @@ type DevBrowser struct {
 	JsErrors    []JSError
 	ErrorsMutex sync.Mutex
 
+	// Request interception
+	InterceptActive bool
+	InterceptedReqs []InterceptedRequest
+	InterceptMutex  sync.Mutex
+
 	// Operation busy flag (atomic) to prevent race conditions and UI blocking
 	// 0 = idle, 1 = busy
 	Busy int32
@@ -296,4 +301,8 @@ func (b *DevBrowser) IsOpen() bool {
 
 func (b *DevBrowser) InitializeConsoleCapture() error {
 	return b.initializeConsoleCapture()
+}
+
+func (b *DevBrowser) InitializeInterceptCapture() {
+	b.initializeInterceptCapture()
 }

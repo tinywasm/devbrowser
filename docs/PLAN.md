@@ -114,7 +114,7 @@ err := chromedp.Run(b.Ctx,
 
 ---
 
-### TASK-1 — `browser_get_source`
+### TASK-1 ✓ — `browser_get_source`
 
 **Archivo:** `mcp-source.go`
 **Args en `models.go`:**
@@ -147,7 +147,7 @@ err := chromedp.Run(b.Ctx, chromedp.Evaluate(js, &result))
 
 ---
 
-### TASK-2 — `browser_get_styles`
+### TASK-2 ✓ — `browser_get_styles`
 
 **Archivo:** `mcp-styles.go`
 **Args en `models.go`:**
@@ -187,7 +187,7 @@ Si `Selector != ""`, agregar al final del JS filtrado por `selectorText`:
 
 ---
 
-### TASK-3 — `browser_get_storage`
+### TASK-3 ✓ — `browser_get_storage`
 
 **Archivo:** `mcp-storage.go`
 **Args en `models.go`:**
@@ -223,7 +223,7 @@ err := chromedp.Run(b.Ctx, chromedp.Evaluate(js, &result))
 
 ---
 
-### TASK-4 — `browser_get_asset`
+### TASK-4 ✓ — `browser_get_asset`
 
 **Archivo:** `mcp-asset.go`
 **Args en `models.go`:**
@@ -258,7 +258,7 @@ err := chromedp.Run(b.Ctx,
 
 ---
 
-### TASK-5 — `browser_intercept_request`
+### TASK-5 ✓ — `browser_intercept_request`
 
 **Archivo:** `mcp-intercept.go`
 **Args en `models.go`:**
