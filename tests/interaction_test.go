@@ -1,6 +1,7 @@
 package devbrowser_test
 
 import (
+	"github.com/tinywasm/devbrowser"
 	"context"
 	"fmt"
 	"net/http"
@@ -34,6 +35,7 @@ func TestBrowserInteraction(t *testing.T) {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", true),
 		chromedp.DisableGPU,
+		chromedp.ExecPath(devbrowser.ResolveChromeExecPath()),
 	)
 	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	defer cancel()
