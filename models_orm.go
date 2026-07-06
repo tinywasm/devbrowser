@@ -3,7 +3,7 @@
 package devbrowser
 
 import (
-	"github.com/tinywasm/fmt"
+	"github.com/tinywasm/model"
 	"github.com/tinywasm/form/input"
 )
 
@@ -11,25 +11,25 @@ func (m *EmulateDeviceArgs) ModelName() string {
 	return "emulate_device_args"
 }
 
-var _schemaEmulateDeviceArgs = []fmt.Field{
-		{Name: "mode", Type: fmt.FieldText},
-		{Name: "capture", Type: fmt.FieldBool},
-		{Name: "selector", Type: fmt.FieldText},
+var _schemaEmulateDeviceArgs = []model.Field{
+		{Name: "mode", Type: model.FieldText},
+		{Name: "capture", Type: model.FieldBool},
+		{Name: "selector", Type: model.FieldText},
 	}
 
-func (m *EmulateDeviceArgs) Schema() []fmt.Field { return _schemaEmulateDeviceArgs }
+func (m *EmulateDeviceArgs) Schema() []model.Field { return _schemaEmulateDeviceArgs }
 
 func (m *EmulateDeviceArgs) Pointers() []any { return []any{&m.Mode, &m.Capture, &m.Selector} }
 
 func (m *EmulateDeviceArgs) IsNil() bool { return m == nil }
 
-func (m *EmulateDeviceArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *EmulateDeviceArgs) EncodeFields(w model.FieldWriter) {
 	w.String("mode", m.Mode)
 	w.Bool("capture", m.Capture)
 	w.String("selector", m.Selector)
 }
 
-func (m *EmulateDeviceArgs) DecodeFields(r fmt.FieldReader) {
+func (m *EmulateDeviceArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("mode"); ok { m.Mode = v }
 	if v, ok := r.Bool("capture"); ok { m.Capture = v }
 	if v, ok := r.String("selector"); ok { m.Selector = v }
@@ -37,190 +37,190 @@ func (m *EmulateDeviceArgs) DecodeFields(r fmt.FieldReader) {
 
 type EmulateDeviceArgsList []*EmulateDeviceArgs
 
-func (s *EmulateDeviceArgsList) Schema() []fmt.Field { return nil }
+func (s *EmulateDeviceArgsList) Schema() []model.Field { return nil }
 func (s *EmulateDeviceArgsList) Pointers() []any     { return nil }
 func (s *EmulateDeviceArgsList) Len() int             { return len(*s) }
-func (s *EmulateDeviceArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *EmulateDeviceArgsList) Append() fmt.Fielder  { v := &EmulateDeviceArgs{}; *s = append(*s, v); return v }
+func (s *EmulateDeviceArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *EmulateDeviceArgsList) Append() model.Fielder  { v := &EmulateDeviceArgs{}; *s = append(*s, v); return v }
 func (s *EmulateDeviceArgsList) IsNil() bool          { return s == nil }
-func (s *EmulateDeviceArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *EmulateDeviceArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *EmulateDeviceArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *EmulateDeviceArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *EmulateDeviceArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *GetConsoleArgs) ModelName() string {
 	return "get_console_args"
 }
 
-var _schemaGetConsoleArgs = []fmt.Field{
-		{Name: "lines", Type: fmt.FieldInt, Widget: input.Number()},
+var _schemaGetConsoleArgs = []model.Field{
+		{Name: "lines", Type: model.FieldInt, Widget: input.Number()},
 	}
 
-func (m *GetConsoleArgs) Schema() []fmt.Field { return _schemaGetConsoleArgs }
+func (m *GetConsoleArgs) Schema() []model.Field { return _schemaGetConsoleArgs }
 
 func (m *GetConsoleArgs) Pointers() []any { return []any{&m.Lines} }
 
 func (m *GetConsoleArgs) IsNil() bool { return m == nil }
 
-func (m *GetConsoleArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *GetConsoleArgs) EncodeFields(w model.FieldWriter) {
 	w.Int("lines", int64(m.Lines))
 }
 
-func (m *GetConsoleArgs) DecodeFields(r fmt.FieldReader) {
+func (m *GetConsoleArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.Int("lines"); ok { m.Lines = int(v) }
 }
 
 type GetConsoleArgsList []*GetConsoleArgs
 
-func (s *GetConsoleArgsList) Schema() []fmt.Field { return nil }
+func (s *GetConsoleArgsList) Schema() []model.Field { return nil }
 func (s *GetConsoleArgsList) Pointers() []any     { return nil }
 func (s *GetConsoleArgsList) Len() int             { return len(*s) }
-func (s *GetConsoleArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *GetConsoleArgsList) Append() fmt.Fielder  { v := &GetConsoleArgs{}; *s = append(*s, v); return v }
+func (s *GetConsoleArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *GetConsoleArgsList) Append() model.Fielder  { v := &GetConsoleArgs{}; *s = append(*s, v); return v }
 func (s *GetConsoleArgsList) IsNil() bool          { return s == nil }
-func (s *GetConsoleArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetConsoleArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *GetConsoleArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *GetConsoleArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *GetConsoleArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *NavigateArgs) ModelName() string {
 	return "navigate_args"
 }
 
-var _schemaNavigateArgs = []fmt.Field{
-		{Name: "url", Type: fmt.FieldText},
+var _schemaNavigateArgs = []model.Field{
+		{Name: "url", Type: model.FieldText},
 	}
 
-func (m *NavigateArgs) Schema() []fmt.Field { return _schemaNavigateArgs }
+func (m *NavigateArgs) Schema() []model.Field { return _schemaNavigateArgs }
 
 func (m *NavigateArgs) Pointers() []any { return []any{&m.URL} }
 
 func (m *NavigateArgs) IsNil() bool { return m == nil }
 
-func (m *NavigateArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *NavigateArgs) EncodeFields(w model.FieldWriter) {
 	w.String("url", m.URL)
 }
 
-func (m *NavigateArgs) DecodeFields(r fmt.FieldReader) {
+func (m *NavigateArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("url"); ok { m.URL = v }
 }
 
 type NavigateArgsList []*NavigateArgs
 
-func (s *NavigateArgsList) Schema() []fmt.Field { return nil }
+func (s *NavigateArgsList) Schema() []model.Field { return nil }
 func (s *NavigateArgsList) Pointers() []any     { return nil }
 func (s *NavigateArgsList) Len() int             { return len(*s) }
-func (s *NavigateArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *NavigateArgsList) Append() fmt.Fielder  { v := &NavigateArgs{}; *s = append(*s, v); return v }
+func (s *NavigateArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *NavigateArgsList) Append() model.Fielder  { v := &NavigateArgs{}; *s = append(*s, v); return v }
 func (s *NavigateArgsList) IsNil() bool          { return s == nil }
-func (s *NavigateArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *NavigateArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *NavigateArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *NavigateArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *NavigateArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *ScreenshotArgs) ModelName() string {
 	return "screenshot_args"
 }
 
-var _schemaScreenshotArgs = []fmt.Field{
-		{Name: "fullpage", Type: fmt.FieldBool},
+var _schemaScreenshotArgs = []model.Field{
+		{Name: "fullpage", Type: model.FieldBool},
 	}
 
-func (m *ScreenshotArgs) Schema() []fmt.Field { return _schemaScreenshotArgs }
+func (m *ScreenshotArgs) Schema() []model.Field { return _schemaScreenshotArgs }
 
 func (m *ScreenshotArgs) Pointers() []any { return []any{&m.Fullpage} }
 
 func (m *ScreenshotArgs) IsNil() bool { return m == nil }
 
-func (m *ScreenshotArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *ScreenshotArgs) EncodeFields(w model.FieldWriter) {
 	w.Bool("fullpage", m.Fullpage)
 }
 
-func (m *ScreenshotArgs) DecodeFields(r fmt.FieldReader) {
+func (m *ScreenshotArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.Bool("fullpage"); ok { m.Fullpage = v }
 }
 
 type ScreenshotArgsList []*ScreenshotArgs
 
-func (s *ScreenshotArgsList) Schema() []fmt.Field { return nil }
+func (s *ScreenshotArgsList) Schema() []model.Field { return nil }
 func (s *ScreenshotArgsList) Pointers() []any     { return nil }
 func (s *ScreenshotArgsList) Len() int             { return len(*s) }
-func (s *ScreenshotArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *ScreenshotArgsList) Append() fmt.Fielder  { v := &ScreenshotArgs{}; *s = append(*s, v); return v }
+func (s *ScreenshotArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *ScreenshotArgsList) Append() model.Fielder  { v := &ScreenshotArgs{}; *s = append(*s, v); return v }
 func (s *ScreenshotArgsList) IsNil() bool          { return s == nil }
-func (s *ScreenshotArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *ScreenshotArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *ScreenshotArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *ScreenshotArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *ScreenshotArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *InspectElementArgs) ModelName() string {
 	return "inspect_element_args"
 }
 
-var _schemaInspectElementArgs = []fmt.Field{
-		{Name: "selector", Type: fmt.FieldText},
+var _schemaInspectElementArgs = []model.Field{
+		{Name: "selector", Type: model.FieldText},
 	}
 
-func (m *InspectElementArgs) Schema() []fmt.Field { return _schemaInspectElementArgs }
+func (m *InspectElementArgs) Schema() []model.Field { return _schemaInspectElementArgs }
 
 func (m *InspectElementArgs) Pointers() []any { return []any{&m.Selector} }
 
 func (m *InspectElementArgs) IsNil() bool { return m == nil }
 
-func (m *InspectElementArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *InspectElementArgs) EncodeFields(w model.FieldWriter) {
 	w.String("selector", m.Selector)
 }
 
-func (m *InspectElementArgs) DecodeFields(r fmt.FieldReader) {
+func (m *InspectElementArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("selector"); ok { m.Selector = v }
 }
 
 type InspectElementArgsList []*InspectElementArgs
 
-func (s *InspectElementArgsList) Schema() []fmt.Field { return nil }
+func (s *InspectElementArgsList) Schema() []model.Field { return nil }
 func (s *InspectElementArgsList) Pointers() []any     { return nil }
 func (s *InspectElementArgsList) Len() int             { return len(*s) }
-func (s *InspectElementArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *InspectElementArgsList) Append() fmt.Fielder  { v := &InspectElementArgs{}; *s = append(*s, v); return v }
+func (s *InspectElementArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *InspectElementArgsList) Append() model.Fielder  { v := &InspectElementArgs{}; *s = append(*s, v); return v }
 func (s *InspectElementArgsList) IsNil() bool          { return s == nil }
-func (s *InspectElementArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *InspectElementArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *InspectElementArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *InspectElementArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *InspectElementArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *ClickElementArgs) ModelName() string {
 	return "click_element_args"
 }
 
-var _schemaClickElementArgs = []fmt.Field{
-		{Name: "selector", Type: fmt.FieldText},
-		{Name: "wait_after", Type: fmt.FieldInt, Widget: input.Number()},
-		{Name: "timeout", Type: fmt.FieldInt, Widget: input.Number()},
+var _schemaClickElementArgs = []model.Field{
+		{Name: "selector", Type: model.FieldText},
+		{Name: "wait_after", Type: model.FieldInt, Widget: input.Number()},
+		{Name: "timeout", Type: model.FieldInt, Widget: input.Number()},
 	}
 
-func (m *ClickElementArgs) Schema() []fmt.Field { return _schemaClickElementArgs }
+func (m *ClickElementArgs) Schema() []model.Field { return _schemaClickElementArgs }
 
 func (m *ClickElementArgs) Pointers() []any { return []any{&m.Selector, &m.WaitAfter, &m.Timeout} }
 
 func (m *ClickElementArgs) IsNil() bool { return m == nil }
 
-func (m *ClickElementArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *ClickElementArgs) EncodeFields(w model.FieldWriter) {
 	w.String("selector", m.Selector)
 	w.Int("wait_after", int64(m.WaitAfter))
 	w.Int("timeout", int64(m.Timeout))
 }
 
-func (m *ClickElementArgs) DecodeFields(r fmt.FieldReader) {
+func (m *ClickElementArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("selector"); ok { m.Selector = v }
 	if v, ok := r.Int("wait_after"); ok { m.WaitAfter = int(v) }
 	if v, ok := r.Int("timeout"); ok { m.Timeout = int(v) }
@@ -228,44 +228,44 @@ func (m *ClickElementArgs) DecodeFields(r fmt.FieldReader) {
 
 type ClickElementArgsList []*ClickElementArgs
 
-func (s *ClickElementArgsList) Schema() []fmt.Field { return nil }
+func (s *ClickElementArgsList) Schema() []model.Field { return nil }
 func (s *ClickElementArgsList) Pointers() []any     { return nil }
 func (s *ClickElementArgsList) Len() int             { return len(*s) }
-func (s *ClickElementArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *ClickElementArgsList) Append() fmt.Fielder  { v := &ClickElementArgs{}; *s = append(*s, v); return v }
+func (s *ClickElementArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *ClickElementArgsList) Append() model.Fielder  { v := &ClickElementArgs{}; *s = append(*s, v); return v }
 func (s *ClickElementArgsList) IsNil() bool          { return s == nil }
-func (s *ClickElementArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *ClickElementArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *ClickElementArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *ClickElementArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *ClickElementArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *FillElementArgs) ModelName() string {
 	return "fill_element_args"
 }
 
-var _schemaFillElementArgs = []fmt.Field{
-		{Name: "selector", Type: fmt.FieldText},
-		{Name: "value", Type: fmt.FieldText},
-		{Name: "wait_after", Type: fmt.FieldInt, Widget: input.Number()},
-		{Name: "timeout", Type: fmt.FieldInt, Widget: input.Number()},
+var _schemaFillElementArgs = []model.Field{
+		{Name: "selector", Type: model.FieldText},
+		{Name: "value", Type: model.FieldText},
+		{Name: "wait_after", Type: model.FieldInt, Widget: input.Number()},
+		{Name: "timeout", Type: model.FieldInt, Widget: input.Number()},
 	}
 
-func (m *FillElementArgs) Schema() []fmt.Field { return _schemaFillElementArgs }
+func (m *FillElementArgs) Schema() []model.Field { return _schemaFillElementArgs }
 
 func (m *FillElementArgs) Pointers() []any { return []any{&m.Selector, &m.Value, &m.WaitAfter, &m.Timeout} }
 
 func (m *FillElementArgs) IsNil() bool { return m == nil }
 
-func (m *FillElementArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *FillElementArgs) EncodeFields(w model.FieldWriter) {
 	w.String("selector", m.Selector)
 	w.String("value", m.Value)
 	w.Int("wait_after", int64(m.WaitAfter))
 	w.Int("timeout", int64(m.Timeout))
 }
 
-func (m *FillElementArgs) DecodeFields(r fmt.FieldReader) {
+func (m *FillElementArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("selector"); ok { m.Selector = v }
 	if v, ok := r.String("value"); ok { m.Value = v }
 	if v, ok := r.Int("wait_after"); ok { m.WaitAfter = int(v) }
@@ -274,42 +274,42 @@ func (m *FillElementArgs) DecodeFields(r fmt.FieldReader) {
 
 type FillElementArgsList []*FillElementArgs
 
-func (s *FillElementArgsList) Schema() []fmt.Field { return nil }
+func (s *FillElementArgsList) Schema() []model.Field { return nil }
 func (s *FillElementArgsList) Pointers() []any     { return nil }
 func (s *FillElementArgsList) Len() int             { return len(*s) }
-func (s *FillElementArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *FillElementArgsList) Append() fmt.Fielder  { v := &FillElementArgs{}; *s = append(*s, v); return v }
+func (s *FillElementArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *FillElementArgsList) Append() model.Fielder  { v := &FillElementArgs{}; *s = append(*s, v); return v }
 func (s *FillElementArgsList) IsNil() bool          { return s == nil }
-func (s *FillElementArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *FillElementArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *FillElementArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *FillElementArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *FillElementArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *SwipeElementArgs) ModelName() string {
 	return "swipe_element_args"
 }
 
-var _schemaSwipeElementArgs = []fmt.Field{
-		{Name: "selector", Type: fmt.FieldText},
-		{Name: "direction", Type: fmt.FieldText},
-		{Name: "distance", Type: fmt.FieldInt, Widget: input.Number()},
+var _schemaSwipeElementArgs = []model.Field{
+		{Name: "selector", Type: model.FieldText},
+		{Name: "direction", Type: model.FieldText},
+		{Name: "distance", Type: model.FieldInt, Widget: input.Number()},
 	}
 
-func (m *SwipeElementArgs) Schema() []fmt.Field { return _schemaSwipeElementArgs }
+func (m *SwipeElementArgs) Schema() []model.Field { return _schemaSwipeElementArgs }
 
 func (m *SwipeElementArgs) Pointers() []any { return []any{&m.Selector, &m.Direction, &m.Distance} }
 
 func (m *SwipeElementArgs) IsNil() bool { return m == nil }
 
-func (m *SwipeElementArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *SwipeElementArgs) EncodeFields(w model.FieldWriter) {
 	w.String("selector", m.Selector)
 	w.String("direction", m.Direction)
 	w.Int("distance", int64(m.Distance))
 }
 
-func (m *SwipeElementArgs) DecodeFields(r fmt.FieldReader) {
+func (m *SwipeElementArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("selector"); ok { m.Selector = v }
 	if v, ok := r.String("direction"); ok { m.Direction = v }
 	if v, ok := r.Int("distance"); ok { m.Distance = int(v) }
@@ -317,498 +317,498 @@ func (m *SwipeElementArgs) DecodeFields(r fmt.FieldReader) {
 
 type SwipeElementArgsList []*SwipeElementArgs
 
-func (s *SwipeElementArgsList) Schema() []fmt.Field { return nil }
+func (s *SwipeElementArgsList) Schema() []model.Field { return nil }
 func (s *SwipeElementArgsList) Pointers() []any     { return nil }
 func (s *SwipeElementArgsList) Len() int             { return len(*s) }
-func (s *SwipeElementArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *SwipeElementArgsList) Append() fmt.Fielder  { v := &SwipeElementArgs{}; *s = append(*s, v); return v }
+func (s *SwipeElementArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *SwipeElementArgsList) Append() model.Fielder  { v := &SwipeElementArgs{}; *s = append(*s, v); return v }
 func (s *SwipeElementArgsList) IsNil() bool          { return s == nil }
-func (s *SwipeElementArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *SwipeElementArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *SwipeElementArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *SwipeElementArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *SwipeElementArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *EvaluateJSArgs) ModelName() string {
 	return "evaluate_jsargs"
 }
 
-var _schemaEvaluateJSArgs = []fmt.Field{
-		{Name: "script", Type: fmt.FieldText},
-		{Name: "await_promise", Type: fmt.FieldBool},
+var _schemaEvaluateJSArgs = []model.Field{
+		{Name: "script", Type: model.FieldText},
+		{Name: "await_promise", Type: model.FieldBool},
 	}
 
-func (m *EvaluateJSArgs) Schema() []fmt.Field { return _schemaEvaluateJSArgs }
+func (m *EvaluateJSArgs) Schema() []model.Field { return _schemaEvaluateJSArgs }
 
 func (m *EvaluateJSArgs) Pointers() []any { return []any{&m.Script, &m.AwaitPromise} }
 
 func (m *EvaluateJSArgs) IsNil() bool { return m == nil }
 
-func (m *EvaluateJSArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *EvaluateJSArgs) EncodeFields(w model.FieldWriter) {
 	w.String("script", m.Script)
 	w.Bool("await_promise", m.AwaitPromise)
 }
 
-func (m *EvaluateJSArgs) DecodeFields(r fmt.FieldReader) {
+func (m *EvaluateJSArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("script"); ok { m.Script = v }
 	if v, ok := r.Bool("await_promise"); ok { m.AwaitPromise = v }
 }
 
 type EvaluateJSArgsList []*EvaluateJSArgs
 
-func (s *EvaluateJSArgsList) Schema() []fmt.Field { return nil }
+func (s *EvaluateJSArgsList) Schema() []model.Field { return nil }
 func (s *EvaluateJSArgsList) Pointers() []any     { return nil }
 func (s *EvaluateJSArgsList) Len() int             { return len(*s) }
-func (s *EvaluateJSArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *EvaluateJSArgsList) Append() fmt.Fielder  { v := &EvaluateJSArgs{}; *s = append(*s, v); return v }
+func (s *EvaluateJSArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *EvaluateJSArgsList) Append() model.Fielder  { v := &EvaluateJSArgs{}; *s = append(*s, v); return v }
 func (s *EvaluateJSArgsList) IsNil() bool          { return s == nil }
-func (s *EvaluateJSArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *EvaluateJSArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *EvaluateJSArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *EvaluateJSArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *EvaluateJSArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *GetNetworkLogsArgs) ModelName() string {
 	return "get_network_logs_args"
 }
 
-var _schemaGetNetworkLogsArgs = []fmt.Field{
-		{Name: "filter", Type: fmt.FieldText},
-		{Name: "limit", Type: fmt.FieldInt, Widget: input.Number()},
+var _schemaGetNetworkLogsArgs = []model.Field{
+		{Name: "filter", Type: model.FieldText},
+		{Name: "limit", Type: model.FieldInt, Widget: input.Number()},
 	}
 
-func (m *GetNetworkLogsArgs) Schema() []fmt.Field { return _schemaGetNetworkLogsArgs }
+func (m *GetNetworkLogsArgs) Schema() []model.Field { return _schemaGetNetworkLogsArgs }
 
 func (m *GetNetworkLogsArgs) Pointers() []any { return []any{&m.Filter, &m.Limit} }
 
 func (m *GetNetworkLogsArgs) IsNil() bool { return m == nil }
 
-func (m *GetNetworkLogsArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *GetNetworkLogsArgs) EncodeFields(w model.FieldWriter) {
 	w.String("filter", m.Filter)
 	w.Int("limit", int64(m.Limit))
 }
 
-func (m *GetNetworkLogsArgs) DecodeFields(r fmt.FieldReader) {
+func (m *GetNetworkLogsArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("filter"); ok { m.Filter = v }
 	if v, ok := r.Int("limit"); ok { m.Limit = int(v) }
 }
 
 type GetNetworkLogsArgsList []*GetNetworkLogsArgs
 
-func (s *GetNetworkLogsArgsList) Schema() []fmt.Field { return nil }
+func (s *GetNetworkLogsArgsList) Schema() []model.Field { return nil }
 func (s *GetNetworkLogsArgsList) Pointers() []any     { return nil }
 func (s *GetNetworkLogsArgsList) Len() int             { return len(*s) }
-func (s *GetNetworkLogsArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *GetNetworkLogsArgsList) Append() fmt.Fielder  { v := &GetNetworkLogsArgs{}; *s = append(*s, v); return v }
+func (s *GetNetworkLogsArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *GetNetworkLogsArgsList) Append() model.Fielder  { v := &GetNetworkLogsArgs{}; *s = append(*s, v); return v }
 func (s *GetNetworkLogsArgsList) IsNil() bool          { return s == nil }
-func (s *GetNetworkLogsArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetNetworkLogsArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *GetNetworkLogsArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *GetNetworkLogsArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *GetNetworkLogsArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *GetErrorsArgs) ModelName() string {
 	return "get_errors_args"
 }
 
-var _schemaGetErrorsArgs = []fmt.Field{
-		{Name: "limit", Type: fmt.FieldInt, Widget: input.Number()},
+var _schemaGetErrorsArgs = []model.Field{
+		{Name: "limit", Type: model.FieldInt, Widget: input.Number()},
 	}
 
-func (m *GetErrorsArgs) Schema() []fmt.Field { return _schemaGetErrorsArgs }
+func (m *GetErrorsArgs) Schema() []model.Field { return _schemaGetErrorsArgs }
 
 func (m *GetErrorsArgs) Pointers() []any { return []any{&m.Limit} }
 
 func (m *GetErrorsArgs) IsNil() bool { return m == nil }
 
-func (m *GetErrorsArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *GetErrorsArgs) EncodeFields(w model.FieldWriter) {
 	w.Int("limit", int64(m.Limit))
 }
 
-func (m *GetErrorsArgs) DecodeFields(r fmt.FieldReader) {
+func (m *GetErrorsArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.Int("limit"); ok { m.Limit = int(v) }
 }
 
 type GetErrorsArgsList []*GetErrorsArgs
 
-func (s *GetErrorsArgsList) Schema() []fmt.Field { return nil }
+func (s *GetErrorsArgsList) Schema() []model.Field { return nil }
 func (s *GetErrorsArgsList) Pointers() []any     { return nil }
 func (s *GetErrorsArgsList) Len() int             { return len(*s) }
-func (s *GetErrorsArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *GetErrorsArgsList) Append() fmt.Fielder  { v := &GetErrorsArgs{}; *s = append(*s, v); return v }
+func (s *GetErrorsArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *GetErrorsArgsList) Append() model.Fielder  { v := &GetErrorsArgs{}; *s = append(*s, v); return v }
 func (s *GetErrorsArgsList) IsNil() bool          { return s == nil }
-func (s *GetErrorsArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetErrorsArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *GetErrorsArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *GetErrorsArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *GetErrorsArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *GetPerformanceArgs) ModelName() string {
 	return "get_performance_args"
 }
 
-var _schemaGetPerformanceArgs = []fmt.Field{
-		{Name: "reserved", Type: fmt.FieldInt},
+var _schemaGetPerformanceArgs = []model.Field{
+		{Name: "reserved", Type: model.FieldInt},
 	}
 
-func (m *GetPerformanceArgs) Schema() []fmt.Field { return _schemaGetPerformanceArgs }
+func (m *GetPerformanceArgs) Schema() []model.Field { return _schemaGetPerformanceArgs }
 
 func (m *GetPerformanceArgs) Pointers() []any { return []any{&m.Reserved} }
 
 func (m *GetPerformanceArgs) IsNil() bool { return m == nil }
 
-func (m *GetPerformanceArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *GetPerformanceArgs) EncodeFields(w model.FieldWriter) {
 	w.Int("reserved", int64(m.Reserved))
 }
 
-func (m *GetPerformanceArgs) DecodeFields(r fmt.FieldReader) {
+func (m *GetPerformanceArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.Int("reserved"); ok { m.Reserved = int(v) }
 }
 
 type GetPerformanceArgsList []*GetPerformanceArgs
 
-func (s *GetPerformanceArgsList) Schema() []fmt.Field { return nil }
+func (s *GetPerformanceArgsList) Schema() []model.Field { return nil }
 func (s *GetPerformanceArgsList) Pointers() []any     { return nil }
 func (s *GetPerformanceArgsList) Len() int             { return len(*s) }
-func (s *GetPerformanceArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *GetPerformanceArgsList) Append() fmt.Fielder  { v := &GetPerformanceArgs{}; *s = append(*s, v); return v }
+func (s *GetPerformanceArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *GetPerformanceArgsList) Append() model.Fielder  { v := &GetPerformanceArgs{}; *s = append(*s, v); return v }
 func (s *GetPerformanceArgsList) IsNil() bool          { return s == nil }
-func (s *GetPerformanceArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetPerformanceArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *GetPerformanceArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *GetPerformanceArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *GetPerformanceArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *GetContentArgs) ModelName() string {
 	return "get_content_args"
 }
 
-var _schemaGetContentArgs = []fmt.Field{
-		{Name: "reserved", Type: fmt.FieldInt},
+var _schemaGetContentArgs = []model.Field{
+		{Name: "reserved", Type: model.FieldInt},
 	}
 
-func (m *GetContentArgs) Schema() []fmt.Field { return _schemaGetContentArgs }
+func (m *GetContentArgs) Schema() []model.Field { return _schemaGetContentArgs }
 
 func (m *GetContentArgs) Pointers() []any { return []any{&m.Reserved} }
 
 func (m *GetContentArgs) IsNil() bool { return m == nil }
 
-func (m *GetContentArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *GetContentArgs) EncodeFields(w model.FieldWriter) {
 	w.Int("reserved", int64(m.Reserved))
 }
 
-func (m *GetContentArgs) DecodeFields(r fmt.FieldReader) {
+func (m *GetContentArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.Int("reserved"); ok { m.Reserved = int(v) }
 }
 
 type GetContentArgsList []*GetContentArgs
 
-func (s *GetContentArgsList) Schema() []fmt.Field { return nil }
+func (s *GetContentArgsList) Schema() []model.Field { return nil }
 func (s *GetContentArgsList) Pointers() []any     { return nil }
 func (s *GetContentArgsList) Len() int             { return len(*s) }
-func (s *GetContentArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *GetContentArgsList) Append() fmt.Fielder  { v := &GetContentArgs{}; *s = append(*s, v); return v }
+func (s *GetContentArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *GetContentArgsList) Append() model.Fielder  { v := &GetContentArgs{}; *s = append(*s, v); return v }
 func (s *GetContentArgsList) IsNil() bool          { return s == nil }
-func (s *GetContentArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetContentArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *GetContentArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *GetContentArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *GetContentArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *EmptyArgs) ModelName() string {
 	return "empty_args"
 }
 
-var _schemaEmptyArgs = []fmt.Field{
-		{Name: "reserved", Type: fmt.FieldInt},
+var _schemaEmptyArgs = []model.Field{
+		{Name: "reserved", Type: model.FieldInt},
 	}
 
-func (m *EmptyArgs) Schema() []fmt.Field { return _schemaEmptyArgs }
+func (m *EmptyArgs) Schema() []model.Field { return _schemaEmptyArgs }
 
 func (m *EmptyArgs) Pointers() []any { return []any{&m.Reserved} }
 
 func (m *EmptyArgs) IsNil() bool { return m == nil }
 
-func (m *EmptyArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *EmptyArgs) EncodeFields(w model.FieldWriter) {
 	w.Int("reserved", int64(m.Reserved))
 }
 
-func (m *EmptyArgs) DecodeFields(r fmt.FieldReader) {
+func (m *EmptyArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.Int("reserved"); ok { m.Reserved = int(v) }
 }
 
 type EmptyArgsList []*EmptyArgs
 
-func (s *EmptyArgsList) Schema() []fmt.Field { return nil }
+func (s *EmptyArgsList) Schema() []model.Field { return nil }
 func (s *EmptyArgsList) Pointers() []any     { return nil }
 func (s *EmptyArgsList) Len() int             { return len(*s) }
-func (s *EmptyArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *EmptyArgsList) Append() fmt.Fielder  { v := &EmptyArgs{}; *s = append(*s, v); return v }
+func (s *EmptyArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *EmptyArgsList) Append() model.Fielder  { v := &EmptyArgs{}; *s = append(*s, v); return v }
 func (s *EmptyArgsList) IsNil() bool          { return s == nil }
-func (s *EmptyArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *EmptyArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *EmptyArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *EmptyArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *EmptyArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *OpenBrowserArgs) ModelName() string {
 	return "open_browser_args"
 }
 
-var _schemaOpenBrowserArgs = []fmt.Field{
-		{Name: "port", Type: fmt.FieldText},
-		{Name: "https", Type: fmt.FieldBool},
+var _schemaOpenBrowserArgs = []model.Field{
+		{Name: "port", Type: model.FieldText},
+		{Name: "https", Type: model.FieldBool},
 	}
 
-func (m *OpenBrowserArgs) Schema() []fmt.Field { return _schemaOpenBrowserArgs }
+func (m *OpenBrowserArgs) Schema() []model.Field { return _schemaOpenBrowserArgs }
 
 func (m *OpenBrowserArgs) Pointers() []any { return []any{&m.Port, &m.Https} }
 
 func (m *OpenBrowserArgs) IsNil() bool { return m == nil }
 
-func (m *OpenBrowserArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *OpenBrowserArgs) EncodeFields(w model.FieldWriter) {
 	w.String("port", m.Port)
 	w.Bool("https", m.Https)
 }
 
-func (m *OpenBrowserArgs) DecodeFields(r fmt.FieldReader) {
+func (m *OpenBrowserArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("port"); ok { m.Port = v }
 	if v, ok := r.Bool("https"); ok { m.Https = v }
 }
 
 type OpenBrowserArgsList []*OpenBrowserArgs
 
-func (s *OpenBrowserArgsList) Schema() []fmt.Field { return nil }
+func (s *OpenBrowserArgsList) Schema() []model.Field { return nil }
 func (s *OpenBrowserArgsList) Pointers() []any     { return nil }
 func (s *OpenBrowserArgsList) Len() int             { return len(*s) }
-func (s *OpenBrowserArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *OpenBrowserArgsList) Append() fmt.Fielder  { v := &OpenBrowserArgs{}; *s = append(*s, v); return v }
+func (s *OpenBrowserArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *OpenBrowserArgsList) Append() model.Fielder  { v := &OpenBrowserArgs{}; *s = append(*s, v); return v }
 func (s *OpenBrowserArgsList) IsNil() bool          { return s == nil }
-func (s *OpenBrowserArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *OpenBrowserArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *OpenBrowserArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *OpenBrowserArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *OpenBrowserArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *CloseBrowserArgs) ModelName() string {
 	return "close_browser_args"
 }
 
-var _schemaCloseBrowserArgs = []fmt.Field{
-		{Name: "reserved", Type: fmt.FieldInt},
+var _schemaCloseBrowserArgs = []model.Field{
+		{Name: "reserved", Type: model.FieldInt},
 	}
 
-func (m *CloseBrowserArgs) Schema() []fmt.Field { return _schemaCloseBrowserArgs }
+func (m *CloseBrowserArgs) Schema() []model.Field { return _schemaCloseBrowserArgs }
 
 func (m *CloseBrowserArgs) Pointers() []any { return []any{&m.Reserved} }
 
 func (m *CloseBrowserArgs) IsNil() bool { return m == nil }
 
-func (m *CloseBrowserArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *CloseBrowserArgs) EncodeFields(w model.FieldWriter) {
 	w.Int("reserved", int64(m.Reserved))
 }
 
-func (m *CloseBrowserArgs) DecodeFields(r fmt.FieldReader) {
+func (m *CloseBrowserArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.Int("reserved"); ok { m.Reserved = int(v) }
 }
 
 type CloseBrowserArgsList []*CloseBrowserArgs
 
-func (s *CloseBrowserArgsList) Schema() []fmt.Field { return nil }
+func (s *CloseBrowserArgsList) Schema() []model.Field { return nil }
 func (s *CloseBrowserArgsList) Pointers() []any     { return nil }
 func (s *CloseBrowserArgsList) Len() int             { return len(*s) }
-func (s *CloseBrowserArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *CloseBrowserArgsList) Append() fmt.Fielder  { v := &CloseBrowserArgs{}; *s = append(*s, v); return v }
+func (s *CloseBrowserArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *CloseBrowserArgsList) Append() model.Fielder  { v := &CloseBrowserArgs{}; *s = append(*s, v); return v }
 func (s *CloseBrowserArgsList) IsNil() bool          { return s == nil }
-func (s *CloseBrowserArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *CloseBrowserArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *CloseBrowserArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *CloseBrowserArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *CloseBrowserArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *GetSourceArgs) ModelName() string {
 	return "get_source_args"
 }
 
-var _schemaGetSourceArgs = []fmt.Field{
-		{Name: "selector", Type: fmt.FieldText},
+var _schemaGetSourceArgs = []model.Field{
+		{Name: "selector", Type: model.FieldText},
 	}
 
-func (m *GetSourceArgs) Schema() []fmt.Field { return _schemaGetSourceArgs }
+func (m *GetSourceArgs) Schema() []model.Field { return _schemaGetSourceArgs }
 
 func (m *GetSourceArgs) Pointers() []any { return []any{&m.Selector} }
 
 func (m *GetSourceArgs) IsNil() bool { return m == nil }
 
-func (m *GetSourceArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *GetSourceArgs) EncodeFields(w model.FieldWriter) {
 	w.String("selector", m.Selector)
 }
 
-func (m *GetSourceArgs) DecodeFields(r fmt.FieldReader) {
+func (m *GetSourceArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("selector"); ok { m.Selector = v }
 }
 
 type GetSourceArgsList []*GetSourceArgs
 
-func (s *GetSourceArgsList) Schema() []fmt.Field { return nil }
+func (s *GetSourceArgsList) Schema() []model.Field { return nil }
 func (s *GetSourceArgsList) Pointers() []any     { return nil }
 func (s *GetSourceArgsList) Len() int             { return len(*s) }
-func (s *GetSourceArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *GetSourceArgsList) Append() fmt.Fielder  { v := &GetSourceArgs{}; *s = append(*s, v); return v }
+func (s *GetSourceArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *GetSourceArgsList) Append() model.Fielder  { v := &GetSourceArgs{}; *s = append(*s, v); return v }
 func (s *GetSourceArgsList) IsNil() bool          { return s == nil }
-func (s *GetSourceArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetSourceArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *GetSourceArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *GetSourceArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *GetSourceArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *GetStylesArgs) ModelName() string {
 	return "get_styles_args"
 }
 
-var _schemaGetStylesArgs = []fmt.Field{
-		{Name: "selector", Type: fmt.FieldText},
-		{Name: "sheet", Type: fmt.FieldInt, Widget: input.Number()},
+var _schemaGetStylesArgs = []model.Field{
+		{Name: "selector", Type: model.FieldText},
+		{Name: "sheet", Type: model.FieldInt, Widget: input.Number()},
 	}
 
-func (m *GetStylesArgs) Schema() []fmt.Field { return _schemaGetStylesArgs }
+func (m *GetStylesArgs) Schema() []model.Field { return _schemaGetStylesArgs }
 
 func (m *GetStylesArgs) Pointers() []any { return []any{&m.Selector, &m.Sheet} }
 
 func (m *GetStylesArgs) IsNil() bool { return m == nil }
 
-func (m *GetStylesArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *GetStylesArgs) EncodeFields(w model.FieldWriter) {
 	w.String("selector", m.Selector)
 	w.Int("sheet", int64(m.Sheet))
 }
 
-func (m *GetStylesArgs) DecodeFields(r fmt.FieldReader) {
+func (m *GetStylesArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("selector"); ok { m.Selector = v }
 	if v, ok := r.Int("sheet"); ok { m.Sheet = int(v) }
 }
 
 type GetStylesArgsList []*GetStylesArgs
 
-func (s *GetStylesArgsList) Schema() []fmt.Field { return nil }
+func (s *GetStylesArgsList) Schema() []model.Field { return nil }
 func (s *GetStylesArgsList) Pointers() []any     { return nil }
 func (s *GetStylesArgsList) Len() int             { return len(*s) }
-func (s *GetStylesArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *GetStylesArgsList) Append() fmt.Fielder  { v := &GetStylesArgs{}; *s = append(*s, v); return v }
+func (s *GetStylesArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *GetStylesArgsList) Append() model.Fielder  { v := &GetStylesArgs{}; *s = append(*s, v); return v }
 func (s *GetStylesArgsList) IsNil() bool          { return s == nil }
-func (s *GetStylesArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetStylesArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *GetStylesArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *GetStylesArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *GetStylesArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *GetStorageArgs) ModelName() string {
 	return "get_storage_args"
 }
 
-var _schemaGetStorageArgs = []fmt.Field{
-		{Name: "type", Type: fmt.FieldText},
+var _schemaGetStorageArgs = []model.Field{
+		{Name: "type", Type: model.FieldText},
 	}
 
-func (m *GetStorageArgs) Schema() []fmt.Field { return _schemaGetStorageArgs }
+func (m *GetStorageArgs) Schema() []model.Field { return _schemaGetStorageArgs }
 
 func (m *GetStorageArgs) Pointers() []any { return []any{&m.Type} }
 
 func (m *GetStorageArgs) IsNil() bool { return m == nil }
 
-func (m *GetStorageArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *GetStorageArgs) EncodeFields(w model.FieldWriter) {
 	w.String("type", m.Type)
 }
 
-func (m *GetStorageArgs) DecodeFields(r fmt.FieldReader) {
+func (m *GetStorageArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("type"); ok { m.Type = v }
 }
 
 type GetStorageArgsList []*GetStorageArgs
 
-func (s *GetStorageArgsList) Schema() []fmt.Field { return nil }
+func (s *GetStorageArgsList) Schema() []model.Field { return nil }
 func (s *GetStorageArgsList) Pointers() []any     { return nil }
 func (s *GetStorageArgsList) Len() int             { return len(*s) }
-func (s *GetStorageArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *GetStorageArgsList) Append() fmt.Fielder  { v := &GetStorageArgs{}; *s = append(*s, v); return v }
+func (s *GetStorageArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *GetStorageArgsList) Append() model.Fielder  { v := &GetStorageArgs{}; *s = append(*s, v); return v }
 func (s *GetStorageArgsList) IsNil() bool          { return s == nil }
-func (s *GetStorageArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetStorageArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *GetStorageArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *GetStorageArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *GetStorageArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *GetAssetArgs) ModelName() string {
 	return "get_asset_args"
 }
 
-var _schemaGetAssetArgs = []fmt.Field{
-		{Name: "url", Type: fmt.FieldText},
+var _schemaGetAssetArgs = []model.Field{
+		{Name: "url", Type: model.FieldText},
 	}
 
-func (m *GetAssetArgs) Schema() []fmt.Field { return _schemaGetAssetArgs }
+func (m *GetAssetArgs) Schema() []model.Field { return _schemaGetAssetArgs }
 
 func (m *GetAssetArgs) Pointers() []any { return []any{&m.URL} }
 
 func (m *GetAssetArgs) IsNil() bool { return m == nil }
 
-func (m *GetAssetArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *GetAssetArgs) EncodeFields(w model.FieldWriter) {
 	w.String("url", m.URL)
 }
 
-func (m *GetAssetArgs) DecodeFields(r fmt.FieldReader) {
+func (m *GetAssetArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("url"); ok { m.URL = v }
 }
 
 type GetAssetArgsList []*GetAssetArgs
 
-func (s *GetAssetArgsList) Schema() []fmt.Field { return nil }
+func (s *GetAssetArgsList) Schema() []model.Field { return nil }
 func (s *GetAssetArgsList) Pointers() []any     { return nil }
 func (s *GetAssetArgsList) Len() int             { return len(*s) }
-func (s *GetAssetArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *GetAssetArgsList) Append() fmt.Fielder  { v := &GetAssetArgs{}; *s = append(*s, v); return v }
+func (s *GetAssetArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *GetAssetArgsList) Append() model.Fielder  { v := &GetAssetArgs{}; *s = append(*s, v); return v }
 func (s *GetAssetArgsList) IsNil() bool          { return s == nil }
-func (s *GetAssetArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *GetAssetArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *GetAssetArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *GetAssetArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *GetAssetArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *InterceptRequestArgs) ModelName() string {
 	return "intercept_request_args"
 }
 
-var _schemaInterceptRequestArgs = []fmt.Field{
-		{Name: "action", Type: fmt.FieldText},
-		{Name: "filter", Type: fmt.FieldText},
-		{Name: "limit", Type: fmt.FieldInt, Widget: input.Number()},
+var _schemaInterceptRequestArgs = []model.Field{
+		{Name: "action", Type: model.FieldText},
+		{Name: "filter", Type: model.FieldText},
+		{Name: "limit", Type: model.FieldInt, Widget: input.Number()},
 	}
 
-func (m *InterceptRequestArgs) Schema() []fmt.Field { return _schemaInterceptRequestArgs }
+func (m *InterceptRequestArgs) Schema() []model.Field { return _schemaInterceptRequestArgs }
 
 func (m *InterceptRequestArgs) Pointers() []any { return []any{&m.Action, &m.Filter, &m.Limit} }
 
 func (m *InterceptRequestArgs) IsNil() bool { return m == nil }
 
-func (m *InterceptRequestArgs) EncodeFields(w fmt.FieldWriter) {
+func (m *InterceptRequestArgs) EncodeFields(w model.FieldWriter) {
 	w.String("action", m.Action)
 	w.String("filter", m.Filter)
 	w.Int("limit", int64(m.Limit))
 }
 
-func (m *InterceptRequestArgs) DecodeFields(r fmt.FieldReader) {
+func (m *InterceptRequestArgs) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("action"); ok { m.Action = v }
 	if v, ok := r.String("filter"); ok { m.Filter = v }
 	if v, ok := r.Int("limit"); ok { m.Limit = int(v) }
@@ -816,38 +816,38 @@ func (m *InterceptRequestArgs) DecodeFields(r fmt.FieldReader) {
 
 type InterceptRequestArgsList []*InterceptRequestArgs
 
-func (s *InterceptRequestArgsList) Schema() []fmt.Field { return nil }
+func (s *InterceptRequestArgsList) Schema() []model.Field { return nil }
 func (s *InterceptRequestArgsList) Pointers() []any     { return nil }
 func (s *InterceptRequestArgsList) Len() int             { return len(*s) }
-func (s *InterceptRequestArgsList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *InterceptRequestArgsList) Append() fmt.Fielder  { v := &InterceptRequestArgs{}; *s = append(*s, v); return v }
+func (s *InterceptRequestArgsList) At(i int) model.Fielder { return (*s)[i] }
+func (s *InterceptRequestArgsList) Append() model.Fielder  { v := &InterceptRequestArgs{}; *s = append(*s, v); return v }
 func (s *InterceptRequestArgsList) IsNil() bool          { return s == nil }
-func (s *InterceptRequestArgsList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *InterceptRequestArgsList) DecodeFields(_ fmt.FieldReader) {}
+func (s *InterceptRequestArgsList) EncodeFields(_ model.FieldWriter) {}
+func (s *InterceptRequestArgsList) DecodeFields(_ model.FieldReader) {}
 
 func (m *InterceptRequestArgs) Validate(action byte) error {
-	return fmt.ValidateFields(action, m)
+	return model.ValidateFields(action, m)
 }
 
 func (m *InterceptedRequest) ModelName() string {
 	return "intercepted_request"
 }
 
-var _schemaInterceptedRequest = []fmt.Field{
-		{Name: "url", Type: fmt.FieldText},
-		{Name: "method", Type: fmt.FieldText},
-		{Name: "request_body", Type: fmt.FieldText},
-		{Name: "response_body", Type: fmt.FieldText},
-		{Name: "status", Type: fmt.FieldInt},
+var _schemaInterceptedRequest = []model.Field{
+		{Name: "url", Type: model.FieldText},
+		{Name: "method", Type: model.FieldText},
+		{Name: "request_body", Type: model.FieldText},
+		{Name: "response_body", Type: model.FieldText},
+		{Name: "status", Type: model.FieldInt},
 	}
 
-func (m *InterceptedRequest) Schema() []fmt.Field { return _schemaInterceptedRequest }
+func (m *InterceptedRequest) Schema() []model.Field { return _schemaInterceptedRequest }
 
 func (m *InterceptedRequest) Pointers() []any { return []any{&m.URL, &m.Method, &m.RequestBody, &m.ResponseBody, &m.Status} }
 
 func (m *InterceptedRequest) IsNil() bool { return m == nil }
 
-func (m *InterceptedRequest) EncodeFields(w fmt.FieldWriter) {
+func (m *InterceptedRequest) EncodeFields(w model.FieldWriter) {
 	w.String("url", m.URL)
 	w.String("method", m.Method)
 	w.String("request_body", m.RequestBody)
@@ -855,7 +855,7 @@ func (m *InterceptedRequest) EncodeFields(w fmt.FieldWriter) {
 	w.Int("status", int64(m.Status))
 }
 
-func (m *InterceptedRequest) DecodeFields(r fmt.FieldReader) {
+func (m *InterceptedRequest) DecodeFields(r model.FieldReader) {
 	if v, ok := r.String("url"); ok { m.URL = v }
 	if v, ok := r.String("method"); ok { m.Method = v }
 	if v, ok := r.String("request_body"); ok { m.RequestBody = v }
@@ -865,11 +865,12 @@ func (m *InterceptedRequest) DecodeFields(r fmt.FieldReader) {
 
 type InterceptedRequestList []*InterceptedRequest
 
-func (s *InterceptedRequestList) Schema() []fmt.Field { return nil }
+func (s *InterceptedRequestList) Schema() []model.Field { return nil }
 func (s *InterceptedRequestList) Pointers() []any     { return nil }
 func (s *InterceptedRequestList) Len() int             { return len(*s) }
-func (s *InterceptedRequestList) At(i int) fmt.Fielder { return (*s)[i] }
-func (s *InterceptedRequestList) Append() fmt.Fielder  { v := &InterceptedRequest{}; *s = append(*s, v); return v }
+func (s *InterceptedRequestList) At(i int) model.Fielder { return (*s)[i] }
+func (s *InterceptedRequestList) Append() model.Fielder  { v := &InterceptedRequest{}; *s = append(*s, v); return v }
 func (s *InterceptedRequestList) IsNil() bool          { return s == nil }
-func (s *InterceptedRequestList) EncodeFields(_ fmt.FieldWriter) {}
-func (s *InterceptedRequestList) DecodeFields(_ fmt.FieldReader) {}
+func (s *InterceptedRequestList) EncodeFields(_ model.FieldWriter) {}
+func (s *InterceptedRequestList) DecodeFields(_ model.FieldReader) {}
+
