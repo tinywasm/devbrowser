@@ -38,6 +38,10 @@ func (h *DevBrowser) CreateBrowserContext() error {
 		)
 	}
 
+	// Resolve the Chrome executable path
+	chromePath := ResolveChromeExecPath()
+	opts = append(opts, chromedp.ExecPath(chromePath))
+
 	allocCtx, allocCancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	ctx, cancel := chromedp.NewContext(allocCtx,
 		chromedp.WithErrorf(func(format string, args ...any) {

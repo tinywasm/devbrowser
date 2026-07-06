@@ -51,6 +51,7 @@ func TestPageStructureExtraction(t *testing.T) {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.Flag("headless", true),
 		chromedp.DisableGPU,
+		chromedp.ExecPath(devbrowser.ResolveChromeExecPath()),
 	)
 	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
 	defer cancel()
