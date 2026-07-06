@@ -13,6 +13,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/tinywasm/devbrowser"
 	"github.com/tinywasm/devbrowser/chromedp"
 	"github.com/tinywasm/devbrowser/chromedp/device"
 
@@ -23,6 +24,23 @@ import (
 	"github.com/tinywasm/devbrowser/cdproto/target"
 )
 
+// newExampleContext sets up a chromedp context using an explicitly resolved
+// Chrome executable, instead of relying on chromedp's built-in default
+// resolution (which can pick a broken Chromium package over a working
+// Google Chrome install; see ../execpath.go). The returned cancel func
+// tears down both the browser context and its exec allocator.
+func newExampleContext() (context.Context, context.CancelFunc) {
+	opts := append(chromedp.DefaultExecAllocatorOptions[:],
+		chromedp.ExecPath(devbrowser.ResolveChromeExecPath()),
+	)
+	allocCtx, allocCancel := chromedp.NewExecAllocator(context.Background(), opts...)
+	ctx, cancel := chromedp.NewContext(allocCtx)
+	return ctx, func() {
+		cancel()
+		allocCancel()
+	}
+}
+
 func writeHTML(content string) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "text/html")
@@ -31,7 +49,7 @@ func writeHTML(content string) http.Handler {
 }
 
 func ExampleTitle() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	ts := httptest.NewServer(writeHTML(`
@@ -58,7 +76,7 @@ func ExampleTitle() {
 }
 
 func ExampleRunResponse() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	// This server simply shows the URL path as the page title, and contains
@@ -125,6 +143,7 @@ func ExampleExecAllocator() {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.DisableGPU,
 		chromedp.UserDataDir(dir),
+		chromedp.ExecPath(devbrowser.ResolveChromeExecPath()),
 	)
 
 	allocCtx, cancel := chromedp.NewExecAllocator(context.Background(), opts...)
@@ -169,7 +188,7 @@ func ExampleNewContext_reuseBrowser() {
 	defer ts.Close()
 
 	// create a new browser
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	// start the browser without a timeout
@@ -201,7 +220,7 @@ func ExampleNewContext_reuseBrowser() {
 
 func ExampleNewContext_manyTabs() {
 	// new browser, first tab
-	ctx1, cancel := chromedp.NewContext(context.Background())
+	ctx1, cancel := newExampleContext()
 	defer cancel()
 
 	// ensure the first tab is created
@@ -229,7 +248,7 @@ func ExampleNewContext_manyTabs() {
 }
 
 func ExampleListenTarget_consoleLog() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	ts := httptest.NewServer(writeHTML(`
@@ -281,7 +300,7 @@ func ExampleListenTarget_consoleLog() {
 }
 
 func ExampleWaitNewTarget() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	mux := http.NewServeMux()
@@ -316,7 +335,7 @@ func ExampleWaitNewTarget() {
 }
 
 func ExampleListenTarget_acceptAlert() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	mux := http.NewServeMux()
@@ -351,7 +370,7 @@ func ExampleListenTarget_acceptAlert() {
 }
 
 func Example_retrieveHTML() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	ts := httptest.NewServer(writeHTML(`
@@ -388,7 +407,7 @@ function changeText() {
 }
 
 func ExampleEmulate() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	var buf []byte
@@ -410,7 +429,7 @@ func ExampleEmulate() {
 }
 
 func ExamplePrintToPDF() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	var buf []byte
@@ -436,7 +455,7 @@ func ExamplePrintToPDF() {
 }
 
 func ExampleByJSPath() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	ts := httptest.NewServer(writeHTML(`
@@ -471,7 +490,7 @@ func ExampleByJSPath() {
 }
 
 func ExampleFromNode() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	ts := httptest.NewServer(writeHTML(`
@@ -519,7 +538,7 @@ func ExampleFromNode() {
 }
 
 func Example_dump() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	ts := httptest.NewServer(writeHTML(`<!doctype html>
@@ -568,7 +587,7 @@ func Example_dump() {
 }
 
 func Example_documentDump() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	ts := httptest.NewServer(writeHTML(`<!doctype html>
@@ -618,7 +637,7 @@ func Example_documentDump() {
 }
 
 func ExampleFullScreenshot() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	var buf []byte
@@ -638,7 +657,7 @@ func ExampleFullScreenshot() {
 }
 
 func ExampleEvaluate() {
-	ctx, cancel := chromedp.NewContext(context.Background())
+	ctx, cancel := newExampleContext()
 	defer cancel()
 
 	// Ignore the result:
