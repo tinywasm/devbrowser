@@ -36,7 +36,7 @@ func TestGetStyles_AllSheets(t *testing.T) {
 	req := mcp.Request{
 		Params: mcp.CallToolParams{
 			Name:      "browser_get_styles",
-			Arguments: devbrowser.EncodeSchema(&args),
+			Arguments: devbrowser.EncodeArgs(&args),
 		},
 		Action: 'r',
 	}
@@ -84,7 +84,7 @@ func TestGetStyles_SheetIndex(t *testing.T) {
 	req := mcp.Request{
 		Params: mcp.CallToolParams{
 			Name:      "browser_get_styles",
-			Arguments: devbrowser.EncodeSchema(&args),
+			Arguments: devbrowser.EncodeArgs(&args),
 		},
 		Action: 'r',
 	}
@@ -134,7 +134,7 @@ func TestGetStyles_Selector(t *testing.T) {
 	req := mcp.Request{
 		Params: mcp.CallToolParams{
 			Name:      "browser_get_styles",
-			Arguments: devbrowser.EncodeSchema(&args),
+			Arguments: devbrowser.EncodeArgs(&args),
 		},
 		Action: 'r',
 	}
@@ -181,7 +181,7 @@ func TestGetStyles_CrossOrigin(t *testing.T) {
 	req := mcp.Request{
 		Params: mcp.CallToolParams{
 			Name:      "browser_get_styles",
-			Arguments: devbrowser.EncodeSchema(&args),
+			Arguments: devbrowser.EncodeArgs(&args),
 		},
 		Action: 'r',
 	}

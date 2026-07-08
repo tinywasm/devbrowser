@@ -115,7 +115,7 @@ func TestBrowserSwipe(t *testing.T) {
 	req := mcp.Request{
 		Params: mcp.CallToolParams{
 			Name:      "browser_swipe_element",
-			Arguments: devbrowser.EncodeSchema(&args),
+			Arguments: devbrowser.EncodeArgs(&args),
 		},
 		Action: 'u',
 	}

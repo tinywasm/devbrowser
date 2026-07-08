@@ -83,6 +83,8 @@ The following Model Context Protocol (MCP) tools are available for browser autom
 | `browser_get_asset` | Download the content of a JS or CSS file by URL using the active session |
 | `browser_intercept_request` | Capture bodies of requests and responses XHR/fetch calls (CDP Fetch domain) |
 
+All tools utilize a valid JSON Schema for their `inputSchema`, which is automatically derived from the arguments' field metadata.
+
 - `(*DevBrowser) GetConsoleLogs() ([]string, error)`: Capture console messages from the loaded page.
 	- Signature: `func (b *DevBrowser) GetConsoleLogs() ([]string, error)`
 	- Behavior: injects a small script into the page that maintains `window.__consoleLogs` and returns its contents as a slice of strings. Captures `console.log`, `console.error`, `console.warn`, and `console.info` messages.
