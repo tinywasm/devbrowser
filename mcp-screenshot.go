@@ -12,7 +12,7 @@ func (b *DevBrowser) GetScreenshotTools() []mcp.Tool {
 		{
 			Name:        "browser_screenshot",
 			Description: "Capture screenshot of current browser viewport to verify visual rendering, layout correctness, or UI state. Returns PNG image as MCP resource (binary efficient format).",
-			InputSchema: EncodeSchema(new(ScreenshotArgs)),
+			Args:        new(ScreenshotArgs),
 			Resource:    "browser",
 			Action:      'r',
 			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
@@ -38,7 +38,7 @@ func (b *DevBrowser) GetScreenshotTools() []mcp.Tool {
 				// Build visual context report (what AI "sees" without image bytes)
 				contextReport := fmt.Sprintf(
 					"Screenshot captured (%d KB)\n"+
-						"URL: %s | Title: %s | Viewport: %dx%d\n"+
+						"Url: %s | Title: %s | Viewport: %dx%d\n"+
 						"\n"+
 						"%s",
 					len(res.ImageData)/1024,

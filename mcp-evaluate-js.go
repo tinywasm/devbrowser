@@ -15,7 +15,7 @@ func (b *DevBrowser) GetEvaluateJsTools() []mcp.Tool {
 		{
 			Name:        "browser_evaluate_js",
 			Description: "Execute JavaScript code in browser context to inspect DOM, call WASM exports, test functions, or debug application state. Returns execution result or error.",
-			InputSchema: EncodeSchema(new(EvaluateJSArgs)),
+			Args: new(EvaluateJSArgs),
 			Resource:    "browser",
 			Action:      'u',
 			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {

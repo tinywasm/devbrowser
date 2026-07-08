@@ -13,8 +13,8 @@ func (b *DevBrowser) GetAssetTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_get_asset",
-			Description: "Download the content of a JS or CSS file by URL using the active session. Evades CORS and authentication issues by fetching from the browser context.",
-			InputSchema: EncodeSchema(new(GetAssetArgs)),
+			Description: "Download the content of a JS or CSS file by Url using the active session. Evades CORS and authentication issues by fetching from the browser context.",
+			Args: new(GetAssetArgs),
 			Resource:    "browser",
 			Action:      'r',
 			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
@@ -29,7 +29,7 @@ func (b *DevBrowser) GetAssetTools() []mcp.Tool {
 				js := fmt.Sprintf(`fetch(%q).then(r => {
 					if (!r.ok) throw new Error("HTTP error! status: " + r.status);
 					return r.text();
-				})`, args.URL)
+				})`, args.Url)
 
 				var result interface{}
 				err := chromedp.Run(b.Ctx,

@@ -53,7 +53,7 @@ func TestInterceptRequest_CapturesBody(t *testing.T) {
 	startReq := mcp.Request{
 		Params: mcp.CallToolParams{
 			Name:      "browser_intercept_request",
-			Arguments: devbrowser.EncodeSchema(&startArgs),
+			Arguments: encodeArgs(&startArgs),
 		},
 		Action: 'u',
 	}
@@ -77,7 +77,7 @@ func TestInterceptRequest_CapturesBody(t *testing.T) {
 	getReq := mcp.Request{
 		Params: mcp.CallToolParams{
 			Name:      "browser_intercept_request",
-			Arguments: devbrowser.EncodeSchema(&getArgs),
+			Arguments: encodeArgs(&getArgs),
 		},
 		Action: 'r',
 	}
@@ -107,7 +107,7 @@ func TestInterceptRequest_CapturesBody(t *testing.T) {
 	stopReq := mcp.Request{
 		Params: mcp.CallToolParams{
 			Name:      "browser_intercept_request",
-			Arguments: devbrowser.EncodeSchema(&stopArgs),
+			Arguments: encodeArgs(&stopArgs),
 		},
 		Action: 'u',
 	}
@@ -143,7 +143,7 @@ func TestInterceptRequest_LimitsMemory(t *testing.T) {
 	startReq := mcp.Request{
 		Params: mcp.CallToolParams{
 			Name:      "browser_intercept_request",
-			Arguments: devbrowser.EncodeSchema(&startArgs),
+			Arguments: encodeArgs(&startArgs),
 		},
 		Action: 'u',
 	}

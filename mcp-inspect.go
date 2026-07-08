@@ -120,7 +120,7 @@ func (b *DevBrowser) GetInspectTools() []mcp.Tool {
 		{
 			Name:        "browser_inspect_element",
 			Description: "Inspect a specific element to get detailed CSS properties like Chrome DevTools. Returns box model (width, height, padding, margin, border), position (top, left, offset), layout (display, flex, grid), typography (font, color), and accessibility info.",
-			InputSchema: EncodeSchema(new(InspectElementArgs)),
+			Args: new(InspectElementArgs),
 			Resource:    "browser",
 			Action:      'r',
 			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {

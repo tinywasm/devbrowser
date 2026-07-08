@@ -1,102 +1,154 @@
 package devbrowser
 
-type EmulateDeviceArgs struct {
-	Mode     string `input:"-"`
-	Capture  bool   `input:"-"`
-	Selector string `input:"-"`
+import "github.com/tinywasm/model"
+
+var ScreenshotArgsModel = model.Definition{
+	Name: "screenshot_args",
+	Fields: model.Fields{
+		{Name: "fullpage", Type: model.FieldBool},
+	},
 }
 
-type GetConsoleArgs struct {
-	Lines int `input:"number"`
+var ClickElementArgsModel = model.Definition{
+	Name: "click_element_args",
+	Fields: model.Fields{
+		{Name: "selector", Type: model.FieldText, NotNull: true},
+		{Name: "wait_after", Type: model.FieldInt},
+		{Name: "timeout", Type: model.FieldInt},
+	},
 }
 
-type NavigateArgs struct {
-	URL string `input:"-" help:"Absolute URL, or a relative path to the running app, e.g. /login"`
+var NavigateArgsModel = model.Definition{
+	Name: "navigate_args",
+	Fields: model.Fields{
+		{Name: "url", Type: model.FieldText, NotNull: true},
+	},
 }
 
-type ScreenshotArgs struct {
-	Fullpage bool `input:"-"`
+var EmulateDeviceArgsModel = model.Definition{
+	Name: "emulate_device_args",
+	Fields: model.Fields{
+		{Name: "mode", Type: model.FieldText},
+		{Name: "capture", Type: model.FieldBool},
+		{Name: "selector", Type: model.FieldText},
+	},
 }
 
-type InspectElementArgs struct {
-	Selector string `input:"-"`
+var GetConsoleArgsModel = model.Definition{
+	Name: "get_console_args",
+	Fields: model.Fields{
+		{Name: "lines", Type: model.FieldInt},
+	},
 }
 
-type ClickElementArgs struct {
-	Selector  string `input:"-"`
-	WaitAfter int    `input:"number"`
-	Timeout   int    `input:"number"`
+var FillElementArgsModel = model.Definition{
+	Name: "fill_element_args",
+	Fields: model.Fields{
+		{Name: "selector", Type: model.FieldText, NotNull: true},
+		{Name: "value", Type: model.FieldText, NotNull: true},
+		{Name: "wait_after", Type: model.FieldInt},
+		{Name: "timeout", Type: model.FieldInt},
+	},
 }
 
-type FillElementArgs struct {
-	Selector  string `input:"-"`
-	Value     string `input:"-"`
-	WaitAfter int    `input:"number"`
-	Timeout   int    `input:"number"`
+var SwipeElementArgsModel = model.Definition{
+	Name: "swipe_element_args",
+	Fields: model.Fields{
+		{Name: "selector", Type: model.FieldText, NotNull: true},
+		{Name: "direction", Type: model.FieldText, NotNull: true},
+		{Name: "distance", Type: model.FieldInt},
+	},
 }
 
-type SwipeElementArgs struct {
-	Selector  string `input:"-"`
-	Direction string `input:"-"`
-	Distance  int    `input:"number"`
+var EvaluateJSArgsModel = model.Definition{
+	Name: "evaluate_js_args",
+	Fields: model.Fields{
+		{Name: "script", Type: model.FieldText, NotNull: true},
+		{Name: "await_promise", Type: model.FieldBool},
+	},
 }
 
-type EvaluateJSArgs struct {
-	Script       string `input:"-"`
-	AwaitPromise bool   `input:"-"`
+var GetNetworkLogsArgsModel = model.Definition{
+	Name: "get_network_logs_args",
+	Fields: model.Fields{
+		{Name: "filter", Type: model.FieldText},
+		{Name: "limit", Type: model.FieldInt},
+	},
 }
 
-type GetNetworkLogsArgs struct {
-	Filter string `input:"-"`
-	Limit  int    `input:"number"`
+var GetErrorsArgsModel = model.Definition{
+	Name: "get_errors_args",
+	Fields: model.Fields{
+		{Name: "limit", Type: model.FieldInt},
+	},
 }
 
-type GetErrorsArgs struct {
-	Limit int `input:"number"`
+var GetPerformanceArgsModel = model.Definition{
+	Name: "get_performance_args",
+	Fields: model.Fields{},
 }
 
-type GetPerformanceArgs struct {
-	Reserved int `input:"-"`
+var GetContentArgsModel = model.Definition{
+	Name: "get_content_args",
+	Fields: model.Fields{},
 }
 
-type GetContentArgs struct {
-	Reserved int `input:"-"`
+var GetSourceArgsModel = model.Definition{
+	Name: "get_source_args",
+	Fields: model.Fields{
+		{Name: "selector", Type: model.FieldText},
+	},
 }
 
-type EmptyArgs struct {
-	Reserved int `input:"-"`
+var InspectElementArgsModel = model.Definition{
+	Name: "inspect_element_args",
+	Fields: model.Fields{
+		{Name: "selector", Type: model.FieldText, NotNull: true},
+	},
 }
 
-type OpenBrowserArgs struct {
-	Port  string `input:"-"`
-	Https bool   `input:"-"`
+var GetStylesArgsModel = model.Definition{
+	Name: "get_styles_args",
+	Fields: model.Fields{
+		{Name: "selector", Type: model.FieldText},
+		{Name: "sheet", Type: model.FieldInt},
+	},
 }
 
-type CloseBrowserArgs struct {
-	Reserved int `input:"-"`
+var GetStorageArgsModel = model.Definition{
+	Name: "get_storage_args",
+	Fields: model.Fields{
+		{Name: "type", Type: model.FieldText},
+	},
 }
 
-type GetSourceArgs struct {
-	Selector string `input:"-"` // vacío = página completa
+var GetAssetArgsModel = model.Definition{
+	Name: "get_asset_args",
+	Fields: model.Fields{
+		{Name: "url", Type: model.FieldText, NotNull: true},
+	},
 }
 
-type GetStylesArgs struct {
-	Selector string `input:"-"`      // vacío = todas las reglas de todos los stylesheets
-	Sheet    int    `input:"number"` // índice de stylesheet (-1 = todos)
+var InterceptRequestArgsModel = model.Definition{
+	Name: "intercept_request_args",
+	Fields: model.Fields{
+		{Name: "action", Type: model.FieldText, NotNull: true},
+		{Name: "filter", Type: model.FieldText},
+		{Name: "limit", Type: model.FieldInt},
+	},
 }
 
-type GetStorageArgs struct {
-	Type string `input:"-"` // "local" | "session" | "cookies" (default: "local")
+var OpenBrowserArgsModel = model.Definition{
+	Name: "open_browser_args",
+	Fields: model.Fields{
+		{Name: "port", Type: model.FieldText},
+		{Name: "https", Type: model.FieldBool},
+	},
 }
 
-type GetAssetArgs struct {
-	URL string `input:"-"` // URL absoluta del archivo JS o CSS a descargar
-}
-
-type InterceptRequestArgs struct {
-	Action string `input:"-"` // "start" | "stop" | "get"
-	Filter string `input:"-"` // filtro de URL (substring), vacío = todo
-	Limit  int    `input:"number"`
+var CloseBrowserArgsModel = model.Definition{
+	Name: "close_browser_args",
+	Fields: model.Fields{},
 }
 
 type InterceptedRequest struct {

@@ -17,7 +17,7 @@ func (b *DevBrowser) GetInteractionTools() []mcp.Tool {
 		{
 			Name:        "browser_click_element",
 			Description: "Click DOM element by CSS selector to test interactions, trigger events, or simulate user actions. Useful for testing buttons, links, and interactive components.",
-			InputSchema: EncodeSchema(new(ClickElementArgs)),
+			Args: new(ClickElementArgs),
 			Resource:    "browser",
 			Action:      'u',
 			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
@@ -81,7 +81,7 @@ func (b *DevBrowser) GetInteractionTools() []mcp.Tool {
 		{
 			Name:        "browser_fill_element",
 			Description: "Fill a form field (input, textarea) with text. Simulates typing.",
-			InputSchema: EncodeSchema(new(FillElementArgs)),
+			Args: new(FillElementArgs),
 			Resource:    "browser",
 			Action:      'u',
 			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
@@ -123,7 +123,7 @@ func (b *DevBrowser) GetInteractionTools() []mcp.Tool {
 		{
 			Name:        "browser_swipe_element",
 			Description: "Simulate a swipe gesture on an element (up, down, left, right).",
-			InputSchema: EncodeSchema(new(SwipeElementArgs)),
+			Args: new(SwipeElementArgs),
 			Resource:    "browser",
 			Action:      'u',
 			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {

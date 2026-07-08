@@ -102,7 +102,7 @@ func (b *DevBrowser) GetStructureTools() []mcp.Tool {
 		{
 			Name:        "browser_get_content",
 			Description: "Get a text-based representation of the page content, optimized for LLM reading. Reduced token count compared to screenshots.",
-			InputSchema: EncodeSchema(new(GetContentArgs)),
+			Args: new(GetContentArgs),
 			Resource:    "browser",
 			Action:      'r',
 			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
@@ -131,7 +131,7 @@ func (b *DevBrowser) GetStructureTools() []mcp.Tool {
 				}
 
 				report := fmt.Sprintf(
-					"URL: %s\nTitle: %s\nViewport: %dx%d\n\n%s",
+					"Url: %s\nTitle: %s\nViewport: %dx%d\n\n%s",
 					pageURL,
 					pageTitle,
 					windowWidth, windowHeight,

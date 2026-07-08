@@ -12,7 +12,7 @@ func (b *DevBrowser) GetConsoleTools() []mcp.Tool {
 		{
 			Name:        "browser_get_console",
 			Description: "Get browser JavaScript console logs to debug WASM runtime errors, console.log outputs, or frontend issues.",
-			InputSchema: EncodeSchema(new(GetConsoleArgs)),
+			Args: new(GetConsoleArgs),
 			Resource:    "browser",
 			Action:      'r',
 			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
@@ -39,8 +39,8 @@ func (b *DevBrowser) GetConsoleTools() []mcp.Tool {
 					maxLines = 50
 				}
 
-				if len(logs) > maxLines {
-					logs = logs[len(logs)-maxLines:]
+				if len(logs) > int(maxLines) {
+					logs = logs[len(logs)-int(maxLines):]
 				}
 
 				var result string

@@ -13,7 +13,7 @@ func (b *DevBrowser) GetSourceTools() []mcp.Tool {
 		{
 			Name:        "browser_get_source",
 			Description: "Get the raw HTML (outerHTML) of the entire page or a specific element by selector. Useful for faithful reverse engineering of the DOM structure.",
-			InputSchema: EncodeSchema(new(GetSourceArgs)),
+			Args: new(GetSourceArgs),
 			Resource:    "browser",
 			Action:      'r',
 			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {

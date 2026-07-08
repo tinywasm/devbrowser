@@ -16,7 +16,7 @@ func (b *DevBrowser) GetErrorTools() []mcp.Tool {
 		{
 			Name:        "browser_get_errors",
 			Description: "Get JavaScript runtime errors and uncaught exceptions to quickly identify crashes, bugs, or WASM panics. Returns error messages with stack traces.",
-			InputSchema: EncodeSchema(new(GetErrorsArgs)),
+			Args: new(GetErrorsArgs),
 			Resource:    "browser",
 			Action:      'r',
 			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
@@ -42,8 +42,8 @@ func (b *DevBrowser) GetErrorTools() []mcp.Tool {
 				}
 
 				start := 0
-				if len(b.JsErrors) > limit {
-					start = len(b.JsErrors) - limit
+				if len(b.JsErrors) > int(limit) {
+					start = len(b.JsErrors) - int(limit)
 				}
 
 				var result strings.Builder

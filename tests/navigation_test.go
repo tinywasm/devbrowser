@@ -43,11 +43,11 @@ func TestBrowserNavigation(t *testing.T) {
 	}
 
 	// Test navigation
-	args := devbrowser.NavigateArgs{URL: ts.URL + "/page2"}
+	args := devbrowser.NavigateArgs{Url: ts.URL + "/page2"}
 	req := mcp.Request{
 		Params: mcp.CallToolParams{
 			Name:      "browser_navigate",
-			Arguments: devbrowser.EncodeSchema(&args),
+			Arguments: encodeArgs(&args),
 		},
 		Action: 'u',
 	}

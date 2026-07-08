@@ -16,8 +16,8 @@ func (b *DevBrowser) GetNetworkTools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name:        "browser_get_network_logs",
-			Description: "Get network requests and responses to debug API calls, asset loading failures, CORS errors, or slow requests. Shows URL, status, method, and timing.",
-			InputSchema: EncodeSchema(new(GetNetworkLogsArgs)),
+			Description: "Get network requests and responses to debug API calls, asset loading failures, CORS errors, or slow requests. Shows Url, status, method, and timing.",
+			Args: new(GetNetworkLogsArgs),
 			Resource:    "browser",
 			Action:      'r',
 			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
@@ -50,8 +50,8 @@ func (b *DevBrowser) GetNetworkTools() []mcp.Tool {
 					}
 				}
 
-				if len(filteredLogs) > limit {
-					filteredLogs = filteredLogs[len(filteredLogs)-limit:]
+				if len(filteredLogs) > int(limit) {
+					filteredLogs = filteredLogs[len(filteredLogs)-int(limit):]
 				}
 
 				if len(filteredLogs) == 0 {
@@ -85,7 +85,7 @@ func (b *DevBrowser) GetNetworkTools() []mcp.Tool {
 func (b *DevBrowser) initializeNetworkCapture() {
 	type requestInfo struct {
 		Method string
-		URL    string
+		Url    string
 		Time   time.Time
 	}
 	requests := make(map[network.RequestID]requestInfo)
@@ -97,7 +97,7 @@ func (b *DevBrowser) initializeNetworkCapture() {
 			mutex.Lock()
 			requests[ev.RequestID] = requestInfo{
 				Method: ev.Request.Method,
-				URL:    ev.Request.URL,
+				Url:    ev.Request.URL,
 				Time:   time.Now(),
 			}
 			mutex.Unlock()
@@ -132,7 +132,7 @@ func (b *DevBrowser) initializeNetworkCapture() {
 				duration := time.Since(reqInfo.Time).Milliseconds()
 				b.NetworkMutex.Lock()
 				b.NetworkLogs = append(b.NetworkLogs, NetworkLogEntry{
-					URL:       reqInfo.URL,
+					URL:       reqInfo.Url,
 					Method:    reqInfo.Method,
 					Type:      string(ev.Type),
 					Duration:  duration,

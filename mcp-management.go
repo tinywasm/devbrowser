@@ -14,7 +14,7 @@ func (b *DevBrowser) GetManagementTools() []mcp.Tool {
 		{
 			Name:        "browser_emulate_device",
 			Description: "Emulate a mobile device or tablet viewport without resizing the physical window. This toggle affects rendering and touch events. This change is persisted.",
-			InputSchema: EncodeSchema(new(EmulateDeviceArgs)),
+			Args: new(EmulateDeviceArgs),
 			Resource:    "browser",
 			Action:      'u',
 			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {

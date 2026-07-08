@@ -4,7 +4,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/tinywasm/devbrowser"
 	"github.com/tinywasm/mcp"
 )
 
@@ -68,11 +67,10 @@ func TestRelativeNavigation(t *testing.T) {
 			db.LastPort = tt.lastPort
 			db.LastHttps = tt.lastHttps
 
-			args := devbrowser.NavigateArgs{URL: tt.url}
 			req := mcp.Request{
 				Params: mcp.CallToolParams{
 					Name:      "browser_navigate",
-					Arguments: devbrowser.EncodeSchema(&args),
+					Arguments: `{"url":"` + tt.url + `"}`,
 				},
 			}
 

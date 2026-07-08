@@ -13,7 +13,7 @@ func (b *DevBrowser) GetStorageTools() []mcp.Tool {
 		{
 			Name:        "browser_get_storage",
 			Description: "Read localStorage, sessionStorage, or cookies from the current domain. Useful for debugging session state and user preferences.",
-			InputSchema: EncodeSchema(new(GetStorageArgs)),
+			Args: new(GetStorageArgs),
 			Resource:    "browser",
 			Action:      'r',
 			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {

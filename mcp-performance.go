@@ -152,7 +152,7 @@ func (b *DevBrowser) GetPerformanceTools() []mcp.Tool {
 		{
 			Name:        "browser_get_performance",
 			Description: "Get page performance metrics (memory, timing, DOM stats, WASM resources) to diagnose excessive RAM usage, slow loads, or rendering issues. Returns a compact text report optimized for minimal token usage.",
-			InputSchema: EncodeSchema(new(GetPerformanceArgs)),
+			Args: new(GetPerformanceArgs),
 			Resource:    "browser",
 			Action:      'r',
 			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {

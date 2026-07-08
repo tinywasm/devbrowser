@@ -68,7 +68,7 @@ func TestRobustInteraction(t *testing.T) {
 	req := mcp.Request{
 		Params: mcp.CallToolParams{
 			Name:      "browser_click_element",
-			Arguments: devbrowser.EncodeSchema(&args),
+			Arguments: encodeArgs(&args),
 		},
 		Action: 'u',
 	}

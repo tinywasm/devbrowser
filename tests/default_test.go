@@ -2,9 +2,20 @@ package devbrowser_test
 
 import (
 	"github.com/tinywasm/devbrowser"
+	"github.com/tinywasm/json"
+	"github.com/tinywasm/model"
 	"errors"
 	"sync"
 )
+
+// encodeArgs serializes an args struct to its wire JSON so tests can build
+// mcp.CallToolParams.Arguments (a raw JSON string), without production code
+// needing a JSON-schema-adjacent helper like the removed EncodeSchema.
+func encodeArgs(f model.Encodable) string {
+	var s string
+	_ = json.Encode(f, &s)
+	return s
+}
 
 // Utilities for tests: provide a single initializer that tests can call to
 // create a trimmed-down devbrowser.DevBrowser suitable for unit tests. The function

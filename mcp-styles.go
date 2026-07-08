@@ -13,7 +13,7 @@ func (b *DevBrowser) GetStylesTools() []mcp.Tool {
 		{
 			Name:        "browser_get_styles",
 			Description: "Extract CSS rules from loaded stylesheets. Can filter by selector and stylesheet index. Useful for replicating design and understanding styling.",
-			InputSchema: EncodeSchema(new(GetStylesArgs)),
+			Args: new(GetStylesArgs),
 			Resource:    "browser",
 			Action:      'r',
 			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {

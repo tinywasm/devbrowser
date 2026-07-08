@@ -17,7 +17,7 @@ func (b *DevBrowser) GetInterceptTools() []mcp.Tool {
 		{
 			Name:        "browser_intercept_request",
 			Description: "Capture request and response bodies for XHR/fetch calls. Use 'start' to begin, 'stop' to end, and 'get' to retrieve captured data.",
-			InputSchema: EncodeSchema(new(InterceptRequestArgs)),
+			Args: new(InterceptRequestArgs),
 			Resource:    "browser",
 			Action:      'u',
 			Execute: func(ctx *twcontext.Context, req mcp.Request) (*mcp.Result, error) {
@@ -35,7 +35,7 @@ func (b *DevBrowser) GetInterceptTools() []mcp.Tool {
 				case "stop":
 					return b.stopInterception()
 				case "get":
-					return b.getInterceptedRequests(args.Filter, args.Limit)
+					return b.getInterceptedRequests(args.Filter, int(args.Limit))
 				default:
 					return nil, fmt.Errorf("Unknown action: %s. Use 'start', 'stop', or 'get'", args.Action)
 				}
