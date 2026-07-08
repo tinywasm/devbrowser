@@ -1,9 +1,10 @@
 package devbrowser_test
 
 import (
-	"github.com/tinywasm/devbrowser"
 	"strings"
 	"testing"
+
+	"github.com/tinywasm/devbrowser"
 )
 
 // optimizedSiteMetrics simulates a well-optimized TinyGo WASM site:
@@ -51,13 +52,13 @@ func heavySiteMetrics() map[string]any {
 }
 
 func TestFormatPerformanceReport_OptimizedSite(t *testing.T) {
-	report := devbrowser.FormatPerformanceReport("http://localhost:6060/", optimizedSiteMetrics())
+	report := devbrowser.FormatPerformanceReport("http://localhost:8080/", optimizedSiteMetrics())
 
 	checks := []struct {
 		label    string
 		contains string
 	}{
-		{"URL", "Performance: http://localhost:6060/"},
+		{"URL", "Performance: http://localhost:8080/"},
 		{"heap used", "4.2"},
 		{"heap total", "8.0 MB"},
 		{"interactive", "Interactive 23ms"},
@@ -81,7 +82,7 @@ func TestFormatPerformanceReport_OptimizedSite(t *testing.T) {
 }
 
 func TestFormatPerformanceReport_HeavySite(t *testing.T) {
-	report := devbrowser.FormatPerformanceReport("http://localhost:6060/", heavySiteMetrics())
+	report := devbrowser.FormatPerformanceReport("http://localhost:8080/", heavySiteMetrics())
 
 	checks := []struct {
 		label    string
@@ -132,7 +133,7 @@ func TestFormatPerformanceReport_PartialMetrics(t *testing.T) {
 		"wasmFiles":       []any{},
 	}
 
-	report := devbrowser.FormatPerformanceReport("http://localhost:6060/", metrics)
+	report := devbrowser.FormatPerformanceReport("http://localhost:8080/", metrics)
 
 	if !strings.Contains(report, "DOM:       5 nodes | max depth 2") {
 		t.Errorf("Should contain DOM line, got:\n%s", report)
@@ -156,7 +157,7 @@ func TestFormatPerformanceReport_MultipleWasmFiles(t *testing.T) {
 		},
 	}
 
-	report := devbrowser.FormatPerformanceReport("http://localhost:6060/", metrics)
+	report := devbrowser.FormatPerformanceReport("http://localhost:8080/", metrics)
 
 	if !strings.Contains(report, "client.wasm 200 KB (loaded in 50ms)") {
 		t.Errorf("Should list client.wasm, got:\n%s", report)
@@ -167,7 +168,7 @@ func TestFormatPerformanceReport_MultipleWasmFiles(t *testing.T) {
 }
 
 func TestFormatPerformanceReport_CompactOutput(t *testing.T) {
-	report := devbrowser.FormatPerformanceReport("http://localhost:6060/", optimizedSiteMetrics())
+	report := devbrowser.FormatPerformanceReport("http://localhost:8080/", optimizedSiteMetrics())
 
 	lines := strings.Split(strings.TrimSpace(report), "\n")
 	if len(lines) > 10 {
