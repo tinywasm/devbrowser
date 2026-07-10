@@ -2,24 +2,38 @@ package devbrowser
 
 import "sync/atomic"
 
+const (
+	autoStartOn           = "on"
+	autoStartOff          = "off"
+	shortcutBrowserToggle = "B"
+)
+
 func (h *DevBrowser) Name() string {
 	return "BROWSER"
 }
 
 func (h *DevBrowser) Label() string {
-	return "Auto Start Browser 't/f'"
+	return "Auto Start"
 }
 
-// Value returns current auto-start setting as "t" or "f"
+// Options returns the available auto-start options
+func (h *DevBrowser) Options() []map[string]string {
+	return []map[string]string{
+		{autoStartOn: "On"},
+		{autoStartOff: "Off"},
+	}
+}
+
+// Value returns current auto-start setting as "on" or "off"
 func (h *DevBrowser) Value() string {
 	if h.AutoStart {
-		return "t"
+		return autoStartOn
 	}
-	return "f"
+	return autoStartOff
 }
 
 // StatusMessage returns formatted browser status for logging
-// Format: "Open | Auto-Start: t | Shortcut B" or "Closed | Auto-Start: f | Shortcut B"
+// Format: "Open | Auto-Start: on | Shortcut B" or "Closed | Auto-Start: off | Shortcut B"
 func (h *DevBrowser) StatusMessage() string {
 	state := "Closed"
 	if h.IsOpenFlag {
@@ -28,10 +42,10 @@ func (h *DevBrowser) StatusMessage() string {
 	return state + " | Auto-Start: " + h.Value() + " | Shortcut B"
 }
 
-// Change handles user input: toggles auto-start or browser state
+// Change handles user input: sets auto-start or toggles browser state
 func (h *DevBrowser) Change(newValue string) {
 	switch newValue {
-	case "B": // Shortcut: toggle browser open/close
+	case shortcutBrowserToggle: // Shortcut: toggle browser open/close
 		go func() {
 			if !atomic.CompareAndSwapInt32(&h.Busy, 0, 1) {
 				// Prevent spamming / re-entrant calls
@@ -50,12 +64,18 @@ func (h *DevBrowser) Change(newValue string) {
 		}()
 		return // Return immediately, don't fall through to RefreshUI below
 
-	default: // Toggle auto-start setting
-		h.AutoStart = !h.AutoStart
-		h.SaveConfig()
-		h.Logger(h.StatusMessage())
+	case autoStartOn:
+		h.AutoStart = true
+	case autoStartOff:
+		h.AutoStart = false
+
+	default:
+		h.Logger("Unknown browser setting:", newValue)
+		return
 	}
 
+	h.SaveConfig()
+	h.Logger(h.StatusMessage())
 	h.UI.RefreshUI()
 }
 
