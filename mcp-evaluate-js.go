@@ -20,7 +20,7 @@ func (b *DevBrowser) GetEvaluateJsTools() []mcp.Tool {
 			Action:      'u',
 			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
 				if !b.IsOpenFlag {
-					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
+					return nil, ErrBrowserNotOpen
 				}
 
 				var args EvaluateJSArgs

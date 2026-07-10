@@ -1,6 +1,14 @@
 package devbrowser
 
-import "github.com/tinywasm/mcp"
+import (
+	"github.com/tinywasm/fmt"
+	"github.com/tinywasm/mcp"
+)
+
+// ErrBrowserNotOpen es el error de precondición de todos los tools browser_*.
+// El browser lo abre el daemon automáticamente al iniciar un proyecto.
+var ErrBrowserNotOpen = fmt.Err(
+	"browser is not open: start a project with the start_development tool (the browser opens automatically); if it was closed, call start_development again")
 
 // GetMCPTools returns metadata for all DevBrowser MCP tools
 func (b *DevBrowser) GetMCPTools() []mcp.Tool {

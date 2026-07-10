@@ -22,7 +22,7 @@ func (b *DevBrowser) GetNetworkTools() []mcp.Tool {
 			Action:      'r',
 			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
 				if !b.IsOpenFlag {
-					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
+					return nil, ErrBrowserNotOpen
 				}
 
 				var args GetNetworkLogsArgs

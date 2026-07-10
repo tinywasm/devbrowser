@@ -6,14 +6,14 @@ require github.com/tinywasm/screenshot v0.0.1
 
 require (
 	github.com/tinywasm/context v0.0.18
+	github.com/tinywasm/fmt v0.25.1
 	github.com/tinywasm/json v0.5.10
-	github.com/tinywasm/mcp v0.1.19
-	github.com/tinywasm/model v0.0.6
+	github.com/tinywasm/mcp v0.1.20
+	github.com/tinywasm/model v0.0.8
 )
 
 require (
 	github.com/tinywasm/fetch v0.1.24 // indirect
-	github.com/tinywasm/fmt v0.25.1 // indirect
 	github.com/tinywasm/router v0.1.4 // indirect
 	github.com/tinywasm/time v0.5.0 // indirect
 	github.com/tinywasm/unixid v0.2.23 // indirect

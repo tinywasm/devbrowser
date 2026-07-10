@@ -22,7 +22,7 @@ func (b *DevBrowser) GetInterceptTools() []mcp.Tool {
 			Action:      'u',
 			Execute: func(ctx *twcontext.Context, req mcp.Request) (*mcp.Result, error) {
 				if !b.IsOpenFlag {
-					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
+					return nil, ErrBrowserNotOpen
 				}
 				var args InterceptRequestArgs
 				if err := req.Bind(&args); err != nil {

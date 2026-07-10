@@ -157,7 +157,7 @@ func (b *DevBrowser) GetPerformanceTools() []mcp.Tool {
 			Action:      'r',
 			Execute: func(Ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
 				if !b.IsOpenFlag {
-					return nil, fmt.Errorf("Browser is not open")
+					return nil, ErrBrowserNotOpen
 				}
 
 				var args GetPerformanceArgs

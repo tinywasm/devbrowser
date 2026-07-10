@@ -21,7 +21,7 @@ func (b *DevBrowser) GetErrorTools() []mcp.Tool {
 			Action:      'r',
 			Execute: func(ctx *context.Context, req mcp.Request) (*mcp.Result, error) {
 				if !b.IsOpenFlag {
-					return nil, fmt.Errorf("Browser is not open. Please open it first with browser_open")
+					return nil, ErrBrowserNotOpen
 				}
 
 				var args GetErrorsArgs
