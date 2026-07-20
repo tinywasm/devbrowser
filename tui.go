@@ -6,6 +6,7 @@ const (
 	autoStartOn           = "on"
 	autoStartOff          = "off"
 	shortcutBrowserToggle = "B"
+	LabelBrowserAutoRun   = "Browser AutoRun"
 )
 
 func (h *DevBrowser) Name() string {
@@ -13,7 +14,7 @@ func (h *DevBrowser) Name() string {
 }
 
 func (h *DevBrowser) Label() string {
-	return "Auto Start"
+	return LabelBrowserAutoRun
 }
 
 // Options returns the available auto-start options

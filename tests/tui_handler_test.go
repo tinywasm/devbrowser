@@ -18,7 +18,6 @@ func (m *mockUI) ReturnFocus() error {
 	return nil
 }
 
-
 func TestTUI_HandlerSelection(t *testing.T) {
 	var loggedMsg string
 	b := &devbrowser.DevBrowser{
@@ -34,8 +33,8 @@ func TestTUI_HandlerSelection(t *testing.T) {
 	}
 
 	// 1. Label
-	if b.Label() != "Auto Start" {
-		t.Errorf("expected Label 'Auto Start', got %q", b.Label())
+	if b.Label() != devbrowser.LabelBrowserAutoRun {
+		t.Errorf("expected Label '%s', got %q", devbrowser.LabelBrowserAutoRun, b.Label())
 	}
 
 	// 2. Options
