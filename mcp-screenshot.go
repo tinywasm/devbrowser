@@ -48,8 +48,8 @@ func (b *DevBrowser) GetScreenshotTools() []mcp.Tool {
 					res.HTMLStructure,
 				)
 
-				// Send text context to MCP client (not to TUI)
-				return mcp.Text(contextReport), nil
+				// Send text context + image to MCP client (not to TUI)
+				return mcp.NewResult(mcp.TextBlock(contextReport), mcp.ImageBlock(res.ImageData, "image/png")), nil
 			},
 		},
 	}
